@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Facturación — Provalliance</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --navy: #0D1B2A;
+  --navy-mid: #1A2E42;
+  --navy-light: #243D55;
+  --gold: #C9A84C;
+  --gold-light: #E8C97A;
+  --gold-pale: #F5E8C0;
+  --cream: #F8F4EE;
+  --white: #FFFFFF;
+  --green: #2E7D5A;
+  --green-light: #4CAF85;
+  --red: #B84040;
+  --red-light: #D96060;
+  --muted: #8A9BB0;
+  --border: rgba(201,168,76,0.18);
+  --border-strong: rgba(201,168,76,0.35);
+  --text-primary: #0D1B2A;
+  --text-secondary: #4A5E72;
+  --text-muted: #8A9BB0;
+  --surface: #FFFFFF;
+  --surface-2: #F8F4EE;
+  --surface-3: #F0EBE0;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+  background: var(--navy);
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+  border-bottom: 1px solid rgba(201,168,76,0.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  background: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  color: var(--navy);
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  color: var(--white);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.brand-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.header-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.header-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: var(--gold-light);
+  font-weight: 500;
+}
+
+.scenario-badge {
+  background: rgba(201,168,76,0.15);
+  border: 1px solid var(--border-strong);
+  padding: 4px 12px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-light);
+}
+
+/* MONTH SELECTOR */
+.month-bar {
+  background: var(--navy-mid);
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-bottom: 1px solid var(--border);
+  height: 44px;
+}
+
+.month-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-right: 12px;
+}
+
+.month-btn {
+  padding: 6px 18px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.month-btn::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0; right: 0;
+  height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transition: transform 0.2s;
+}
+
+.month-btn.active {
+  color: var(--gold-light);
+}
+
+.month-btn.active::after {
+  transform: scaleX(1);
+}
+
+.month-btn:hover:not(.active) {
+  color: var(--cream);
+}
+
+/* MAIN CONTENT */
+.main {
+  padding: 32px 40px 48px;
+  max-width: 1400px;
+}
+
+/* SECTION TITLE */
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 16px;
+  margin-top: 32px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+}
+
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--border-strong), transparent);
+}
+
+.section-tag {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+}
+
+/* KPI CARDS */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 20px 22px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--gold), transparent);
+}
+
+.kpi-card.highlight::before {
+  background: var(--gold);
+}
+
+.kpi-card.highlight {
+  background: var(--navy);
+  border-color: var(--gold);
+}
+
+.kpi-card.highlight .kpi-label { color: var(--muted); }
+.kpi-card.highlight .kpi-val { color: var(--white); }
+
+.kpi-label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.kpi-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.kpi-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  padding: 2px 7px;
+}
+
+.badge.pos { background: rgba(46,125,90,0.10); color: var(--green); border: 1px solid rgba(46,125,90,0.25); }
+.badge.neg { background: rgba(184,64,64,0.10); color: var(--red); border: 1px solid rgba(184,64,64,0.25); }
+.badge.neu { background: rgba(138,155,176,0.10); color: var(--muted); border: 1px solid rgba(138,155,176,0.2); }
+
+.badge-label { font-size: 8px; opacity: 0.7; font-family: 'DM Sans', sans-serif; letter-spacing: 0.5px; }
+
+/* CHARTS ROW */
+.charts-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.chart-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 22px 24px;
+}
+
+.chart-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.chart-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.chart-card-sub {
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.legend-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* DATA TABLE */
+.data-table-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+thead th {
+  background: var(--navy);
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  text-align: right;
+  font-weight: 400;
+  font-family: 'DM Sans', sans-serif;
+}
+
+thead th:first-child { text-align: left; width: 220px; }
+
+tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+tbody tr:hover { background: var(--surface-2); }
+tbody tr:last-child { border-bottom: none; }
+
+td {
+  padding: 8px 14px;
+  text-align: right;
+  color: var(--text-secondary);
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+}
+
+td:first-child {
+  text-align: left;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12.5px;
+  color: var(--text-primary);
+}
+
+tr.row-total td {
+  background: var(--navy);
+  color: var(--white);
+  font-weight: 500;
+  font-size: 12px;
+}
+
+tr.row-total td:first-child {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: var(--gold-light);
+}
+
+tr.row-sub td:first-child {
+  padding-left: 28px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+tr.row-sub td { color: var(--text-muted); }
+
+.pct-pos { color: var(--green) !important; }
+.pct-neg { color: var(--red) !important; }
+.pct-neu { color: var(--muted) !important; }
+
+/* FOOTER */
+.footer {
+  margin-top: 40px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-left {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.footer-right {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+/* DIVIDER SECTION */
+.sec-divider {
+  height: 1px;
+  background: linear-gradient(to right, var(--border-strong), var(--border), transparent);
+  margin: 28px 0 0;
+}
+
+@media (max-width: 900px) {
+  .kpi-row { grid-template-columns: 1fr 1fr; }
+  .charts-row { grid-template-columns: 1fr; }
+  .main { padding: 20px 16px 40px; }
+  .header, .month-bar { padding: 0 16px; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-brand">
+    <div class="brand-mark">P</div>
+    <div>
+      <div class="brand-name">Provalliance</div>
+      <div class="brand-sub">Financial Intelligence</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div>
+      <div class="header-label">Escenario</div>
+      <div class="header-val" id="hdr-escenario">REAL</div>
+    </div>
+    <div>
+      <div class="header-label">Período</div>
+      <div class="header-val" id="hdr-period">—</div>
+    </div>
+    <div class="scenario-badge">MTD €</div>
+  </div>
+</header>
+
+<div class="month-bar">
+  <span class="month-label">Período</span>
+  <div id="monthSel"></div>
+</div>
+
+<div class="main">
+
+  <!-- KPIs -->
+  <div class="section-header" style="margin-top:0">
+    <span class="section-title">Resumen ejecutivo</span>
+    <span class="section-line"></span>
+    <span class="section-tag">Total Provalliance</span>
+  </div>
+  <div class="kpi-row" id="kpiRow"></div>
+
+  <!-- CHARTS -->
+  <div class="section-header">
+    <span class="section-title">Análisis comparativo por unidad</span>
+    <span class="section-line"></span>
+    <span class="section-tag">A2026</span>
+  </div>
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title">A 2026 vs B 2026</div>
+          <div class="chart-card-sub">Desviación sobre presupuesto</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <div class="legend-item"><div class="legend-dot" style="background:#C9A84C"></div>A 2026 (Real)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#2A4A6B;border:1px dashed #5580A0"></div>B 2026 (Budget)</div>
+      </div>
+      <div style="position:relative;height:200px">
+        <canvas id="chartBudget" role="img" aria-label="Comparativa A2026 vs B2026 por unidad de negocio"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title">A 2026 vs A 2025</div>
+          <div class="chart-card-sub">Evolución interanual</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <div class="legend-item"><div class="legend-dot" style="background:#C9A84C"></div>A 2026</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#4CAF85"></div>A 2025</div>
+      </div>
+      <div style="position:relative;height:200px">
+        <canvas id="chartYoY" role="img" aria-label="Comparativa A2026 vs A2025 por unidad de negocio"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLE: OWNED SALONS -->
+  <div class="section-header">
+    <span class="section-title">Sales — Owned Salons</span>
+    <span class="section-line"></span>
+    <span class="section-tag">Salones propios</span>
+  </div>
+  <div class="data-table-wrap" id="tableOwned"></div>
+
+  <!-- TABLE: FRANCHISES -->
+  <div class="section-header">
+    <span class="section-title">Sales — Franchises</span>
+    <span class="section-line"></span>
+    <span class="section-tag">Red franquiciada</span>
+  </div>
+  <div class="data-table-wrap" id="tableFranch"></div>
+
+  <!-- TABLE: DISTRIBUTION -->
+  <div class="section-header">
+    <span class="section-title">Sales — Distribución Nacional</span>
+    <span class="section-line"></span>
+    <span class="section-tag">Producto</span>
+  </div>
+  <div class="data-table-wrap" id="tableProd"></div>
+
+  <!-- TABLE: EDU + HQ -->
+  <div class="section-header">
+    <span class="section-title">Education & HQ Contribution</span>
+    <span class="section-line"></span>
+    <span class="section-tag">Corporativo</span>
+  </div>
+  <div class="data-table-wrap" id="tableEdu"></div>
+
+  <div class="footer">
+    <div class="footer-left">Provalliance · Dashboard de Facturación · Uso interno</div>
+    <div class="footer-right" id="footer-date"></div>
+  </div>
+
+</div>
+
+<script>
+const DATA = {
+  MARZO:{
+    mes:"Marzo 2026", escenario:"REAL",
+    total_provalliance:{a2026:4472177,b2026:4513195,vs_b:-0.009,a2025:4499085,vs_a25:-0.006},
+    total_owned:{a2026:2476678,b2026:2356352,vs_b:0.051,a2025:2160541,vs_a25:0.146},
+    total_peninsula:{a2026:1801917,b2026:1724140,vs_b:0.045,a2025:1793570,vs_a25:0.005},
+    lfl_peninsula:{a2026:1734027,b2026:1628206,vs_b:0.065,a2025:1618197,vs_a25:0.072},
+    op_peninsula:{a2026:62102,b2026:60469,vs_b:0.027,a2025:46412,vs_a25:0.338},
+    cl_peninsula:{a2026:5788,b2026:35465,vs_b:-0.837,a2025:128961,vs_a25:-0.955},
+    total_canarias:{a2026:467486,b2026:429409,vs_b:0.089,a2025:366971,vs_a25:0.274},
+    lfl_canarias:{a2026:359566,b2026:357596,vs_b:0.006,a2025:347846,vs_a25:0.034},
+    op_canarias:{a2026:87707,b2026:52376,vs_b:0.674,a2025:0,vs_a25:null},
+    cl_canarias:{a2026:20213,b2026:19437,vs_b:0.04,a2025:19125,vs_a25:0.057},
+    omc:{a2026:207275,b2026:202803,vs_b:0.022,a2025:0,vs_a25:null},
+    total_franchises:{a2026:650580,b2026:656157,vs_b:-0.008,a2025:541781,vs_a25:0.201},
+    franchises:{a2026:600798,b2026:609124,vs_b:-0.014,a2025:541781,vs_a25:0.109},
+    royalty:{a2026:114703,b2026:116045,vs_b:-0.012,a2025:102730,vs_a25:0.117},
+    entrance_fee:{a2026:0,b2026:18000,vs_b:-1,a2025:0,vs_a25:null},
+    commercial_coop:{a2026:271877,b2026:238519,vs_b:0.14,a2025:234631,vs_a25:0.159},
+    products_franch:{a2026:214217,b2026:236560,vs_b:-0.094,a2025:204420,vs_a25:0.048},
+    franch_omc:{a2026:49782,b2026:47033,vs_b:0.058,a2025:0,vs_a25:null},
+    total_product:{a2026:1287409,b2026:1426497,vs_b:-0.098,a2025:1702922,vs_a25:-0.244},
+    hair_salons:{a2026:538341,b2026:542234,vs_b:-0.007,a2025:894311,vs_a25:-0.398},
+    salon_space:{a2026:217714,b2026:340080,vs_b:-0.360,a2025:269090,vs_a25:-0.191},
+    ohpeluqueros:{a2026:531354,b2026:544182,vs_b:-0.024,a2025:539521,vs_a25:-0.015},
+    amazon:{a2026:460385,b2026:484263,vs_b:-0.049,a2025:440454,vs_a25:0.045},
+    web:{a2026:43945,b2026:59920,vs_b:-0.267,a2025:29817,vs_a25:0.474},
+    others_miravia:{a2026:27024,b2026:0,vs_b:null,a2025:69249,vs_a25:-0.610},
+    total_education:{a2026:35010,b2026:51689,vs_b:-0.323,a2025:51689,vs_a25:-0.323},
+    hq_contribution:{a2026:22500,b2026:22500,vs_b:0,a2025:42153,vs_a25:-0.466}
+  },
+  MAYO:{
+    mes:"Mayo 2026", escenario:"REAL",
+    total_provalliance:{a2026:4400927,b2026:4742638,vs_b:-0.072,a2025:4627847,vs_a25:-0.049},
+    total_owned:{a2026:2465850,b2026:2564038,vs_b:-0.038,a2025:2378007,vs_a25:0.037},
+    total_peninsula:{a2026:1783569,b2026:1912999,vs_b:-0.068,a2025:1984652,vs_a25:-0.101},
+    lfl_peninsula:{a2026:1715014,b2026:1778583,vs_b:-0.036,a2025:1815079,vs_a25:-0.055},
+    op_peninsula:{a2026:68555,b2026:86864,vs_b:-0.211,a2025:28129,vs_a25:1.437},
+    cl_peninsula:{a2026:0,b2026:47552,vs_b:-1,a2025:141444,vs_a25:-1},
+    total_canarias:{a2026:471328,b2026:433038,vs_b:0.088,a2025:393355,vs_a25:0.198},
+    lfl_canarias:{a2026:384034,b2026:335268,vs_b:0.145,a2025:360314,vs_a25:0.066},
+    op_canarias:{a2026:87293,b2026:61446,vs_b:0.421,a2025:13504,vs_a25:5.464},
+    cl_canarias:{a2026:0,b2026:36325,vs_b:-1,a2025:19537,vs_a25:-1},
+    omc:{a2026:210954,b2026:218000,vs_b:-0.032,a2025:0,vs_a25:null},
+    total_franchises:{a2026:476026,b2026:484231,vs_b:-0.017,a2025:483617,vs_a25:-0.016},
+    franchises:{a2026:430760,b2026:437198,vs_b:-0.015,a2025:483617,vs_a25:-0.109},
+    royalty:{a2026:124811,b2026:112753,vs_b:0.107,a2025:131484,vs_a25:-0.051},
+    entrance_fee:{a2026:0,b2026:9000,vs_b:-1,a2025:20000,vs_a25:-1},
+    commercial_coop:{a2026:205317,b2026:145682,vs_b:0.409,a2025:159511,vs_a25:0.287},
+    products_franch:{a2026:100632,b2026:169762,vs_b:-0.407,a2025:172622,vs_a25:-0.417},
+    franch_omc:{a2026:45266,b2026:47033,vs_b:-0.038,a2025:0,vs_a25:null},
+    total_product:{a2026:1410249,b2026:1639925,vs_b:-0.14,a2025:1714393,vs_a25:-0.177},
+    hair_salons:{a2026:499987,b2026:582824,vs_b:-0.142,a2025:879742,vs_a25:-0.432},
+    salon_space:{a2026:282469,b2026:485111,vs_b:-0.418,a2025:381148,vs_a25:-0.259},
+    ohpeluqueros:{a2026:627793,b2026:571991,vs_b:0.098,a2025:453504,vs_a25:0.384},
+    amazon:{a2026:528541,b2026:508476,vs_b:0.039,a2025:377704,vs_a25:0.399},
+    web:{a2026:57913,b2026:63515,vs_b:-0.088,a2025:30154,vs_a25:0.921},
+    others_miravia:{a2026:41339,b2026:0,vs_b:null,a2025:45645,vs_a25:-0.094},
+    total_education:{a2026:26303,b2026:31944,vs_b:-0.177,a2025:31944,vs_a25:-0.177},
+    hq_contribution:{a2026:22500,b2026:22500,vs_b:0,a2025:19886,vs_a25:0.131}
+  }
+};
+
+const MONTHS = ['MARZO','MAYO'];
+let current = 'MARZO';
+let cBudget = null, cYoY = null;
+
+function fmt(v) {
+  if (v == null || v === '') return '—';
+  return new Intl.NumberFormat('es-ES', {minimumFractionDigits:0, maximumFractionDigits:0}).format(v) + ' €';
+}
+function fmtK(v) {
+  if (!v) return '—';
+  if (Math.abs(v) >= 1000000) return (v/1000000).toFixed(2).replace('.',',') + ' M€';
+  if (Math.abs(v) >= 1000) return (v/1000).toFixed(0).replace('.',',') + ' K€';
+  return Math.round(v) + ' €';
+}
+function fmtPct(v) {
+  if (v == null) return '—';
+  const s = v >= 0 ? '+' : '';
+  return s + (v * 100).toFixed(1) + '%';
+}
+function pctClass(v) {
+  if (v == null) return 'pct-neu';
+  return v >= 0 ? 'pct-pos' : 'pct-neg';
+}
+function badgeClass(v) {
+  if (v == null) return 'neu';
+  return v >= 0 ? 'pos' : 'neg';
+}
+
+function renderHeader() {
+  const d = DATA[current];
+  document.getElementById('hdr-period').textContent = d.mes;
+  document.getElementById('hdr-escenario').textContent = d.escenario;
+}
+
+function renderMonths() {
+  const sel = document.getElementById('monthSel');
+  sel.innerHTML = '';
+  MONTHS.forEach(m => {
+    const b = document.createElement('button');
+    b.className = 'month-btn' + (m === current ? ' active' : '');
+    b.textContent = DATA[m].mes;
+    b.onclick = () => { current = m; render(); };
+    sel.appendChild(b);
+  });
+}
+
+function renderKPIs() {
+  const d = DATA[current];
+  const kpis = [
+    {label:'Total Provalliance', key:'total_provalliance', hi:true},
+    {label:'Owned Salons', key:'total_owned'},
+    {label:'Franchises', key:'total_franchises'},
+    {label:'Distribución Nacional', key:'total_product'},
+  ];
+  document.getElementById('kpiRow').innerHTML = kpis.map(k => {
+    const r = d[k.key];
+    return `<div class="kpi-card${k.hi?' highlight':''}">
+      <div class="kpi-label">${k.label}</div>
+      <div class="kpi-val">${fmtK(r.a2026)}</div>
+      <div class="kpi-badges">
+        <div class="badge ${badgeClass(r.vs_b)}">
+          <span class="badge-label">vs B</span> ${fmtPct(r.vs_b)}
+        </div>
+        <div class="badge ${badgeClass(r.vs_a25)}">
+          <span class="badge-label">vs A25</span> ${fmtPct(r.vs_a25)}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function makeRow(label, key, type='normal') {
+  const d = DATA[current][key];
+  if (!d) return '';
+  const cls = type === 'total' ? 'row-total' : type === 'sub' ? 'row-sub' : '';
+  return `<tr class="${cls}">
+    <td>${label}</td>
+    <td>${fmt(d.a2026)}</td>
+    <td>${fmt(d.b2026)}</td>
+    <td class="${pctClass(d.vs_b)}">${fmtPct(d.vs_b)}</td>
+    <td>${fmt(d.a2025)}</td>
+    <td class="${pctClass(d.vs_a25)}">${fmtPct(d.vs_a25)}</td>
+  </tr>`;
+}
+
+function tableHTML(rows) {
+  return `<table>
+    <thead><tr>
+      <th>Concepto</th>
+      <th>A 2026</th><th>B 2026</th><th>vs B2026</th><th>A 2025</th><th>vs A2025</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+function renderTables() {
+  document.getElementById('tableOwned').innerHTML = tableHTML(
+    makeRow('Total Owned Salons', 'total_owned', 'total') +
+    makeRow('Total Península', 'total_peninsula') +
+    makeRow('· LFL', 'lfl_peninsula', 'sub') +
+    makeRow('· OP', 'op_peninsula', 'sub') +
+    makeRow('· CL', 'cl_peninsula', 'sub') +
+    makeRow('Total Canarias', 'total_canarias') +
+    makeRow('· LFL', 'lfl_canarias', 'sub') +
+    makeRow('· OP Canarias', 'op_canarias', 'sub') +
+    makeRow('· CL Canarias', 'cl_canarias', 'sub') +
+    makeRow('Oh My Cut', 'omc')
+  );
+  document.getElementById('tableFranch').innerHTML = tableHTML(
+    makeRow('Total Franchises', 'total_franchises', 'total') +
+    makeRow('Franchises', 'franchises') +
+    makeRow('· Royalty', 'royalty', 'sub') +
+    makeRow('· Entrance Fee', 'entrance_fee', 'sub') +
+    makeRow('· Commercial Cooperation', 'commercial_coop', 'sub') +
+    makeRow('· Products', 'products_franch', 'sub') +
+    makeRow('Franchises-OMC', 'franch_omc')
+  );
+  document.getElementById('tableProd').innerHTML = tableHTML(
+    makeRow('Total Product', 'total_product', 'total') +
+    makeRow('Hair Salons', 'hair_salons') +
+    makeRow('Salon Space', 'salon_space') +
+    makeRow('OHPeluqueros', 'ohpeluqueros') +
+    makeRow('· Amazon', 'amazon', 'sub') +
+    makeRow('· WEB', 'web', 'sub') +
+    makeRow('· Others (Miravia / TikTok)', 'others_miravia', 'sub')
+  );
+  document.getElementById('tableEdu').innerHTML = tableHTML(
+    makeRow('Total Education', 'total_education') +
+    makeRow('HQ Contribution', 'hq_contribution')
+  );
+}
+
+const chartOpts = (labels) => ({
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { display: false }, tooltip: {
+    backgroundColor: '#0D1B2A',
+    titleColor: '#C9A84C',
+    bodyColor: '#F8F4EE',
+    borderColor: 'rgba(201,168,76,0.3)',
+    borderWidth: 1,
+    padding: 10,
+    callbacks: {
+      label: ctx => ' ' + new Intl.NumberFormat('es-ES').format(Math.round(ctx.raw)) + ' €'
+    }
+  }},
+  scales: {
+    x: {
+      ticks: { font:{size:10,family:'DM Sans'}, color:'#8A9BB0', autoSkip:false, maxRotation:0 },
+      grid: { color:'rgba(201,168,76,0.08)' },
+      border: { color:'rgba(201,168,76,0.15)' }
+    },
+    y: {
+      ticks: {
+        font:{size:9,family:'DM Mono'}, color:'#8A9BB0',
+        callback: v => new Intl.NumberFormat('es-ES',{notation:'compact',compactDisplay:'short'}).format(v)
+      },
+      grid: { color:'rgba(201,168,76,0.08)' },
+      border: { color:'rgba(201,168,76,0.15)' }
+    }
+  }
+});
+
+function renderCharts() {
+  const d = DATA[current];
+  const labels = ['Owned\nSalons', 'Franchises', 'Distribución', 'Education'];
+  const a2026 = [d.total_owned.a2026, d.total_franchises.a2026, d.total_product.a2026, d.total_education.a2026];
+  const b2026 = [d.total_owned.b2026, d.total_franchises.b2026, d.total_product.b2026, d.total_education.b2026];
+  const a2025 = [d.total_owned.a2025, d.total_franchises.a2025, d.total_product.a2025, d.total_education.a2025];
+
+  if (cBudget) cBudget.destroy();
+  cBudget = new Chart(document.getElementById('chartBudget'), {
+    type: 'bar',
+    data: {
+      labels: ['Owned Salons','Franchises','Distribución','Education'],
+      datasets: [
+        { label:'A 2026', data:a2026, backgroundColor:'#C9A84C', borderRadius:2, borderSkipped:false },
+        { label:'B 2026', data:b2026, backgroundColor:'rgba(42,74,107,0.7)', borderRadius:2, borderSkipped:false, borderWidth:1, borderColor:'#5580A0' }
+      ]
+    },
+    options: chartOpts()
+  });
+
+  if (cYoY) cYoY.destroy();
+  cYoY = new Chart(document.getElementById('chartYoY'), {
+    type: 'bar',
+    data: {
+      labels: ['Owned Salons','Franchises','Distribución','Education'],
+      datasets: [
+        { label:'A 2026', data:a2026, backgroundColor:'#C9A84C', borderRadius:2, borderSkipped:false },
+        { label:'A 2025', data:a2025, backgroundColor:'rgba(46,125,90,0.55)', borderRadius:2, borderSkipped:false, borderWidth:1, borderColor:'#4CAF85' }
+      ]
+    },
+    options: chartOpts()
+  });
+}
+
+function render() {
+  renderHeader();
+  renderMonths();
+  renderKPIs();
+  renderCharts();
+  renderTables();
+}
+
+document.getElementById('footer-date').textContent =
+  'Generado: ' + new Date().toLocaleDateString('es-ES', {day:'2-digit',month:'long',year:'numeric'});
+
+render();
+</script>
+</body>
+</html>
