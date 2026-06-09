@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketing Dashboard 2026 — Provalliance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#F5F3EE;--bg2:#EDEAE3;--bg3:#E4E0D6;--white:#FFFFFF;--text:#1A1A18;--text2:#5C5C58;--text3:#9A9A94;--gold:#B8973A;--gold2:#D4AE55;--navy:#1A2B3C;--navy2:#0b1f3a;--green:#1A7A52;--red:#C0392B;--amber:#B87333;--border:#D8D4CB;--border2:#C8C3B8;--radius:6px;--radius-lg:10px}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:13px;min-height:100vh;letter-spacing:-.01em}
+.topbar{background:var(--navy2);border-bottom:1px solid rgba(201,168,76,0.2);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
+.topbar-left{display:flex;align-items:center;gap:16px}
+.topbar-back{font-size:11px;color:rgba(201,168,76,0.7);letter-spacing:.1em;text-transform:uppercase;text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
+.topbar-back:hover{color:#c9a84c}
+.topbar-divider{width:1px;height:20px;background:rgba(201,168,76,0.2)}
+.topbar-logo{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#c9a84c}
+.topbar-title{font-size:11px;color:rgba(255,255,255,.45);letter-spacing:.06em;text-transform:uppercase}
+.topbar-right{display:flex;align-items:stretch}
+.filter-group{display:flex;align-items:center;gap:8px;padding:0 16px;border-left:1px solid rgba(201,168,76,.15)}
+.filter-group label{font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
+.filter-group select{background:transparent;color:rgba(255,255,255,.85);border:none;font-size:11px;cursor:pointer;outline:none;font-family:inherit;padding:2px 0}
+.filter-group select option{background:#1a2b3c;color:#fff}
+.tabs{background:var(--white);border-bottom:1px solid var(--border);padding:0 28px;display:flex;overflow-x:auto}
+.tab{padding:12px 16px;font-size:11px;font-weight:400;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;transition:color .15s}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--text);border-bottom-color:var(--gold);font-weight:500}
+.content{padding:24px 28px}
+.kpi-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:24px}
+.kpi{background:var(--white);padding:20px 20px 18px}
+.kpi.highlight{background:var(--navy)}
+.kpi-label{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px;font-weight:500}
+.kpi.highlight .kpi-label{color:rgba(255,255,255,.5)}
+.kpi-value{font-size:24px;font-weight:300;color:var(--text);line-height:1;letter-spacing:-.03em}
+.kpi.highlight .kpi-value{color:#fff}
+.kpi-sub{font-size:10px;color:var(--text3);margin-top:6px}
+.kpi.highlight .kpi-sub{color:rgba(255,255,255,.45)}
+.kpi-bar{height:2px;background:var(--bg2);margin-top:12px;border-radius:1px;overflow:hidden}
+.kpi-bar-fill{height:100%;background:var(--gold);border-radius:1px}
+.tag{display:inline-block;font-size:9px;font-weight:500;padding:2px 7px;border-radius:20px;letter-spacing:.04em}
+.tag-pos{background:#E8F5EF;color:var(--green)}
+.tag-neg{background:#FBEAEA;color:var(--red)}
+.tag-neu{background:#F5EED8;color:var(--amber)}
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px 24px;margin-bottom:16px}
+.card-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px;gap:8px;flex-wrap:wrap}
+.card-title{font-size:13px;font-weight:500;color:var(--text)}
+.card-hint{font-size:10px;color:var(--text3);letter-spacing:.04em}
+.two-col{display:grid;grid-template-columns:3fr 2fr;gap:16px;margin-bottom:16px}
+@media(max-width:640px){.two-col{grid-template-columns:1fr}}
+.legend{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:14px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text3);letter-spacing:.04em;text-transform:uppercase}
+.swatch{width:8px;height:8px;border-radius:1px;flex-shrink:0}
+.chart-wrap{position:relative;width:100%}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead th{font-size:9px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.09em;padding:8px 12px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;background:var(--bg)}
+tbody td{padding:9px 12px;border-bottom:1px solid var(--bg2);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr.clickable:hover{background:var(--bg);cursor:pointer}
+.num{text-align:right;font-variant-numeric:tabular-nums;font-size:11.5px}
+.pos{color:var(--green)}.neg{color:var(--red)}
+.bu-pill{display:inline-block;font-size:9px;font-weight:500;padding:3px 8px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase}
+.pill-hq{background:#EEF3FA;color:#2A5BA0}.pill-dist{background:#F5EED8;color:#8B6520}.pill-bs{background:#EAF5EE;color:#1A6B3C}.pill-b2c{background:#F0EAF8;color:#6B3A90}.pill-other{background:var(--bg2);color:var(--text2)}
+.row-total td{font-weight:500;background:var(--bg);border-top:1px solid var(--border2) !important}
+.row-total-grand td{font-weight:600;background:var(--navy);color:#fff !important;border-top:2px solid var(--border2) !important}
+.drill-panel{background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius);padding:16px 18px;margin-top:12px;display:none}
+.drill-panel.open{display:block}
+.drill-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.drill-title{font-size:11px;font-weight:500;color:var(--text);text-transform:uppercase;letter-spacing:.08em}
+.drill-close{cursor:pointer;color:var(--text3);font-size:18px;padding:0 4px;background:none;border:none}
+.drill-close:hover{color:var(--text)}
+.donut-wrap{position:relative;height:200px}
+.donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);text-align:center;pointer-events:none}
+.donut-pct{font-size:26px;font-weight:300;color:var(--text);letter-spacing:-.03em}
+.donut-lbl{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-top:2px}
+.diff-section-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text2);padding:8px 12px;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.diff-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.met-badge{font-size:9px;color:var(--text3);margin-left:5px;font-weight:400;font-style:italic}
+@media(max-width:768px){.topbar{flex-wrap:wrap;height:auto;padding:12px 16px;gap:8px}.topbar-right{flex-wrap:wrap;width:100%}.filter-group{padding:6px 10px;border-left:none;border-top:1px solid rgba(201,168,76,.15)}.content{padding:16px}.two-col{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-left">
+    <a href="index.html" class="topbar-back">← Volver</a>
+    <div class="topbar-divider"></div>
+    <div class="topbar-logo">Provalliance</div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-title">Marketing · Dashboard 2026</div>
+  </div>
+  <div class="topbar-right">
+    <div class="filter-group"><label>BU</label>
+      <select id="buFilter" onchange="render()">
+        <option value="ALL">Todas</option><option value="HQ">HQ</option><option value="DIST">DIST</option><option value="BSTORES">BSTORES</option>
+      </select>
+    </div>
+    <div class="filter-group"><label>Período</label>
+      <select id="monthFilter" onchange="render()">
+        <option value="ALL">YTD Ene–May</option><option value="1">Enero</option><option value="2">Febrero</option><option value="3">Marzo</option><option value="4">Abril</option><option value="5">Mayo</option>
+      </select>
+    </div>
+  </div>
+</div>
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('resumen',this)">Resumen</div>
+  <div class="tab" onclick="switchTab('mensual',this)">Evolución mensual</div>
+  <div class="tab" onclick="switchTab('contabilidad',this)">Contabilidad</div>
+  <div class="tab" onclick="switchTab('diferencias',this)">Diferencias</div>
+</div>
+<div class="content">
+
+<div id="tab-resumen">
+  <div class="kpi-strip" id="kpi-cards"></div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-header"><span class="card-title">P&L vs Presupuesto vs Contabilidad</span><span class="card-hint" id="chart-period-label"></span></div>
+      <div class="legend">
+        <div class="legend-item"><div class="swatch" style="background:#2A5BA0"></div>P&L Marketing</div>
+        <div class="legend-item"><div class="swatch" style="background:#B8973A"></div>Presupuesto</div>
+        <div class="legend-item"><div class="swatch" style="background:#C0392B"></div>Contabilidad</div>
+      </div>
+      <div class="chart-wrap" style="height:240px"><canvas id="chartResumen"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Ejecución presupuestaria</span></div>
+      <div class="donut-wrap"><canvas id="chartDonut"></canvas><div class="donut-center"><div class="donut-pct" id="donut-pct">—</div><div class="donut-lbl">Ejecutado</div></div></div>
+      <div style="text-align:center;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-top:4px">P&L sobre presupuesto FY26</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Comparativa por unidad de negocio</span><span class="card-hint">Clic en fila → detalle proveedores</span></div>
+    <div class="table-wrap"><table><thead><tr><th>BU</th><th class="num">Contabilidad</th><th class="num">P&L YTD</th><th class="num">Ppto FY26</th><th class="num">Ppto período</th><th class="num">P&L vs Ppto</th><th class="num">Gap P&L–Contab.</th><th class="num">% Ejec.</th></tr></thead><tbody id="tbody-resumen"></tbody></table></div>
+    <div class="drill-panel" id="drill-resumen"><div class="drill-header"><span class="drill-title" id="drill-resumen-title">Detalle</span><button class="drill-close" onclick="closeDrill('drill-resumen')">×</button></div><div class="table-wrap"><table><thead><tr><th>Proveedor</th><th class="num">Ene</th><th class="num">Feb</th><th class="num">Mar</th><th class="num">Abr</th><th class="num">May</th><th class="num">Total</th></tr></thead><tbody id="drill-resumen-body"></tbody></table></div></div>
+  </div>
+</div>
+
+<div id="tab-mensual" style="display:none">
+  <div class="kpi-strip" id="kpi-cards-m"></div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Gasto mensual vs presupuesto</span></div>
+    <div class="legend">
+      <div class="legend-item"><div class="swatch" style="background:#2A5BA0"></div>HQ</div>
+      <div class="legend-item"><div class="swatch" style="background:#B8973A"></div>DIST</div>
+      <div class="legend-item"><div class="swatch" style="background:#1A6B3C"></div>BSTORES</div>
+      <div class="legend-item"><div class="swatch" style="background:#C0392B;width:16px;height:2px;border-radius:0"></div>Ref. ppto HQ</div>
+      <div class="legend-item"><div class="swatch" style="background:#B8973A;width:16px;height:2px;border-radius:0"></div>Ref. ppto DIST</div>
+    </div>
+    <div class="chart-wrap" style="height:300px"><canvas id="chartMensual"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Detalle mensual</span></div>
+    <div class="table-wrap"><table><thead><tr><th>Mes</th><th class="num">P&L HQ</th><th class="num">Ppto HQ</th><th class="num">Desv. HQ</th><th class="num">P&L DIST</th><th class="num">Ppto DIST</th><th class="num">Desv. DIST</th><th class="num">BSTORES</th><th class="num">Ppto BS</th><th class="num">Total P&L</th><th class="num">Contabilidad</th><th class="num">Gap</th></tr></thead><tbody id="tbody-mensual"></tbody></table></div>
+  </div>
+</div>
+
+<div id="tab-contabilidad" style="display:none">
+  <div class="kpi-strip" id="kpi-cards-c"></div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Contabilidad por tercero</span>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span class="card-hint">Clic en fila → detalle mensual</span>
+        <select id="buContabFilter" onchange="renderContabilidad()" style="background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:var(--radius);padding:4px 10px;font-size:11px;font-family:inherit">
+          <option value="ALL">Todas las BU</option><option value="HQ">HQ</option><option value="DIST">DIST</option><option value="BSTORES">BSTORES</option><option value="B2CECOMM">B2CECOMM</option><option value="PROPIOS">PROPIOS</option><option value="B2BECOMM">B2BECOMM</option><option value="FRANQUICIA">FRANQUICIA</option><option value="EDUCACION">EDUCACION</option>
+        </select>
+      </div>
+    </div>
+    <div class="table-wrap"><table><thead><tr id="contab-thead-row"></tr></thead><tbody id="tbody-contabilidad"></tbody></table></div>
+    <div class="drill-panel" id="drill-contab"><div class="drill-header"><span class="drill-title" id="drill-contab-title">Detalle</span><button class="drill-close" onclick="closeDrill('drill-contab')">×</button></div><div class="table-wrap"><table><thead><tr><th>Mes</th><th class="num">Importe</th><th class="num">Acumulado</th></tr></thead><tbody id="drill-contab-body"></tbody></table></div></div>
+  </div>
+</div>
+
+<div id="tab-diferencias" style="display:none">
+  <div class="kpi-strip" id="kpi-cards-d"></div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Diferencias — Contabilidad vs Seguimiento</span>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span class="card-hint">F=Factura · T=Tarjeta · P=Paypal · Clic fila → detalle</span>
+        <select id="buDiffFilter" onchange="renderDiferencias()" style="background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:var(--radius);padding:5px 10px;font-size:11px;font-family:inherit">
+          <option value="ALL">Todas las BU</option><option value="HQ">HQ</option><option value="DIST">DIST</option><option value="BSTORES">BSTORES</option>
+        </select>
+      </div>
+    </div>
+    <div class="table-wrap"><table><thead><tr><th>Proveedor / Tercero</th><th>BU</th><th class="num">Contabilidad</th><th class="num">Seguimiento</th><th class="num">Diferencia</th><th>Estado</th></tr></thead><tbody id="tbody-diferencias"></tbody></table></div>
+    <div class="drill-panel" id="drill-diff"><div class="drill-header"><span class="drill-title" id="drill-diff-title">Detalle</span><button class="drill-close" onclick="closeDrill('drill-diff')">×</button></div><div class="table-wrap"><table><thead><tr><th>Mes</th><th class="num">Contabilidad</th><th class="num">Seguimiento</th><th class="num">Diferencia</th></tr></thead><tbody id="drill-diff-body"></tbody></table></div></div>
+  </div>
+</div>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const MESES=['Enero','Febrero','Marzo','Abril','Mayo'];
+const PPTO_MENS={HQ:[59167,59167,59167,59167,59167,59167,71001,15778,86778,86778,86778,86778],DIST:[13576,14576,15076,15576,16076,17576,20576,5667,19076,20076,20576,21576],BSTORES:[4140,4177,3937,4177,4231,4297,4219,3599,4361,4156,4252,4455]};
+const plMensual={HQ:[72674,45931,75283,30484,33654],DIST:[5104,7062,15869,23671,12412],BSTORES:[0,0,0,20537,11601]};
+const plYTD={HQ:265806,DIST:106596,BSTORES:75340};
+const CONTAB_TOTAL=[96342.16,57903.29,124517.48,105537.17,113507.13];
+const contab={
+  HQ:{total:280977.35,mes:[79078.71,29217.86,74506.93,42133.08,56040.77],terceros:{'21NOVA GROWTH SL':[4541,0,4533,0,0],'5TH AVE MODEL MANAGEMENT S.L.':[0,0,2200,0,0],'ABRAHAM E.ESCUDERO AUGUSTO':[3000,0,0,4475,700],'ACKERMAN MARIA AGUSTINA':[0,300,0,-300,0],'ACREEDOR VISAS':[8055.3,7488.09,9025,8093.23,2433.85],'ACTIVE CAMPAIGN LLC':[0,291.5,-291.5,0,0],'ADQUIERE PUBLICIDAD SL':[83,3439.97,0,30,0],'Alejandra Dominguez Brito':[0,0,1200,0,0],'ALEXANDRE ARZA FONQUERNA':[0,2040.3,0,0,0],'ALMUDENA CARNICERO':[0,0,1000,0,0],'ANGELS PRJCT S.L.':[0,0,0,0,5000],'BANCO BILBAO VIZCAYA ARGENTARIA':[1600.82,0,-1600.82,0,0],'BEFEGA INVEST S.L.':[0,0,0,0,2000],'CARISMATIC SL':[0,0,10800,0,0],'CARVING LABS SAS':[2300,2300,4600,0,0],'COOL FACE ENTERPRISE S.L.':[0,0,836.9,0,-36.9],'CRISANTO BLANCO SANCHEZ':[0,0,0,0,1200],'DAVID MERCHANTE CARRILLO':[0,0,0,450,1200],'DB COSMETIC UNIPESSOAL LDA':[0,0,0,0,2025],'DIVINA ESTRATEGIA S.L.':[285,285,1199.85,0,0],'DOS MODELS SL':[8766.77,0,0,30,0],'EDELMAN SPAIN S.A.':[0,-15000,0,0,0],'ESTHER MARTIN SEPULVEDA':[600,0,0,-100,300],'FABRA COMUNICACION SL':[2400,0,4800,4800,2400],'FERNANDO CASCALES RODRÍGUEZ':[0,0,0,95,95],'GOOGLE IRELAND LIMITED':[4349,0,6008.31,-0.07,0],'GOVENTURE TECHNOLOGIES SL':[10240,0,0,0,0],'ITZIAR JIMENEZ BARROS':[0,0,0,0,1030],'JACOBO SUÁRZ MUÑOZ':[0,0,0,0,200],'JOSE CARLOS LORA SANCHEZ':[0,0,0,350,0],'Jose Luis Tabueña Acín':[0,900,0,0,0],'JUAN RAMON DUARTE FERNANDEZ-MIJARES':[0,0,630,0,0],'LAB MEDIA Y COMUNICACIÓN S.L.':[0,0,2033.47,0,0],'LIDIA HERNÁNDEZ DIÉGUEZ':[0,600,0,39.19,0],'M PILAR LLOMBART DE ARCE':[3000,0,0,0,0],'MARTIN SUQUIA MONFORT':[200,0,0,0,0],'MEDIAPOST SPAIN SL':[0,0,0,0,2373.67],'OLLO ESTUDIO CREATIVO SL':[2950,2800,889.97,2265,700],'OMNIPRO3D':[0,200,1000,0,4195],'OTILIA SOLUCIONES GASTRÓNOMICAS':[0,435,0,-55,0],'OVH HISPANO S.L.U.':[0,0,0,181.37,0],'PRAGMATISTS SP. Z O. O.':[2027,0,0,0,0],'SALONS DEVELOPMENT':[0,0,0,3857.94,0],'SHOPIFY INTERNATIONAL LIMITED':[0,0,0,0,145.64],'SMS PUBLI - COMMIFY IBERIA':[1600.82,0,1863.65,1740,0],'SOCIEDAD ESPAÑOLA DE RADIODIFUSION':[1255,0,0,0,0],'TEAM TOP VISUAL S.L.':[0,513,18382.66,-768,5695],'TEAM VALIENTE SL':[0,4000,0,0,0],'TYPEFORM S.L.':[55,-55,55,-55,0],'UBERALL GMBH':[0,0,12540,0,0],'VIEW MANAGEMENT MADRID S.L.':[0,0,0,0,5149],'WASSABI STEREO SL':[800,610,150,0,0],'WEBMEFY ESPAÑA SL':[4125,4125,4675,0,4125],'YKONE NMA S.R.L.':[0,0,0,2100,0],'YOU GLOW AGENCY SL':[3300,400,1061.04,-206.1,0],'(en blanco HQ)':[13545,13545,-13084.6,15110.52,15110.51]}},
+  DIST:{total:101580.92,mes:[12967.96,14493.14,25800.72,28878.84,19440.26],terceros:{'ABRAHAM E.ESCUDERO AUGUSTO':[0,770,0,2900,6760],'ACR 20':[0,0,500,-500,0],'BAKED BLISS SL':[0,218.9,0,0.01,0],'CHIC LOVE FASHION BRAND SL':[0,0,0,288.1,0],'EVOL XXI':[0,0,1312.06,0,0],'FERNANDO CASCALES RODRÍGUEZ':[0,0,228,-1307.5,0],'HMY YUDIGAR EQUIPAMIENTO':[0,0,12733.87,1812.81,0],'JESSICA DEL ARBOL JIMENEZ':[1473.82,3277.54,1315.94,9321.06,3214.26],'JESSY ART ZONE S.L.':[1198.14,-432.8,1949.85,8802.86,0],'OLLO ESTUDIO CREATIVO SL':[3630,1800,1095,-2895,0],'SEMILLA FOOD FAMILY S.L.':[0,0,0,0,2800],'YUDIGAR G.S. S.A.U':[0,2193.5,0,-2193.5,0],'(en blanco DIST)':[6666,6666,6666,12650,6666]}},
+  BSTORES:{total:62977.61,mes:[0,0,16437.87,22445.27,24094.47],terceros:{'MADRID TROPHY PROMOTION SLU':[0,0,35224,0,0],'SF & MACARENA DISEÑO INTEGRAL':[0,0,0,20097,20097],'TEMPS MULTIWORK S.L. ETT':[0,0,0,0,1649.2],'(en blanco BSTORES)':[0,0,-18786.13,2348.27,2348.27]}},
+  B2CECOMM:{total:34039.17,mes:[3410.49,9072.29,5831.77,6207.25,9517.37],terceros:{'ACREEDOR VISAS':[3410.49,5576.49,5831.77,5547.25,8857.37],'FUNDACJA ROZWOJU PRZEDSIEBIORCZOSCI':[0,1655.5,0,0,0],'GOOGLE IRELAND LIMITED':[0,1840.3,0,0,0],'SEM Consulting BCN SL':[0,0,0,660,660]}},
+  PROPIOS:{total:7704.1,mes:[885,1250,546,2223.1,2800],terceros:{'LORENA ISABEL VEGA DEL RÍO':[800,800,0,2223.1,0],'SOCIEDAD ESPAÑOLA DE RADIODIFUSION':[0,450,0,0,0],'TEAM TOP VISUAL S.L.':[85,0,546,0,2800]}},
+  B2BECOMM:{total:6949.96,mes:[0,3870,557.88,1427.81,1094.27],terceros:{'ABRAHAM E.ESCUDERO AUGUSTO':[0,3800,0,0,0],'ARMY EVENTOS SL':[0,0,0,0,946.8],'FUNDACJA ROZWOJU PRZEDSIEBIORCZOSCI':[0,70,0,344.05,0],'WILD AUDIENCE S.L.':[0,0,262.94,788.82,0],'ZOOM VIDEO COMMUNICATIONS INC':[0,0,294.94,294.94,147.47]}},
+  FRANQUICIA:{total:2018.15,mes:[0,0,836.31,1181.84,0],terceros:{'TALENT CONTAINER S.L.':[0,0,0,583.84,0],'U.T.E. ZIGZAG RETAIL':[0,0,0,598,0],'WAAPITI S.L.':[0,0,836.31,0,0]}},
+  EDUCACION:{total:1559.97,mes:[0,0,0,1039.98,519.99],terceros:{'VORTICE INNOVACION DIGITAL':[0,0,0,1039.98,519.99]}}
+};
+
+// Seguimiento completo todos los métodos — F=Factura T=Tarjeta P=Paypal
+const seguimiento={
+  HQ:[
+    {p:'21NOVA GROWTH SL',mes:[4541,5485,4533,4533,0],met:['F','F','F','F','']},
+    {p:'FABRA COMUNICACION SL',mes:[2400,2400,2400,4800,2400],met:['F','F','F','F','F']},
+    {p:'ABRAHAM E.ESCUDERO AUGUSTO',mes:[800,0,1686,4325,700],met:['F','','T/F','F','F']},
+    {p:'YOU GLOW AGENCY SL',mes:[3300,400,1904,0,0],met:['F','F','F','','']},
+    {p:'OLLO ESTUDIO CREATIVO SL',mes:[2950,3690,889,2965,700],met:['F','F','F','F','F']},
+    {p:'DOS MODELS SL',mes:[8767,0,0,0,0],met:['F','','','','']},
+    {p:'WEBMEFY ESPAÑA SL',mes:[4125,0,5125,4125,4125],met:['F','','F','F','F']},
+    {p:'M PILAR LLOMBART DE ARCE',mes:[3000,0,0,0,0],met:['F','','','','']},
+    {p:'MARTIN SUQUIA MONFORT',mes:[200,0,0,0,0],met:['F','','','','']},
+    {p:'ESTHER MARTIN SEPULVEDA',mes:[600,0,0,-100,300],met:['F','','','F','F']},
+    {p:'CARVING LABS SAS',mes:[2300,2300,6900,2300,2300],met:['F','F','F','F','F']},
+    {p:'UBERALL GMBH',mes:[12540,0,0,0,0],met:['F','','','','']},
+    {p:'META PLATFORMS',mes:[3542,868,542,0,0],met:['P/T','P','P','','']},
+    {p:'GOOGLE IRELAND LIMITED',mes:[10555,315,6008,3241,0],met:['F/T','F/T','F','F/T','']},
+    {p:'DIVINA ESTRATEGIA S.L.',mes:[285,630,1140,285,0],met:['F','F','F','F','']},
+    {p:'KLAVIYO',mes:[903,903,923,990,990],met:['T','T','T','T','T']},
+    {p:'ACTIVE CAMPAIGN LLC',mes:[292,292,397,344,344],met:['T','T','T','T','T']},
+    {p:'TYPEFORM S.L.',mes:[55,55,67,55,55],met:['F','T','T','T','T']},
+    {p:'SHOPIFY INTERNATIONAL LIMITED',mes:[108,126,89,412,157],met:['T','T','T','T','T']},
+    {p:'PRAGMATISTS SP. Z O. O.',mes:[2027,0,6771,0,0],met:['F','','F','','']},
+    {p:'MEDIAPOST SPAIN SL',mes:[2042,0,2100,2374,2374],met:['F','','F','F','F']},
+    {p:'WASSABI STEREO SL',mes:[800,610,150,0,0],met:['F','F','F','','']},
+    {p:'CARISMATIC SL',mes:[0,0,10800,0,0],met:['','','F','','']},
+    {p:'TEAM TOP VISUAL S.L.',mes:[0,513,14986,0,2054],met:['','F','F','','F']},
+    {p:'ANGELS PRJCT S.L.',mes:[0,0,0,0,5000],met:['','','','','F']},
+    {p:'VIEW MANAGEMENT MADRID S.L.',mes:[0,0,0,0,5149],met:['','','','','F']},
+    {p:'YKONE NMA S.R.L.',mes:[0,0,0,2100,0],met:['','','','F','']},
+    {p:'GOVENTURE TECHNOLOGIES SL',mes:[5120,5120,0,0,0],met:['F','F','','','']},
+    {p:'OPENAI',mes:[59,8,71,55,23],met:['T','T','T','T','T']},
+    {p:'MAKE',mes:[99,99,102,100,0],met:['F','T','T','T','']},
+    {p:'DAVID MERCHANTE CARRILLO',mes:[0,0,0,477,1200],met:['','','','F','F']},
+    {p:'OMNIPRO3D',mes:[0,200,1000,0,4195],met:['','F','F','','F']},
+    {p:'ADQUIERE PUBLICIDAD SL',mes:[83,3440,0,30,0],met:['F','F','','F','']},
+    {p:'SALONS DEVELOPMENT',mes:[48,0,0,0,0],met:['T','','','','']},
+    {p:'ALEJANDRA DOMINGUEZ BRITO',mes:[0,0,1200,0,0],met:['','','F','','']},
+    {p:'JUAN RAMON DUARTE FERNANDEZ-MIJARES',mes:[0,0,630,0,0],met:['','','F','','']},
+    {p:'LAB MEDIA Y COMUNICACION S.L.',mes:[0,0,2033,0,0],met:['','','F','','']},
+    {p:'5TH AVE MODEL MANAGEMENT S.L.',mes:[0,0,2200,0,0],met:['','','F','','']},
+    {p:'ALMUDENA CARNICERO',mes:[0,0,1000,0,0],met:['','','F','','']},
+    {p:'COOL FACE ENTERPRISE S.L.',mes:[0,0,837,0,0],met:['','','F','','']},
+    {p:'ITZIAR JIMENEZ BARROS',mes:[0,0,0,0,1030],met:['','','','','F']},
+    {p:'JACOBO SUAREZ',mes:[0,0,0,0,200],met:['','','','','F']},
+    {p:'CRISANTO BLANCO SANCHEZ',mes:[0,0,0,0,1200],met:['','','','','F']},
+    {p:'BEFEGA INVEST S.L.',mes:[0,0,0,0,2000],met:['','','','','F']},
+    {p:'DB COSMETIC UNIPESSOAL LDA',mes:[0,0,0,0,1800],met:['','','','','F']},
+    {p:'TRELLO INC',mes:[0,0,0,0,50],met:['','','','','T']},
+    {p:'IKEA IBERICA S.A.',mes:[0,0,0,0,138],met:['','','','','P']},
+    {p:'ESTUDIOPLAST',mes:[0,0,0,0,846],met:['','','','','P']},
+    {p:'STRATO HOSTING',mes:[0,0,0,0,6],met:['','','','','T']},
+    {p:'JOSE CARLOS LORA SANCHEZ',mes:[0,0,0,350,0],met:['','','','F','']},
+    {p:'THE CREW MGMT 24 SL',mes:[0,0,0,377,0],met:['','','','F','']},
+    {p:'OVH HISPANO S.L.U.',mes:[0,0,0,219,0],met:['','','','F','']},
+    {p:'ALEXANDRE ARZA FONQUERNA',mes:[0,2040,0,0,0],met:['','F','','','']},
+    {p:'LIDIA HERNANDEZ DIEGUEZ',mes:[0,600,0,39,0],met:['','F','','F','']},
+    {p:'TEAM VALIENTE SL',mes:[0,4000,0,0,0],met:['','F','','','']},
+    {p:'JOSE LUIS TABUEÑA ACIN',mes:[0,900,0,0,0],met:['','F','','','']},
+    {p:'OTILIA SOLUCIONES GASTRONOMICAS',mes:[0,435,0,-55,0],met:['','F','','F','']},
+    {p:'BYTEDANCE PTE. LDT.',mes:[0,12,0,0,0],met:['','T','','','']},
+    {p:'BEFEGA (LOIDA)',mes:[0,0,0,0,2000],met:['','','','','F']}
+  ],
+  DIST:[
+    {p:'OLLO ESTUDIO CREATIVO SL',mes:[3630,1800,1095,4080,0],met:['F','F','F','F','']},
+    {p:'JESSICA DEL ARBOL JIMENEZ',mes:[1474,3278,1316,8879,3214],met:['F','F','F','F','F']},
+    {p:'JESSY ART ZONE S.L.',mes:[1198,0,1950,8803,2300],met:['F','','F','F','F']},
+    {p:'HMY YUDIGAR EQUIPAMIENTO',mes:[0,2194,12734,0,0],met:['','F','F','','']},
+    {p:'FERNANDO CASCALES RODRÍGUEZ',mes:[0,1080,228,96,0],met:['','F','F','F','']},
+    {p:'ABRAHAM E.ESCUDERO AUGUSTO',mes:[0,770,0,2900,3820],met:['','F','','F','F']},
+    {p:'EVOL XXI',mes:[0,0,1312,891,0],met:['','','F','F','']},
+    {p:'SEMILLA FOOD FAMILY S.L.',mes:[0,0,0,0,2800],met:['','','','','F']},
+    {p:'BAKED BLISS SL',mes:[0,219,0,0,95],met:['','F','','','F']},
+    {p:'ACR 20',mes:[0,0,500,0,0],met:['','','F','','']},
+    {p:'CHIC LOVE FASHION BRAND SL',mes:[0,0,0,288,0],met:['','','','F','']},
+    {p:'GARABATO',mes:[0,0,0,0,120],met:['','','','','F']},
+    {p:'META (DIST)',mes:[0,0,0,0,430],met:['','','','','T']}
+  ],
+  BSTORES:[
+    {p:'MADRID TROPHY PROMOTION SLU',mes:[0,0,21134,35224,0],met:['','','F','F','']},
+    {p:'SF & MACARENA DISEÑO INTEGRAL',mes:[0,0,0,20097,20097],met:['','','','F','F']},
+    {p:'TEMPS MULTIWORK S.L. ETT',mes:[0,0,0,0,1649],met:['','','','','F']},
+    {p:'3D CREACIONES',mes:[0,0,1000,0,0],met:['','','F','','']},
+    {p:'COMPAÑIA DE ASISTENCIAS GENERALES',mes:[0,0,0,0,106],met:['','','','','F']},
+    {p:'M.DIFUSION Y CATERING S.L.',mes:[0,0,0,0,12049],met:['','','','','F']},
+    {p:'MUDANZAS LOPEZ - JOLOFER',mes:[0,0,0,5200,0],met:['','','','F','']},
+    {p:'ALEJANDRA MESONER',mes:[0,0,0,0,100],met:['','','','','T']}
+  ]
+};
+
+let charts={};let currentTab='resumen';
+const fmt=v=>{if(v===null||v===undefined)return'—';const a=Math.abs(v);const s=v<0?'−':'';return s+'€'+Math.round(a).toLocaleString('es-ES')};
+const fmtK=v=>{const a=Math.abs(v);const s=v<0?'−':'';const n=a>=10000?Math.round(a/100)/10+'k':Math.round(a).toLocaleString('es-ES');return s+'€'+n};
+const pct=(a,b)=>b>0?Math.round(a/b*100):0;
+const dFmt=v=>(v>0?'+':'')+Math.round(v).toLocaleString('es-ES')+'€';
+const dCls=v=>v>=0?'pos':'neg';
+
+function norm(s){return s.toLowerCase().replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/[^a-z0-9]/g,' ').replace(/\s+/g,' ').trim();}
+function similarity(a,b){
+  const na=norm(a),nb=norm(b);
+  if(na===nb)return 1;
+  if(na.includes(nb)||nb.includes(na))return 0.95;
+  const wa=new Set(na.split(' ').filter(x=>x.length>2));
+  const wb=new Set(nb.split(' ').filter(x=>x.length>2));
+  if(wa.size===0||wb.size===0)return 0;
+  const inter=[...wa].filter(x=>wb.has(x)).length;
+  const uni=new Set([...wa,...wb]).size;
+  const jacc=uni>0?inter/uni:0;
+  const shorter=wa.size<=wb.size?wa:wb;
+  const longer=wa.size<=wb.size?wb:wa;
+  const coverage=[...shorter].filter(x=>longer.has(x)).length/shorter.size;
+  return Math.max(jacc,coverage*0.85);
+}
+function getPpto(bu,mes){const idxs=mes==='ALL'?[0,1,2,3,4]:[parseInt(mes)-1];const buList=bu==='ALL'?['HQ','DIST','BSTORES']:[bu];return buList.reduce((s,b)=>s+idxs.reduce((ss,i)=>ss+(PPTO_MENS[b]?.[i]||0),0),0);}
+function getPptoFY(bu){const buList=bu==='ALL'?['HQ','DIST','BSTORES']:[bu];return buList.reduce((s,b)=>s+(PPTO_MENS[b]||[]).reduce((a,c)=>a+c,0),0);}
+function getPl(bu,mes){const bus=bu==='ALL'?['HQ','DIST','BSTORES']:[bu];if(mes==='ALL')return bus.reduce((s,b)=>s+(plYTD[b]||0),0);return bus.reduce((s,b)=>s+((plMensual[b]||[])[parseInt(mes)-1]||0),0);}
+function getCt(bu,mes){const d=contab[bu];if(!d)return 0;if(mes==='ALL')return d.total;return d.mes[parseInt(mes)-1]||0;}
+function getCtAll(mes){const all=['HQ','DIST','BSTORES','B2CECOMM','PROPIOS','B2BECOMM','FRANQUICIA','EDUCACION'];if(mes==='ALL')return all.reduce((s,b)=>s+(contab[b]?.total||0),0);const m=parseInt(mes)-1;return all.reduce((s,b)=>s+(contab[b]?.mes[m]||0),0);}
+
+function renderKPIs(id,bu,mes){const pl=getPl(bu,mes),ppRef=getPpto(bu,mes),ppFY=getPptoFY(bu);const ct=bu==='ALL'?getCtAll(mes):getCt(bu,mes);const ejec=pct(pl,ppFY);document.getElementById(id).innerHTML=`<div class="kpi highlight"><div class="kpi-label">Contabilidad${mes!=='ALL'?' · '+MESES[parseInt(mes)-1]:' · YTD'}</div><div class="kpi-value">${fmtK(ct)}</div><div class="kpi-sub">Facturas registradas</div></div><div class="kpi"><div class="kpi-label">P&L Marketing${mes!=='ALL'?' · '+MESES[parseInt(mes)-1]:' · YTD'}</div><div class="kpi-value">${fmtK(pl)}</div><div class="kpi-sub">${mes==='ALL'?'Ene–May':'Mes seleccionado'}</div></div><div class="kpi"><div class="kpi-label">Presupuesto${mes==='ALL'?' FY26':' mes'}</div><div class="kpi-value">${fmtK(mes==='ALL'?ppFY:ppRef)}</div><div class="kpi-sub"><span class="tag tag-neu">${ejec}% ejecutado YTD</span></div><div class="kpi-bar"><div class="kpi-bar-fill" style="width:${Math.min(ejec,100)}%"></div></div></div><div class="kpi"><div class="kpi-label">P&L vs Ppto período</div><div class="kpi-value ${dCls(pl-ppRef)}">${fmtK(pl-ppRef)}</div><div class="kpi-sub"><span class="tag ${dCls(pl-ppRef)==='pos'?'tag-pos':'tag-neg'}">${dFmt(pl-ppRef)}</span></div></div><div class="kpi"><div class="kpi-label">Gap P&L vs Contab.</div><div class="kpi-value ${dCls(pl-ct)}">${fmtK(pl-ct)}</div><div class="kpi-sub"><span class="tag ${dCls(pl-ct)==='pos'?'tag-pos':'tag-neg'}">${dFmt(pl-ct)}</span></div></div>`;}
+
+function render(){const bu=document.getElementById('buFilter').value;const mes=document.getElementById('monthFilter').value;if(currentTab==='resumen'){renderKPIs('kpi-cards',bu,mes);renderResumen(bu,mes);}if(currentTab==='mensual'){renderKPIs('kpi-cards-m',bu,'ALL');renderMensual(bu);}if(currentTab==='contabilidad'){renderKPIs('kpi-cards-c',bu,mes);renderContabilidad();}if(currentTab==='diferencias'){renderKPIs('kpi-cards-d',bu,mes);renderDiferencias();}}
+
+function renderResumen(bu,mes){['res','donut'].forEach(k=>{if(charts[k]){charts[k].destroy();delete charts[k];}});document.getElementById('chart-period-label').textContent=mes==='ALL'?'YTD Ene–May':'Mes '+MESES[parseInt(mes)-1];const bus=bu==='ALL'?['HQ','DIST','BSTORES']:[bu];const ctx=document.getElementById('chartResumen').getContext('2d');charts.res=new Chart(ctx,{type:'bar',data:{labels:bus,datasets:[{label:'P&L Marketing',data:bus.map(b=>getPl(b,mes)),backgroundColor:'#2A5BA0',borderRadius:3,borderSkipped:false},{label:'Presupuesto',data:bus.map(b=>getPpto(b,mes)),backgroundColor:'#B8973A',borderRadius:3,borderSkipped:false},{label:'Contabilidad',data:bus.map(b=>getCt(b,mes)),backgroundColor:'rgba(192,57,43,0.45)',borderColor:'#C0392B',borderWidth:1.5,borderRadius:3,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1A1A18',borderColor:'#D8D4CB',borderWidth:1,padding:10,callbacks:{label:c=>'  '+c.dataset.label+': '+fmt(c.raw)}}},scales:{y:{ticks:{color:'#9A9A94',font:{size:10},callback:v=>'€'+Math.round(v/1000)+'k'},grid:{color:'rgba(0,0,0,.05)'},border:{color:'transparent'}},x:{ticks:{color:'#5C5C58',font:{size:11}},grid:{display:false},border:{color:'transparent'}}}}});const plT=getPl(bu,mes),ppFY=getPptoFY(bu);const ejec=ppFY>0?Math.min(Math.round(plT/ppFY*100),100):0;document.getElementById('donut-pct').textContent=ejec+'%';const ctx2=document.getElementById('chartDonut').getContext('2d');charts.donut=new Chart(ctx2,{type:'doughnut',data:{labels:['Ejecutado','Restante'],datasets:[{data:[ejec,Math.max(100-ejec,0)],backgroundColor:['#B8973A','#E4E0D6'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'75%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.label+': '+c.raw+'%'}}}}});const tbody=document.getElementById('tbody-resumen');tbody.innerHTML='';const allBus=bu==='ALL'?['HQ','DIST','BSTORES']:[bu];let tCt=0,tPl=0,tPp=0;allBus.forEach(b=>{const ct=getCt(b,mes),pl=getPl(b,mes),pp=getPpto(b,mes),ppFY=getPptoFY(b);tCt+=ct;tPl+=pl;tPp+=pp;const cls=b==='HQ'?'pill-hq':b==='DIST'?'pill-dist':'pill-bs';tbody.innerHTML+=`<tr class="clickable" onclick="drillResumen('${b}')"><td><span class="bu-pill ${cls}">${b}</span></td><td class="num">${fmt(ct)}</td><td class="num" style="font-weight:500">${fmt(pl)}</td><td class="num" style="color:var(--text2)">${ppFY>0?fmt(ppFY):'-'}</td><td class="num" style="color:var(--text2)">${ppFY>0?fmt(pp):'-'}</td><td class="num ${ppFY>0?dCls(pl-pp):''}">${ppFY>0?dFmt(pl-pp):'-'}</td><td class="num ${dCls(pl-ct)}">${dFmt(pl-ct)}</td><td class="num">${ppFY>0?`<span class="tag ${pct(pl,ppFY)>85?'tag-neg':pct(pl,ppFY)>50?'tag-neu':'tag-pos'}">${pct(pl,ppFY)}%</span>`:'-'}</td></tr>`;});if(allBus.length>1){const ppFY2=getPptoFY(bu);tbody.innerHTML+=`<tr class="row-total"><td>Total</td><td class="num">${fmt(tCt)}</td><td class="num">${fmt(tPl)}</td><td class="num">${fmt(ppFY2)}</td><td class="num">${fmt(tPp)}</td><td class="num ${dCls(tPl-tPp)}">${dFmt(tPl-tPp)}</td><td class="num ${dCls(tPl-tCt)}">${dFmt(tPl-tCt)}</td><td class="num"><span class="tag tag-neu">${pct(tPl,ppFY2)}%</span></td></tr>`;}}
+
+function drillResumen(bu){const d=contab[bu];if(!d){closeDrill('drill-resumen');return;}document.getElementById('drill-resumen-title').textContent='Detalle proveedores — '+bu;const tbody=document.getElementById('drill-resumen-body');tbody.innerHTML='';const entries=Object.entries(d.terceros).sort((a,b)=>Math.abs(b[1].reduce((s,v)=>s+v,0))-Math.abs(a[1].reduce((s,v)=>s+v,0)));let tots=[0,0,0,0,0];entries.forEach(([name,vals])=>{const tot=vals.reduce((s,v)=>s+v,0);if(Math.abs(tot)<.01)return;vals.forEach((v,i)=>tots[i]+=v);tbody.innerHTML+=`<tr><td>${name}</td>${vals.map(v=>`<td class="num ${v<0?'neg':''}">${v!==0?fmt(v):'-'}</td>`).join('')}<td class="num" style="font-weight:500">${fmt(tot)}</td></tr>`;});tbody.innerHTML+=`<tr class="row-total"><td>Total ${bu}</td>${tots.map(v=>`<td class="num">${fmt(v)}</td>`).join('')}<td class="num">${fmt(tots.reduce((s,v)=>s+v,0))}</td></tr>`;const p=document.getElementById('drill-resumen');p.classList.add('open');p.scrollIntoView({behavior:'smooth',block:'nearest'});}
+
+function closeDrill(id){document.getElementById(id).classList.remove('open');}
+
+function renderMensual(bu){if(charts.men){charts.men.destroy();delete charts.men;}const colors={HQ:'#2A5BA0',DIST:'#B8973A',BSTORES:'#1A6B3C'};const bus=bu==='ALL'?['HQ','DIST','BSTORES']:[bu];let datasets=bus.map(b=>({label:b,data:plMensual[b],backgroundColor:colors[b],borderRadius:3,borderSkipped:false,stack:'s',order:2}));if(bu==='ALL'||bu==='HQ')datasets.push({label:'Ref. ppto HQ',data:MESES.map((_,i)=>PPTO_MENS.HQ[i]),type:'line',borderColor:'#C0392B',borderDash:[4,4],borderWidth:1.5,pointRadius:0,fill:false,order:1});if(bu==='ALL'||bu==='DIST')datasets.push({label:'Ref. ppto DIST',data:MESES.map((_,i)=>PPTO_MENS.DIST[i]),type:'line',borderColor:'#B8973A',borderDash:[4,4],borderWidth:1.5,pointRadius:0,fill:false,order:1});if(bu==='ALL'||bu==='BSTORES')datasets.push({label:'Ref. ppto BS',data:MESES.map((_,i)=>PPTO_MENS.BSTORES[i]),type:'line',borderColor:'#1A6B3C',borderDash:[4,4],borderWidth:1.5,pointRadius:0,fill:false,order:1});const ctx=document.getElementById('chartMensual').getContext('2d');charts.men=new Chart(ctx,{type:'bar',data:{labels:MESES,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1A1A18',borderColor:'#D8D4CB',borderWidth:1,padding:10,callbacks:{label:c=>'  '+c.dataset.label+': '+fmt(c.raw)}}},scales:{x:{stacked:true,ticks:{color:'#5C5C58',font:{size:10},autoSkip:false},grid:{display:false},border:{color:'transparent'}},y:{stacked:true,ticks:{color:'#9A9A94',font:{size:10},callback:v=>'€'+Math.round(v/1000)+'k'},grid:{color:'rgba(0,0,0,.05)'},border:{color:'transparent'}}}}});const tbody=document.getElementById('tbody-mensual');tbody.innerHTML='';let tHQ=0,tDIST=0,tBS=0,tPl=0,tCt=0,tPpHQ=0,tPpDIST=0,tPpBS=0;MESES.forEach((m,i)=>{const hq=plMensual.HQ[i],dist=plMensual.DIST[i],bs=plMensual.BSTORES[i],tot=hq+dist+bs,ct=CONTAB_TOTAL[i];const ppHQ=PPTO_MENS.HQ[i],ppDIST=PPTO_MENS.DIST[i],ppBS=PPTO_MENS.BSTORES[i];tHQ+=hq;tDIST+=dist;tBS+=bs;tPl+=tot;tCt+=ct;tPpHQ+=ppHQ;tPpDIST+=ppDIST;tPpBS+=ppBS;tbody.innerHTML+=`<tr><td style="font-weight:500">${m}</td><td class="num">${fmt(hq)}</td><td class="num" style="color:var(--text3)">${fmt(ppHQ)}</td><td class="num ${dCls(hq-ppHQ)}">${dFmt(hq-ppHQ)}</td><td class="num">${fmt(dist)}</td><td class="num" style="color:var(--text3)">${fmt(ppDIST)}</td><td class="num ${dCls(dist-ppDIST)}">${dFmt(dist-ppDIST)}</td><td class="num">${bs>0?fmt(bs):'-'}</td><td class="num" style="color:var(--text3)">${fmt(ppBS)}</td><td class="num" style="font-weight:500">${fmt(tot)}</td><td class="num">${fmt(ct)}</td><td class="num ${dCls(tot-ct)}">${dFmt(tot-ct)}</td></tr>`;});tbody.innerHTML+=`<tr class="row-total"><td>Total YTD</td><td class="num">${fmt(tHQ)}</td><td class="num">${fmt(tPpHQ)}</td><td class="num ${dCls(tHQ-tPpHQ)}">${dFmt(tHQ-tPpHQ)}</td><td class="num">${fmt(tDIST)}</td><td class="num">${fmt(tPpDIST)}</td><td class="num ${dCls(tDIST-tPpDIST)}">${dFmt(tDIST-tPpDIST)}</td><td class="num">${fmt(tBS)}</td><td class="num">${fmt(tPpBS)}</td><td class="num">${fmt(tPl)}</td><td class="num">${fmt(tCt)}</td><td class="num ${dCls(tPl-tCt)}">${dFmt(tPl-tCt)}</td></tr>`;}
+
+function renderContabilidad(){const f=document.getElementById('buContabFilter')?.value||'ALL';const mes=document.getElementById('monthFilter').value;const all=['HQ','DIST','BSTORES','B2CECOMM','PROPIOS','B2BECOMM','FRANQUICIA','EDUCACION'];const bus=f==='ALL'?all:[f];const pillMap={HQ:'pill-hq',DIST:'pill-dist',BSTORES:'pill-bs',B2CECOMM:'pill-b2c',PROPIOS:'pill-other',B2BECOMM:'pill-b2c',FRANQUICIA:'pill-other',EDUCACION:'pill-other'};const mesIdx=mes==='ALL'?null:parseInt(mes)-1;const rows=[];bus.forEach(bu=>{const d=contab[bu];if(!d)return;Object.entries(d.terceros).forEach(([n,v])=>{const val=mesIdx!==null?v[mesIdx]:v.reduce((s,x)=>s+x,0);if(Math.abs(val)>.01)rows.push({bu,n,v,val});});});rows.sort((a,b)=>Math.abs(b.val)-Math.abs(a.val));const thead=document.getElementById('contab-thead-row');const tbody=document.getElementById('tbody-contabilidad');tbody.innerHTML='';if(mesIdx!==null){thead.innerHTML=`<th>Tercero</th><th>BU</th><th class="num">${MESES[mesIdx]}</th>`;rows.forEach(({bu,n,v,val})=>{tbody.innerHTML+=`<tr class="clickable" onclick="drillContab('${n.replace(/'/g,"\\'")}',${JSON.stringify(v)})"><td>${n}</td><td><span class="bu-pill ${pillMap[bu]||'pill-other'}">${bu}</span></td><td class="num ${val<0?'neg':''}" style="font-weight:500">${fmt(val)}</td></tr>`;});tbody.innerHTML+=`<tr class="row-total-grand"><td>Total ${MESES[mesIdx]}</td><td></td><td class="num">${fmt(rows.reduce((s,r)=>s+r.val,0))}</td></tr>`;}else{thead.innerHTML='<th>Tercero</th><th>BU</th><th class="num">Ene</th><th class="num">Feb</th><th class="num">Mar</th><th class="num">Abr</th><th class="num">May</th><th class="num">Total YTD</th>';const tots=[0,0,0,0,0];let tGen=0;rows.forEach(({bu,n,v,val})=>{v.forEach((x,i)=>tots[i]+=x);tGen+=val;tbody.innerHTML+=`<tr class="clickable" onclick="drillContab('${n.replace(/'/g,"\\'")}',${JSON.stringify(v)})"><td>${n}</td><td><span class="bu-pill ${pillMap[bu]||'pill-other'}">${bu}</span></td>${v.map(x=>`<td class="num ${x<0?'neg':''}">${x!==0?fmt(x):'-'}</td>`).join('')}<td class="num" style="font-weight:500">${fmt(val)}</td></tr>`;});tbody.innerHTML+=`<tr class="row-total-grand"><td>Total</td><td></td>${tots.map(v=>`<td class="num">${fmt(v)}</td>`).join('')}<td class="num">${fmt(tGen)}</td></tr>`;}}
+
+function drillContab(name,vals){document.getElementById('drill-contab-title').textContent=name;const tbody=document.getElementById('drill-contab-body');tbody.innerHTML='';let acum=0;vals.forEach((v,i)=>{acum+=v;tbody.innerHTML+=`<tr><td>${MESES[i]}</td><td class="num ${v<0?'neg':''}">${v!==0?fmt(v):'-'}</td><td class="num" style="color:var(--gold)">${fmt(acum)}</td></tr>`;});tbody.innerHTML+=`<tr class="row-total"><td>Total</td><td class="num">${fmt(vals.reduce((s,v)=>s+v,0))}</td><td></td></tr>`;const p=document.getElementById('drill-contab');p.classList.add('open');p.scrollIntoView({behavior:'smooth',block:'nearest'});}
+
+function renderDiferencias(){
+  const buF=document.getElementById('buDiffFilter')?.value||'ALL';
+  const mes=document.getElementById('monthFilter').value;
+  const mesIdx=mes==='ALL'?null:parseInt(mes)-1;
+  const buList=buF==='ALL'?['HQ','DIST','BSTORES']:[buF];
+  const pillMap={HQ:'pill-hq',DIST:'pill-dist',BSTORES:'pill-bs'};
+  const ctRows=[];
+  buList.forEach(bu=>{const d=contab[bu];if(!d)return;Object.entries(d.terceros).forEach(([n,v])=>{const val=mesIdx!==null?v[mesIdx]:v.reduce((s,x)=>s+x,0);if(Math.abs(val)>.01)ctRows.push({bu,name:n,ctMes:v,ctTot:val});});});
+  const segRows=[];
+  buList.forEach(bu=>{(seguimiento[bu]||[]).forEach(r=>{
+    const val=mesIdx!==null?r.mes[mesIdx]:r.mes.reduce((s,x)=>s+x,0);
+    if(Math.abs(val)>.01){
+      let mets='';
+      if(mesIdx!==null){mets=r.met&&r.met[mesIdx]?r.met[mesIdx]:'';}
+      else{mets=r.met?[...new Set(r.met.filter(m=>m))].join('/'):'';}
+      segRows.push({bu,name:r.p,segMes:r.mes,segTot:val,mets});
+    }
+  });});
+  const matched=[];const usedSeg=new Set(),usedCt=new Set();
+  ctRows.forEach((cr,ci)=>{let best=0,bsi=-1;segRows.forEach((sr,si)=>{if(usedSeg.has(si)||sr.bu!==cr.bu)return;const s=similarity(cr.name,sr.name);if(s>best){best=s;bsi=si;}});if(best>=0.35){const sr=segRows[bsi];matched.push({bu:cr.bu,name:cr.name,nameSeg:sr.name,ctTot:cr.ctTot,segTot:sr.segTot,ctMes:cr.ctMes,segMes:sr.segMes,mets:sr.mets,confidence:best>=0.7?'alta':'media'});usedSeg.add(bsi);usedCt.add(ci);}});
+  const ctOnly=ctRows.filter((_,i)=>!usedCt.has(i));
+  const segOnly=segRows.filter((_,i)=>!usedSeg.has(i));
+  matched.sort((a,b)=>Math.abs(b.ctTot)-Math.abs(a.ctTot));
+  ctOnly.sort((a,b)=>Math.abs(b.ctTot)-Math.abs(a.ctTot));
+  segOnly.sort((a,b)=>Math.abs(b.segTot)-Math.abs(a.segTot));
+  const tbody=document.getElementById('tbody-diferencias');tbody.innerHTML='';
+  const metBadge=m=>m?`<span class="met-badge">${m}</span>`:'';
+  function sh(label,color){tbody.innerHTML+=`<tr><td colspan="6" class="diff-section-label"><div class="diff-dot" style="background:${color}"></div>${label}</td></tr>`;}
+  sh('Emparejados — contabilidad vs seguimiento','#2A5BA0');
+  let tCtM=0,tSegM=0;
+  matched.forEach(r=>{const diff=r.ctTot-r.segTot;tCtM+=r.ctTot;tSegM+=r.segTot;const conf=r.confidence==='alta'?`<span class="tag tag-pos">Match alto</span>`:`<span class="tag tag-neu">Match medio</span>`;tbody.innerHTML+=`<tr class="clickable" onclick="drillDiff('${r.name.replace(/'/g,"\\'")}',${JSON.stringify(r.ctMes)},${JSON.stringify(r.segMes)})"><td>${r.name}${r.name!==r.nameSeg?`<span style="font-size:10px;color:var(--text3);display:block">Seg: ${r.nameSeg}</span>`:''}</td><td><span class="bu-pill ${pillMap[r.bu]||'pill-other'}">${r.bu}</span></td><td class="num">${fmt(r.ctTot)}</td><td class="num">${fmt(r.segTot)}${metBadge(r.mets)}</td><td class="num ${dCls(-diff)}">${dFmt(-diff)}</td><td>${conf}</td></tr>`;});
+  tbody.innerHTML+=`<tr class="row-total"><td colspan="2">Subtotal emparejados</td><td class="num">${fmt(tCtM)}</td><td class="num">${fmt(tSegM)}</td><td class="num ${dCls(-(tCtM-tSegM))}">${dFmt(-(tCtM-tSegM))}</td><td></td></tr>`;
+  if(ctOnly.length>0){sh('En contabilidad — sin línea de seguimiento equivalente','#C0392B');let tCtO=0;ctOnly.forEach(r=>{tCtO+=r.ctTot;tbody.innerHTML+=`<tr class="clickable" onclick="drillDiff('${r.name.replace(/'/g,"\\'")}',${JSON.stringify(r.ctMes)},[0,0,0,0,0])"><td>${r.name}</td><td><span class="bu-pill ${pillMap[r.bu]||'pill-other'}">${r.bu}</span></td><td class="num">${fmt(r.ctTot)}</td><td class="num" style="color:var(--text3)">—</td><td class="num neg">${dFmt(-r.ctTot)}</td><td><span class="tag tag-neg">Solo contab.</span></td></tr>`;});tbody.innerHTML+=`<tr class="row-total"><td colspan="2">Subtotal solo contabilidad</td><td class="num">${fmt(tCtO)}</td><td class="num">—</td><td class="num neg">${dFmt(-tCtO)}</td><td></td></tr>`;}
+  if(segOnly.length>0){sh('En seguimiento — sin registro contable equivalente','#B87333');let tSegO=0;segOnly.forEach(r=>{tSegO+=r.segTot;tbody.innerHTML+=`<tr class="clickable" onclick="drillDiff('${r.name.replace(/'/g,"\\'")}',${JSON.stringify([0,0,0,0,0])},${JSON.stringify(r.segMes)})"><td>${r.name}</td><td><span class="bu-pill ${pillMap[r.bu]||'pill-other'}">${r.bu}</span></td><td class="num" style="color:var(--text3)">—</td><td class="num">${fmt(r.segTot)}${metBadge(r.mets)}</td><td class="num pos">+${fmt(r.segTot)}</td><td><span class="tag tag-neu">Solo seguim.</span></td></tr>`;});tbody.innerHTML+=`<tr class="row-total"><td colspan="2">Subtotal solo seguimiento</td><td class="num">—</td><td class="num">${fmt(tSegO)}</td><td class="num pos">+${fmt(tSegO)}</td><td></td></tr>`;}
+  const allCt=matched.reduce((s,r)=>s+r.ctTot,0)+ctOnly.reduce((s,r)=>s+r.ctTot,0);
+  const allSeg=matched.reduce((s,r)=>s+r.segTot,0)+segOnly.reduce((s,r)=>s+r.segTot,0);
+  tbody.innerHTML+=`<tr class="row-total-grand"><td colspan="2">Total general</td><td class="num">${fmt(allCt)}</td><td class="num">${fmt(allSeg)}</td><td class="num ${dCls(-(allCt-allSeg))}">${dFmt(-(allCt-allSeg))}</td><td></td></tr>`;
+}
+
+function drillDiff(name,ctMes,segMes){document.getElementById('drill-diff-title').textContent='Detalle: '+name;const tbody=document.getElementById('drill-diff-body');tbody.innerHTML='';MESES.forEach((m,i)=>{const ct=ctMes[i]||0,seg=segMes[i]||0,diff=ct-seg;tbody.innerHTML+=`<tr><td>${m}</td><td class="num ${ct<0?'neg':''}">${ct!==0?fmt(ct):'-'}</td><td class="num ${seg<0?'neg':''}">${seg!==0?fmt(seg):'-'}</td><td class="num ${diff!==0?dCls(-diff):''}">${diff!==0?dFmt(-diff):'-'}</td></tr>`;});const tC=ctMes.reduce((s,v)=>s+v,0),tS=segMes.reduce((s,v)=>s+v,0);tbody.innerHTML+=`<tr class="row-total"><td>Total</td><td class="num">${fmt(tC)}</td><td class="num">${fmt(tS)}</td><td class="num ${dCls(-(tC-tS))}">${dFmt(-(tC-tS))}</td></tr>`;const p=document.getElementById('drill-diff');p.classList.add('open');p.scrollIntoView({behavior:'smooth',block:'nearest'});}
+
+function switchTab(tab,el){currentTab=tab;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');['resumen','mensual','contabilidad','diferencias'].forEach(t=>document.getElementById('tab-'+t).style.display=t===tab?'block':'none');['drill-resumen','drill-contab','drill-diff'].forEach(id=>closeDrill(id));render();}
+render();
+</script>
+</body>
+</html>
