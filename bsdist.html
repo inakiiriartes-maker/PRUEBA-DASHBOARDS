@@ -528,42 +528,8 @@ function goToMonth(year,monthIdx){
 // ---- TARJETA CORPORATIVA ----
 const TC_MESES=['ENERO','FEBRERO','MARZO','ABRIL','MAYO'];
 const TC_DATA=[
-  {persona:'ANGEL GONZALEZ PALACIOS',bun:'B2BECOMM',cruce:'Angel Gonzalez',meses:[3410.49,5576.49,5831.77,5547.25,8857.37]},
-  {persona:'ROBERTO NIETO SALON SPACE',bun:'B2BECOMM',cruce:'Otros [Oficina]',meses:[3052.94,3715.51,3874.38,3005.51,3254.93]},
-  {persona:'SUSANA PAYA MIEDES',bun:'Distribution',cruce:'Susana Paya',meses:[248.47,1369.31,1280.25,1497.46,777.61]},
-  {persona:'JAIME MARRERO',bun:'Owned Salons Peninsula',cruce:'Jaime Marrero',meses:[1431.68,1204.74,1350.85,1194.58,941.10]},
   {persona:'MANUEL ESTÉVEZ',bun:'BS|DIST',cruce:'Manuel Estevez',meses:[688.81,1145.92,1425.57,1181.00,1406.85]},
-  {persona:'JUSTINE DE VILLEPIN',bun:'Owned Salons Peninsula',cruce:'Justine De Villepin',meses:[2022.97,926.14,1258.56,1237.49,964.64]},
-  {persona:'IZASKUN HURTADO',bun:'Owned Salons Peninsula',cruce:'Izaskun Hurtado',meses:[837.22,894.06,1050.20,840.42,1037.85]},
-  {persona:'FREDERIC LOGODIN',bun:'HQ',cruce:'Frederic Logodin',meses:[913.73,851.74,1521.22,1256.38,934.25]},
-  {persona:'ANA REVILLA',bun:'Owned Salons Peninsula',cruce:'Ana Revilla',meses:[715.64,777.73,915.82,1076.91,673.69]},
-  {persona:'DAVINIA SANTANA',bun:'Owned Salons Canarias',cruce:'Davinia Santana + Canarias',meses:[973.71,665.25,1186.38,1476.90,576.20]},
-  {persona:'ROBERTO NIETO OM',bun:'HQ',cruce:'Eventos | Otros',meses:[4471.68,629.69,5380.88,2238.86,5988.93]},
   {persona:'CARLOS FERNANDEZ',bun:'BS|DIST',cruce:'Carlos Fernandez',meses:[762.90,502.95,862.18,482.64,325.90]},
-  {persona:'ANTONIO SANCHEZ GARCÍA',bun:'Distribution',cruce:'Antonio Sanchez',meses:[604.43,482.28,422.28,469.12,430.64]},
-  {persona:'JOSE PARDO CAYUELA',bun:'Franchises',cruce:'Jose Pardo Cayuela',meses:[395.90,429.21,714.46,403.01,969.94]},
-  {persona:'MAR BERENGER',bun:'Owned Salons Peninsula',cruce:'Mar Berenguer',meses:[741.48,408.91,768.82,812.23,294.53]},
-  {persona:'HELENA HERRERA',bun:'Owned Salons Peninsula',cruce:'Otros [Caja Sal + Managers salon]',meses:[433.60,402.79,1109.64,829.05,775.03]},
-  {persona:'PATRICK PHELIPPEAU',bun:'Franchises',cruce:'Patrick Phellippeau',meses:[0,398.27,16.84,0,0]},
-  {persona:'JUAN CARLOS BRAÑAS',bun:'Franchises',cruce:'Juan Carlos Brañas',meses:[400.25,330.53,399.90,242.95,350.14]},
-  {persona:'BLAS ANTON ALBERO',bun:'Franchises',cruce:'Blas Anton',meses:[301.16,310.13,593.11,240.98,554.46]},
-  {persona:'BELEN MAHIQUES',bun:'Franchises',cruce:'Belen Mahiques',meses:[477.79,295.07,317.17,258.88,417.91]},
-  {persona:'OSCAR GUINEA',bun:'HQ',cruce:'Eventos | Otros',meses:[437.39,276.04,328.00,597.31,234.68]},
-  {persona:'MARÍA LINARES',bun:'HQ',cruce:'Maria Linares',meses:[214.02,223.24,484.05,394.28,650.84]},
-  {persona:'ANA MARTÍNEZ',bun:'Franchises',cruce:'Ana Martinez',meses:[346.29,173.56,256.00,14.50,145.53]},
-  {persona:'MIREIA DUEÑAS',bun:'HQ',cruce:'Mireia Dueñas',meses:[2.98,135.05,20.92,225.15,550.90]},
-  {persona:'JESUS CASTELLS NAVARRO',bun:'Distribution',cruce:'Jesus Castells',meses:[154.57,84.05,227.95,230.70,242.58]},
-  {persona:'PEDRO MORENO',bun:'Franchises',cruce:'Pedro Moreno',meses:[191.27,66.63,327.44,88.78,201.37]},
-  {persona:'JOCELYNE NOVELLA',bun:'HQ',cruce:'Eventos | Otros',meses:[0,40.00,0,0,0]},
-  {persona:'VERÓNICA MARTÍN OROZCO',bun:'Franchises',cruce:'Veronica Martin Orozco',meses:[271.67,37.28,184.82,255.08,398.04]},
-  {persona:'WILMA SORTINO',bun:'Franchises',cruce:'Wilma Sortino',meses:[0,19.75,55.55,0,49.00]},
-  {persona:'ALBERTO SANGUINO',bun:'Franchises',cruce:'Alberto Sanguino',meses:[322.59,6.75,120.20,0,498.26]},
-  {persona:'MIREIA DUEÑAS OB',bun:'HQ',cruce:'Eventos | Otros',meses:[306.05,6.68,55.90,44.93,5.29]},
-  {persona:'CARLOS NAVARRO',bun:'Distribution',cruce:'Otros [Consultores]',meses:[429.23,0,0,0,0]},
-  {persona:'ALICIA ROMAN MONEDERO',bun:'Education',cruce:'Alicia Roman',meses:[51.55,0,109.09,0,0]},
-  {persona:'Prov. Gastos Raquel da Conceic',bun:'Owned Salons Peninsula',cruce:'Otros [Caja Sal + Managers salon]',meses:[41.63,0,0,0,0]},
-  {persona:'SIMONE TUMINELLI',bun:'HQ',cruce:'Eventos | Otros',meses:[52.38,0,0,0,0]},
-  {persona:'Blanca De Diego',bun:'HQ',cruce:'Blanca de Diego',meses:[0,0,0,521.89,224.24]}
 ];
 TC_DATA.forEach(r=>r.total=r.meses.reduce((s,v)=>s+v,0));
 
