@@ -1,0 +1,6 @@
+{
+  "semanas": [
+    { "id": "s23", "etiqueta": "S23 · 1–7 Jun 2026", "archivo": "weekly-s23.json" }
+  ],
+  "por_defecto": "s23"
+}
