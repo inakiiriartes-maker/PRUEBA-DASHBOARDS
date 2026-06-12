@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Provalliance · Panel de Control</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:#0b1f3a;--navy-mid:#122340;--navy-light:#1a3358;
+      --gold:#c9a84c;--gold-light:#e2c47a;--white:#ffffff;--text-dim:rgba(255,255,255,0.55);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: var(--white); min-height: 100vh; overflow-x: hidden; }
+    body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E"); opacity:0.03; pointer-events:none; z-index:0; }
+    .topbar { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:0 48px; height:64px; background:rgba(11,31,58,0.85); backdrop-filter:blur(12px); border-bottom:1px solid rgba(201,168,76,0.15); }
+    .topbar-logo { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:600; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); }
+    .topbar-meta { font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-dim); }
+    .hero { position:relative; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:120px 32px 80px; overflow:hidden; }
+    .hero::after { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-52%); width:900px; height:600px; background:radial-gradient(ellipse at center,rgba(201,168,76,0.10) 0%,transparent 70%); pointer-events:none; }
+    .hero-rule { width:1px; height:60px; background:linear-gradient(to bottom,transparent,var(--gold),transparent); margin:0 auto 40px; opacity:0; animation:fadeUp 1s 0.2s forwards; }
+    .hero-eyebrow { font-size:0.7rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); margin-bottom:24px; opacity:0; animation:fadeUp 1s 0.4s forwards; }
+    .hero-title { font-family:'Cormorant Garamond',serif; font-size:clamp(4rem,10vw,8.5rem); font-weight:300; line-height:0.92; letter-spacing:-0.01em; color:var(--white); opacity:0; animation:fadeUp 1.1s 0.5s forwards; }
+    .hero-subtitle { margin-top:32px; font-size:0.85rem; font-weight:300; letter-spacing:0.18em; text-transform:uppercase; color:var(--text-dim); opacity:0; animation:fadeUp 1s 0.7s forwards; }
+    .hero-cta { margin-top:52px; display:inline-block; padding:14px 44px; border:1px solid var(--gold); color:var(--gold); font-size:0.72rem; font-weight:500; letter-spacing:0.3em; text-transform:uppercase; text-decoration:none; transition:background 0.3s,color 0.3s; opacity:0; animation:fadeUp 1s 0.9s forwards; }
+    .hero-cta:hover { background:var(--gold); color:var(--navy); }
+    .corner { position:absolute; width:60px; height:60px; border-color:rgba(201,168,76,0.3); border-style:solid; pointer-events:none; }
+    .corner-tl { top:100px; left:48px; border-width:1px 0 0 1px; }
+    .corner-tr { top:100px; right:48px; border-width:1px 1px 0 0; }
+    .corner-bl { bottom:40px; left:48px; border-width:0 0 1px 1px; }
+    .corner-br { bottom:40px; right:48px; border-width:0 1px 1px 0; }
+    .stats-strip { position:relative; z-index:1; display:flex; justify-content:center; border-top:1px solid rgba(201,168,76,0.15); border-bottom:1px solid rgba(201,168,76,0.15); background:rgba(18,35,64,0.6); backdrop-filter:blur(8px); }
+    .stat-item { flex:1; max-width:280px; padding:28px 32px; text-align:center; border-right:1px solid rgba(201,168,76,0.1); }
+    .stat-item:last-child { border-right:none; }
+    .stat-value { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:600; color:var(--gold); line-height:1; }
+    .stat-label { margin-top:6px; font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-dim); }
+    .section { position:relative; z-index:1; padding:96px 64px; max-width:900px; margin:0 auto; }
+    .section-header { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:56px; padding-bottom:24px; border-bottom:1px solid rgba(201,168,76,0.15); }
+    .section-label { font-size:0.65rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
+    .section-title { font-family:'Cormorant Garamond',serif; font-size:2.6rem; font-weight:300; color:var(--white); line-height:1.1; }
+    .section-count { font-size:0.72rem; color:var(--text-dim); letter-spacing:0.15em; }
+    .selector-list { display:flex; flex-direction:column; gap:0; }
+    .selector-item { display:flex; align-items:center; justify-content:space-between; padding:28px 32px; border:1px solid rgba(201,168,76,0.12); border-top:none; background:var(--navy-mid); cursor:pointer; text-decoration:none; color:var(--white); position:relative; overflow:hidden; transition:border-color 0.25s,background 0.25s; }
+    .selector-item:first-child { border-top:1px solid rgba(201,168,76,0.12); }
+    .selector-item::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--gold); transform:scaleY(0); transform-origin:bottom; transition:transform 0.3s ease; }
+    .selector-item:hover,.selector-item.active { background:rgba(201,168,76,0.06); border-color:rgba(201,168,76,0.35); }
+    .selector-item:hover::before,.selector-item.active::before { transform:scaleY(1); }
+    .sel-left { display:flex; align-items:center; gap:24px; }
+    .sel-number { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:300; color:rgba(201,168,76,0.4); min-width:28px; transition:color 0.25s; }
+    .selector-item:hover .sel-number,.selector-item.active .sel-number { color:var(--gold); }
+    .sel-info { display:flex; flex-direction:column; gap:5px; }
+    .sel-tag { font-size:0.58rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); opacity:0.7; }
+    .sel-title { font-family:'Cormorant Garamond',serif; font-size:1.35rem; font-weight:600; color:var(--white); line-height:1.2; }
+    .sel-desc { font-size:0.75rem; color:var(--text-dim); font-weight:300; margin-top:2px; max-width:440px; }
+    .sel-right { display:flex; align-items:center; gap:20px; flex-shrink:0; }
+    .sel-date { font-size:0.65rem; color:var(--text-dim); letter-spacing:0.08em; text-align:right; }
+    .sel-arrow { width:36px; height:36px; border:1px solid rgba(201,168,76,0.25); display:flex; align-items:center; justify-content:center; color:var(--gold); font-size:0.85rem; transition:background 0.25s,border-color 0.25s,transform 0.25s; flex-shrink:0; }
+    .selector-item:hover .sel-arrow { background:var(--gold); color:var(--navy); border-color:var(--gold); transform:translateX(3px); }
+    footer { position:relative; z-index:1; border-top:1px solid rgba(201,168,76,0.12); padding:32px 64px; display:flex; align-items:center; justify-content:space-between; }
+    .footer-brand { font-family:'Cormorant Garamond',serif; font-size:0.9rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); opacity:0.7; }
+    .footer-copy { font-size:0.65rem; color:var(--text-dim); letter-spacing:0.1em; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+    @media(max-width:768px){.topbar{padding:0 24px}.hero{padding:100px 24px 60px}.corner{display:none}.stats-strip{flex-wrap:wrap}.stat-item{min-width:140px;border-right:none;border-bottom:1px solid rgba(201,168,76,0.1)}.section{padding:60px 24px}.section-header{flex-direction:column;align-items:flex-start;gap:12px}.selector-item{flex-direction:column;align-items:flex-start;gap:16px;padding:24px 20px}.sel-right{width:100%;justify-content:space-between}.sel-desc{max-width:100%}footer{flex-direction:column;gap:12px;text-align:center;padding:24px}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <span class="topbar-logo">Provalliance</span>
+    <span class="topbar-meta">Panel Interno · <span id="top-year"></span></span>
+  </header>
+  <section class="hero">
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+    <div class="hero-rule"></div>
+    <p class="hero-eyebrow">Panel de Control Interno</p>
+    <h1 class="hero-title">Provalliance</h1>
+    <p class="hero-subtitle">Reporting · Análisis · Seguimiento</p>
+    <a href="#dashboards" class="hero-cta">Explorar dashboards</a>
+  </section>
+  <div class="stats-strip">
+    <div class="stat-item"><div class="stat-value">5</div><div class="stat-label">Dashboards activos</div></div>
+    <div class="stat-item"><div class="stat-value">5</div><div class="stat-label">Unidades de negocio</div></div>
+    <div class="stat-item"><div class="stat-value" id="current-year">2026</div><div class="stat-label">Año fiscal</div></div>
+    <div class="stat-item"><div class="stat-value" id="last-update">—</div><div class="stat-label">Última actualización</div></div>
+  </div>
+  <main class="section" id="dashboards">
+    <div class="section-header">
+      <div>
+        <p class="section-label">Selecciona un módulo</p>
+        <h2 class="section-title">Dashboards<br>disponibles</h2>
+      </div>
+      <span class="section-count">05 módulos</span>
+    </div>
+    <div class="selector-list">
+      <a href="dashboard_facturacion.html" class="selector-item">
+        <div class="sel-left">
+          <span class="sel-number">01</span>
+          <div class="sel-info">
+            <span class="sel-tag">Financiero</span>
+            <span class="sel-title">Facturación & EBITDA</span>
+            <span class="sel-desc">Seguimiento mensual de facturación por unidad de negocio, márgenes EBITDA y estimaciones vs. objetivo.</span>
+          </div>
+        </div>
+        <div class="sel-right">
+          <span class="sel-date" id="date-facturacion"></span>
+          <div class="sel-arrow">→</div>
+        </div>
+      </a>
+      <a href="compras.html" class="selector-item">
+        <div class="sel-left">
+          <span class="sel-number">02</span>
+          <div class="sel-info">
+            <span class="sel-tag">Operaciones</span>
+            <span class="sel-title">Compras</span>
+            <span class="sel-desc">Análisis de aprovisionamiento, evolución de pedidos y seguimiento por proveedor y categoría.</span>
+          </div>
+        </div>
+        <div class="sel-right">
+          <span class="sel-date" id="date-compras"></span>
+          <div class="sel-arrow">→</div>
+        </div>
+      </a>
+      <a href="viajes.html" class="selector-item">
+        <div class="sel-left">
+          <span class="sel-number">03</span>
+          <div class="sel-info">
+            <span class="sel-tag">Gastos · Viajes · Tarjeta</span>
+            <span class="sel-title">Viajes & Gastos Corporativos</span>
+            <span class="sel-desc">Control de desplazamientos por empleado y departamento. Incluye desglose de tarjeta corporativa por BUN y mes, y seguimiento de viajes TravelPerk con evolución mensual.</span>
+          </div>
+        </div>
+        <div class="sel-right">
+          <span class="sel-date" id="date-viajes"></span>
+          <div class="sel-arrow">→</div>
+        </div>
+      </a>
+      <a href="dashboard_marketing.html" class="selector-item">
+        <div class="sel-left">
+          <span class="sel-number">04</span>
+          <div class="sel-info">
+            <span class="sel-tag">Marketing</span>
+            <span class="sel-title">Marketing 2026</span>
+            <span class="sel-desc">Seguimiento de P&L, presupuesto mensualizado y contabilidad por BU. Comparativa de escenarios y diferencias por tercero.</span>
+          </div>
+        </div>
+        <div class="sel-right">
+          <span class="sel-date" id="date-marketing"></span>
+          <div class="sel-arrow">→</div>
+        </div>
+      </a>
+      <a href="dashboards/weekly.html" class="selector-item">
+        <div class="sel-left">
+          <span class="sel-number">05</span>
+          <div class="sel-info">
+            <span class="sel-tag">Distribución · Semanal</span>
+            <span class="sel-title">Weekly Report</span>
+            <span class="sel-desc">Informe semanal de Distribución: facturación, pedidos y provisiones por BUN y marca, objetivo de mes, mejores clientes y detalle de facturación. Con selector de semanas e histórico.</span>
+          </div>
+        </div>
+        <div class="sel-right">
+          <span class="sel-date" id="date-weekly"></span>
+          <div class="sel-arrow">→</div>
+        </div>
+      </a>
+    </div>
+  </main>
+  <footer>
+    <span class="footer-brand">Provalliance</span>
+    <span class="footer-copy">© <span id="year"></span> Provalliance · Uso interno · Todos los derechos reservados</span>
+  </footer>
+  <script>
+    const y=new Date().getFullYear();
+    document.getElementById('year').textContent=y;
+    document.getElementById('top-year').textContent=y;
+    document.getElementById('current-year').textContent=y;
+    const today=new Date();
+    document.getElementById('last-update').textContent=today.toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'});
+    const cardDate=today.toLocaleDateString('es-ES',{month:'short',year:'numeric'});
+    ['date-facturacion','date-compras','date-viajes','date-marketing','date-weekly'].forEach(id=>{document.getElementById(id).textContent=cardDate;});
+    document.querySelector('.hero-cta').addEventListener('click',e=>{e.preventDefault();document.getElementById('dashboards').scrollIntoView({behavior:'smooth'});});
+  </script>
+</body>
+</html>
