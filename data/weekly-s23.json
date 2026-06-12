@@ -1,313 +1,90 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Weekly Report — Provalliance</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/style.css">
-</head>
-<body>
-
-<nav class="topbar">
-  <a class="topbar-brand" href="../index.html">Provalliance</a>
-  <div class="topbar-nav">
-    <a href="../index.html">← Portal</a>
-    <a href="#" class="active">Weekly</a>
-  </div>
-</nav>
-
-<header class="page-header">
-  <div class="page-header-inner">
-    <div class="page-title">
-      <span>Distribución · Informe Semanal</span>
-      <span id="page-title-text" style="display:inline;font-family:'Cormorant Garamond',serif;font-size:36px;color:#fff;letter-spacing:0;text-transform:none;">Weekly Report</span>
-    </div>
-    <div class="page-meta">
-      <select class="period-select" id="week-selector" aria-label="Seleccionar semana"></select>
-      <div class="meta-pill" id="meta-rango"></div>
-      <div class="meta-pill" id="meta-buns"></div>
-    </div>
-  </div>
-</header>
-
-<div class="obj-banner">
-  <div class="obj-banner-inner" id="kpi-banner"></div>
-</div>
-
-<main class="content" id="main-content">
-  <div class="loading-state">Cargando datos…</div>
-</main>
-
-<script>
-/* =====================================================
-   WEEKLY DASHBOARD — Provalliance
-   Lee los datos desde /data/weekly-*.json
-   Para actualizar: sube un nuevo JSON, no toques este archivo.
-   ===================================================== */
-
-const DATA_PATH = '../data/';
-
-// ---------- utilidades de formato ----------
-const fmtEur = (v, dec = 0) => {
-  if (v === null || v === undefined) return '—';
-  return v.toLocaleString('es-ES', { minimumFractionDigits: dec, maximumFractionDigits: dec });
-};
-const fmtPct = (v, dec = 1) => {
-  if (v === null || v === undefined) return '—';
-  return (v * 100).toLocaleString('es-ES', { minimumFractionDigits: dec, maximumFractionDigits: dec }) + '%';
-};
-const numCell = (v, dec = 0) => {
-  if (v === null || v === undefined) return '<td class="muted">—</td>';
-  const cls = v < 0 ? ' class="neg"' : '';
-  const txt = v < 0 ? `(${fmtEur(Math.abs(v), dec)})` : fmtEur(v, dec);
-  return `<td${cls}>${txt}</td>`;
-};
-const deltaCell = (v) => {
-  if (v === null || v === undefined) return '<td class="muted">—</td>';
-  const cls = v < 0 ? 'neg' : 'pos';
-  const sign = v >= 0 ? '+' : '';
-  return `<td class="${cls}">${sign}${fmtEur(v)}</td>`;
-};
-
-// ---------- render del banner de KPIs ----------
-function renderKPIs(k) {
-  const pctTxt = fmtPct(k.pct_alcanzado, 2);
-  document.getElementById('kpi-banner').innerHTML = `
-    <div class="obj-card">
-      <div class="obj-label">Facturación Neta</div>
-      <div class="obj-value ${k.facturacion >= 0 ? 'pos-val' : 'neg-val'}">${fmtEur(k.facturacion)} €</div>
-      <div class="obj-sub">Origen: Sage X3 · Facturación</div>
-      <span class="obj-badge warn">${k.clientes_facturacion} clientes</span>
-    </div>
-    <div class="obj-card">
-      <div class="obj-label">Pedidos</div>
-      <div class="obj-value warn-val">${fmtEur(k.pedidos)} €</div>
-      <div class="obj-sub">Pedidos confirmados</div>
-      <span class="obj-badge warn">${k.clientes_pedidos} clientes</span>
-    </div>
-    <div class="obj-card">
-      <div class="obj-label">Total (Fact + Ped)</div>
-      <div class="obj-value ${k.total >= 0 ? 'pos-val' : 'neg-val'}">${fmtEur(k.total)} €</div>
-      <div class="obj-sub">Antes de provisiones</div>
-    </div>
-    <div class="obj-card">
-      <div class="obj-label">Objetivo Mes</div>
-      <div class="obj-value ${k.pct_alcanzado >= 0 ? 'pos-val' : 'neg-val'}">${pctTxt}</div>
-      <div class="obj-sub">Alcanzado · YearToGo: ${fmtEur(k.year_to_go)} €</div>
-      <span class="obj-badge neg">Obj: ${fmtEur(k.objetivo_mes)} €</span>
-    </div>`;
+{
+  "meta": {
+    "semana": "S23",
+    "rango": "1 – 7 Jun 2026",
+    "mes": "Junio 2026",
+    "buns": "BSTORES · DIST · WHOLESALE · B2BECOMM",
+    "fuente": "Sage X3 — Facturación, Pedidos y Provisiones",
+    "fecha_actualizacion": "2026-06-08"
+  },
+  "kpis": {
+    "facturacion": 2667.61,
+    "pedidos": 186943.32,
+    "total": 189610.93,
+    "clientes_facturacion": 13,
+    "clientes_pedidos": 16,
+    "provisiones_mes_pasado": -197141.45,
+    "saldo_neto": -7530.52,
+    "objetivo_mes": 533522.40,
+    "pct_alcanzado": -0.0141,
+    "year_to_go": -541052.92
+  },
+  "evolucion_semanal": [
+    { "semana": "S23 (1 – 7 Jun)",   "facturacion": 2667.61, "pedidos": 186943.32, "total": 189610.93, "delta": 189610.93, "pct_var": null, "activa": true },
+    { "semana": "S24 (8 – 14 Jun)",  "facturacion": null,    "pedidos": null,      "total": null,      "delta": null,      "pct_var": null, "activa": false },
+    { "semana": "S25 (15 – 23 Jun)", "facturacion": null,    "pedidos": null,      "total": null,      "delta": null,      "pct_var": null, "activa": false },
+    { "semana": "S26 (24 – 30 Jun)", "facturacion": null,    "pedidos": null,      "total": null,      "delta": null,      "pct_var": null, "activa": false }
+  ],
+  "bun_marca": [
+    {
+      "bun": "BSTORES",
+      "marcas": [
+        { "marca": "ALFAPARF",   "facturacion": 0, "pedidos": 2400.40, "provision": -2400.40, "total": 0 },
+        { "marca": "MASGLO",     "facturacion": 0, "pedidos": 2972.55, "provision": 0,        "total": 2972.55 },
+        { "marca": "MOROCCANOI", "facturacion": 0, "pedidos": 0,       "provision": -4745.83, "total": -4745.83 }
+      ],
+      "subtotal": { "facturacion": 0, "pedidos": 5372.95, "provision": -7146.23, "total": -1773.28, "r2026": 101009.81, "vs_r2026": -102783.09, "vs_r2026_pct": -1.0176 }
+    },
+    {
+      "bun": "DIST",
+      "marcas": [
+        { "marca": "REF",      "facturacion": 0,         "pedidos": 151.14,   "provision": -7548.96,  "total": -7397.82 },
+        { "marca": "LADIOSA",  "facturacion": 10422.50,  "pedidos": 534.97,   "provision": -9283.13,  "total": 1674.34 },
+        { "marca": "CHICLOVE", "facturacion": 3523.20,   "pedidos": 10250.40, "provision": -1917.08,  "total": 11856.52 },
+        { "marca": "EOLUX",    "facturacion": 0,         "pedidos": 0,        "provision": -240,      "total": -240 },
+        { "marca": "REMEMBER", "facturacion": -11531.85, "pedidos": 0,        "provision": 0,         "total": -11531.85 }
+      ],
+      "subtotal": { "facturacion": 2413.85, "pedidos": 10936.51, "provision": -18989.17, "total": -5638.81, "r2026": 171733.44, "vs_r2026": -177372.25, "vs_r2026_pct": -1.0328 }
+    },
+    {
+      "bun": "WHOLESALE",
+      "marcas": [
+        { "marca": "LOREAL",     "facturacion": -396.24, "pedidos": 124226.50, "provision": -124318.96, "total": -488.70 },
+        { "marca": "REDKEN",     "facturacion": 0,       "pedidos": 45957.77,  "provision": -45957.77,  "total": 0 },
+        { "marca": "MOROCCANOI", "facturacion": 0,       "pedidos": 23.68,     "provision": -23.68,     "total": 0 },
+        { "marca": "WELLA",      "facturacion": 0,       "pedidos": 358.24,    "provision": -705.64,    "total": -347.40 },
+        { "marca": "DAVINES",    "facturacion": 0,       "pedidos": 12.87,     "provision": 0,          "total": 12.87 }
+      ],
+      "subtotal": { "facturacion": -396.24, "pedidos": 170579.06, "provision": -171006.05, "total": -823.23, "r2026": 248543.50, "vs_r2026": -249366.73, "vs_r2026_pct": -1.0033 }
+    },
+    {
+      "bun": "B2BECOMM",
+      "marcas": [
+        { "marca": "GOLDWELL", "facturacion": 555, "pedidos": 0, "provision": 0, "total": 555 }
+      ],
+      "subtotal": { "facturacion": 555, "pedidos": 0, "provision": 0, "total": 555, "r2026": 12235.65, "vs_r2026": -11680.65, "vs_r2026_pct": -0.9546 }
+    }
+  ],
+  "total_general": { "facturacion": 2572.61, "pedidos": 186888.52, "provision": -197141.45, "total": -7680.32, "r2026": 533522.40, "vs_r2026": -541202.72, "vs_r2026_pct": -1.0144 },
+  "mejores_clientes": [
+    { "codigo": 796,  "nombre": "SHAZAM HAIR & COSMETIC, S.L.",        "total": 147446,    "peso": 0.7799 },
+    { "codigo": 2045, "nombre": "VELVET ECHO UNIPESSOAL LDA",          "total": 12078.76,  "peso": 0.0639 },
+    { "codigo": 1550, "nombre": "CF PINEDO, S.L.",                     "total": 5835.50,   "peso": 0.0309 },
+    { "codigo": 2346, "nombre": "GME SERVICIO INTEGRAL DE PELUQUERIA", "total": 5579.45,   "peso": 0.0295 },
+    { "codigo": 348,  "nombre": "DRUNI S.A.",                          "total": 2972.55,   "peso": 0.0157 },
+    { "codigo": 1484, "nombre": "LUXURY ORGANIC S.L.",                 "total": 1488,      "peso": 0.0079 },
+    { "codigo": 884,  "nombre": "JESSY ART ZONE, S.L.",                "total": 1302.24,   "peso": 0.0069 },
+    { "codigo": 196,  "nombre": "DB COSMETIC UNIPESSOAL LDA",          "total": -11531.85, "peso": -0.0610 },
+    { "codigo": null, "nombre": "Otros clientes",                      "total": 23591.36,  "peso": 0.1248 }
+  ],
+  "detalle_facturacion": [
+    { "cliente": "JESSY ART ZONE",    "descripcion": "Extensiones / Balayage (varios)",  "marca": "LADIOSA",            "bun": "DIST",      "uds": null, "neto": 1302.24,   "coste": 774,    "margen": 528 },
+    { "cliente": "ADELA CAICOYA SL",  "descripcion": "Extensiones + Chiclove (pack)",    "marca": "LADIOSA / CHICLOVE", "bun": "DIST",      "uds": null, "neto": 9122,      "coste": 5411,   "margen": 3711 },
+    { "cliente": "LUXURY ORGANIC",    "descripcion": "Sleep + Vial Hair Forte",          "marca": "CHICLOVE",           "bun": "DIST",      "uds": 132,  "neto": 1488,      "coste": 1012,   "margen": 476 },
+    { "cliente": "GME SERVICIO INT.", "descripcion": "Radiant Skin + Sleep + Viales",    "marca": "CHICLOVE",           "bun": "DIST",      "uds": 210,  "neto": 1128,      "coste": 768,    "margen": 360 },
+    { "cliente": "VELVET ECHO LDA",   "descripcion": "Abono Loréal (Blondifier, Metal)", "marca": "LOREAL",             "bun": "WHOLESALE", "uds": -24,  "neto": -396.24,   "coste": -469,   "margen": 73 },
+    { "cliente": "DB COSMETIC LDA",   "descripcion": "Abono Remember (pack completo)",   "marca": "REMEMBER",           "bun": "DIST",      "uds": null, "neto": -11531.85, "coste": -7922,  "margen": -3610 },
+    { "cliente": "ALICIA RINCON EST.","descripcion": "Goldwell ELU HC (varios tonos)",   "marca": "GOLDWELL",           "bun": "B2BECOMM",  "uds": 21,   "neto": 555,       "coste": 340,    "margen": 215 },
+    { "cliente": "ENEXO HAIR SATATE", "descripcion": "La Diosa + Maxsum Cacao",          "marca": "LADIOSA / MAXSUM",   "bun": "DIST",      "uds": 5,    "neto": 433,       "coste": 214,    "margen": 219 }
+  ]
 }
-
-// ---------- render de evolución semanal ----------
-function renderEvolucion(evo) {
-  const cards = evo.map(s => `
-    <div class="week-card${s.activa ? ' active' : ''}">
-      <div class="week-card-label">${s.semana}${s.activa ? ' ✓' : ''}</div>
-      <div class="week-card-value${s.total === null ? ' muted' : ''}">${s.total === null ? '—' : fmtEur(s.total) + ' €'}</div>
-      <div class="week-card-sub">${s.total === null ? 'Sin datos aún' : 'Fact: ' + fmtEur(s.facturacion) + ' € · Ped: ' + fmtEur(s.pedidos) + ' €'}</div>
-    </div>`).join('');
-
-  const filas = evo.map(s => `
-    <tr${s.activa ? ' class="week-active"' : ''}>
-      <td class="lbl">${s.semana}</td>
-      ${numCell(s.facturacion)}${numCell(s.pedidos)}
-      <td>${s.total === null ? '<span class="muted">—</span>' : '<strong>' + fmtEur(s.total) + '</strong>'}</td>
-      ${deltaCell(s.delta)}
-      <td class="muted">${s.pct_var === null ? '—' : fmtPct(s.pct_var)}</td>
-    </tr>`).join('');
-
-  const totF = evo.reduce((a, s) => a + (s.facturacion || 0), 0);
-  const totP = evo.reduce((a, s) => a + (s.pedidos || 0), 0);
-
-  return `
-  <div class="section">
-    <div class="sec-header">
-      <div class="sec-title">1 · Evolución Semanal</div>
-      <div class="sec-pill">${evo.find(s => s.activa)?.semana.split(' ')[0] || ''} activa</div>
-    </div>
-    <div class="week-section"><div class="week-grid">${cards}</div></div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th class="lbl">Semana</th><th>Facturación (€)</th><th>Pedidos (€)</th><th>Total (€)</th><th>Δ vs ant. (€)</th><th>% var.</th></tr></thead>
-        <tbody>
-          ${filas}
-          <tr class="tot"><td class="lbl">TOTAL MES</td><td>${fmtEur(totF)}</td><td>${fmtEur(totP)}</td><td><strong>${fmtEur(totF + totP)}</strong></td><td>—</td><td>—</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>`;
-}
-
-// ---------- render tabla BUN y Marca ----------
-function renderBunMarca(buns, totalGeneral) {
-  let rows = '';
-  buns.forEach(b => {
-    rows += `<tr><td class="bun-header" colspan="8">${b.bun}</td></tr>`;
-    b.marcas.forEach(m => {
-      rows += `<tr>
-        <td class="lbl indent">${m.marca}</td>
-        ${numCell(m.facturacion)}${numCell(m.pedidos)}${numCell(m.provision)}${numCell(m.total)}
-        <td class="muted">—</td><td class="muted">—</td><td class="muted">—</td>
-      </tr>`;
-    });
-    const st = b.subtotal;
-    rows += `<tr class="sub">
-      <td class="lbl">Subtotal ${b.bun}</td>
-      ${numCell(st.facturacion)}${numCell(st.pedidos)}${numCell(st.provision)}${numCell(st.total)}
-      <td>${fmtEur(st.r2026)}</td>
-      <td class="neg">${fmtEur(st.vs_r2026)}</td>
-      <td class="neg">(${fmtPct(Math.abs(st.vs_r2026_pct))})</td>
-    </tr>`;
-  });
-  const t = totalGeneral;
-  rows += `<tr class="tot">
-    <td class="lbl">TOTAL GENERAL</td>
-    ${numCell(t.facturacion)}${numCell(t.pedidos)}${numCell(t.provision)}${numCell(t.total)}
-    <td>${fmtEur(t.r2026)}</td>
-    <td class="neg">${fmtEur(t.vs_r2026)}</td>
-    <td class="neg">(${fmtPct(Math.abs(t.vs_r2026_pct))})</td>
-  </tr>`;
-
-  return `
-  <div class="section">
-    <div class="sec-header">
-      <div class="sec-title">2 · Facturación, Pedidos y Provisiones por BUN y Marca</div>
-      <div class="sec-pill">vs R2026</div>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr>
-          <th class="lbl">BUN / Marca</th><th>Facturación (€)</th><th>Pedidos (€)</th><th>Provisión (€)</th><th>Total (€)</th>
-          <th class="r2">R2026 (€)</th><th class="r2">vs R2026 (€)</th><th class="r2">vs R2026 (%)</th>
-        </tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>
-  </div>`;
-}
-
-// ---------- render mejores clientes ----------
-function renderClientes(clientes) {
-  const maxPeso = Math.max(...clientes.map(c => Math.abs(c.peso)));
-  const rows = clientes.map(c => {
-    const w = Math.abs(c.peso) / maxPeso * 100;
-    const isNeg = c.total < 0;
-    return `
-    <div class="progress-row">
-      <span class="progress-label" title="${c.nombre}">${c.nombre}</span>
-      <div class="progress-bar-bg"><div class="progress-bar-fill${isNeg ? ' neg-fill' : ''}" style="width:${w.toFixed(1)}%"></div></div>
-      <span class="progress-val${isNeg ? ' neg' : ''}">${isNeg ? '(' + fmtEur(Math.abs(c.total)) + ')' : fmtEur(c.total)} €</span>
-      <span class="progress-pct${isNeg ? ' neg' : ''}">${fmtPct(c.peso)}</span>
-    </div>`;
-  }).join('');
-
-  return `
-  <div class="section">
-    <div class="sec-header">
-      <div class="sec-title">3 · Mejores Clientes</div>
-      <div class="sec-pill">Fact + Ped</div>
-    </div>
-    <div class="progress-wrap">${rows}</div>
-  </div>`;
-}
-
-// ---------- render detalle facturación ----------
-function renderDetalle(detalle) {
-  const rows = detalle.map(d => `
-    <tr>
-      <td class="lbl">${d.cliente}</td>
-      <td class="lbl">${d.descripcion}</td>
-      <td>${d.marca}</td><td>${d.bun}</td>
-      <td>${d.uds === null ? '—' : d.uds}</td>
-      ${numCell(d.neto)}
-      <td class="muted">${d.coste === null ? '—' : '~' + fmtEur(Math.abs(d.coste))}</td>
-      ${d.margen >= 0 ? '<td class="pos">~' + fmtEur(d.margen) + '</td>' : '<td class="neg">(' + fmtEur(Math.abs(d.margen)) + ')</td>'}
-    </tr>`).join('');
-
-  return `
-  <div class="section">
-    <div class="sec-header">
-      <div class="sec-title">4 · Detalle Facturación — Líneas destacadas</div>
-      <div class="sec-pill">FACTURACION</div>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr>
-          <th class="lbl">Cliente</th><th class="lbl">Descripción</th><th>Marca</th><th>BUN</th>
-          <th>Uds.</th><th>Imp. Neto (€)</th><th>Coste (€)</th><th>Margen (€)</th>
-        </tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>
-    <div class="sec-note">* Importes resumidos por cliente/marca. El detalle línea a línea está en el Excel de origen.</div>
-  </div>`;
-}
-
-// ---------- carga y pintado ----------
-async function loadWeek(archivo) {
-  const main = document.getElementById('main-content');
-  main.innerHTML = '<div class="loading-state">Cargando datos…</div>';
-  try {
-    const resp = await fetch(DATA_PATH + archivo, { cache: 'no-store' });
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    const d = await resp.json();
-
-    document.getElementById('page-title-text').textContent = `Weekly Report — ${d.meta.semana} · ${d.meta.mes}`;
-    document.getElementById('meta-rango').innerHTML = `📅 <strong>${d.meta.rango}</strong>`;
-    document.getElementById('meta-buns').innerHTML = `BUNs: <strong>${d.meta.buns}</strong>`;
-    document.title = `Weekly ${d.meta.semana} · ${d.meta.mes} — Provalliance`;
-
-    renderKPIs(d.kpis);
-
-    main.innerHTML =
-      renderEvolucion(d.evolucion_semanal) +
-      renderBunMarca(d.bun_marca, d.total_general) +
-      renderClientes(d.mejores_clientes) +
-      renderDetalle(d.detalle_facturacion) +
-      `<div class="foot">
-        Weekly Report · ${d.meta.semana} · ${d.meta.rango} · Fuente: ${d.meta.fuente}<br>
-        Última actualización de datos: ${d.meta.fecha_actualizacion} · Portal de Reporting Interno · Provalliance
-      </div>`;
-  } catch (err) {
-    main.innerHTML = `<div class="error-state">
-      No se pudieron cargar los datos (${err.message}).<br>
-      Comprueba que el archivo <code>data/${archivo}</code> existe en el repositorio.
-    </div>`;
-  }
-}
-
-async function init() {
-  const selector = document.getElementById('week-selector');
-  try {
-    const resp = await fetch(DATA_PATH + 'weekly-index.json', { cache: 'no-store' });
-    const idx = await resp.json();
-
-    idx.semanas.forEach(s => {
-      const opt = document.createElement('option');
-      opt.value = s.archivo;
-      opt.textContent = s.etiqueta;
-      selector.appendChild(opt);
-    });
-
-    // semana por URL (?semana=s23) o por defecto
-    const param = new URLSearchParams(location.search).get('semana');
-    const elegida = idx.semanas.find(s => s.id === param) || idx.semanas.find(s => s.id === idx.por_defecto) || idx.semanas[idx.semanas.length - 1];
-    selector.value = elegida.archivo;
-    loadWeek(elegida.archivo);
-
-    selector.addEventListener('change', () => {
-      const sem = idx.semanas.find(s => s.archivo === selector.value);
-      history.replaceState(null, '', '?semana=' + sem.id);
-      loadWeek(selector.value);
-    });
-  } catch (err) {
-    document.getElementById('main-content').innerHTML =
-      `<div class="error-state">No se pudo cargar el índice de semanas (data/weekly-index.json).</div>`;
-  }
-}
-
-init();
-</script>
-</body>
-</html>
