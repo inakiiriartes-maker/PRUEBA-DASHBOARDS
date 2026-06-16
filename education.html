@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Portal de Viajes</title>
+<title>Portal de Viajes · Education v3</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -154,7 +154,7 @@ tfoot td.r{text-align:right;}
   <div class="header-left">
     <div class="header-icon"><i class="ti ti-plane-departure" aria-hidden="true"></i></div>
     <div>
-      <div class="header-title">Portal de Viajes</div>
+      <div class="header-title">Portal de Viajes v3</div>
       <div class="header-sub">Gastos corporativos — Education</div>
     </div>
   </div>
@@ -162,45 +162,14 @@ tfoot td.r{text-align:right;}
 </div>
 
 <div class="tabs">
-  <div class="tab active" id="tabMes" onclick="switchTab('mes')"><i class="ti ti-calendar-month" aria-hidden="true"></i>Vista mensual</div>
-  <div class="tab" id="tabAnual" onclick="switchTab('anual')"><i class="ti ti-chart-line" aria-hidden="true"></i>Comparativa anual</div>
+  <div class="tab active" id="tabAnual" onclick="switchTab('anual')"><i class="ti ti-chart-line" aria-hidden="true"></i>Comparativa anual</div>
   <div class="tab" id="tabTarjeta" onclick="switchTab('tarjeta')"><i class="ti ti-credit-card" aria-hidden="true"></i>Tarjeta corporativa</div>
+  <div class="tab" id="tabTP" onclick="switchTab('tp')"><i class="ti ti-plane" aria-hidden="true"></i>TravelPerk</div>
 </div>
 
 <div class="main">
 
-  <!-- VISTA MENSUAL -->
-  <div id="viewMes">
-    <div class="filters-bar" id="filtersBar">
-      <div class="fg"><i class="ti ti-calendar-month" aria-hidden="true"></i><label for="monthPicker">Mes</label><input type="month" id="monthPicker"/></div>
-      <div class="divider"></div>
-      <div class="fg"><i class="ti ti-building-skyscraper" aria-hidden="true"></i><label for="deptFilter">Departamento</label><select id="deptFilter"><option value="">Todos</option></select></div>
-      <div class="divider"></div>
-      <div class="fg"><i class="ti ti-user-circle" aria-hidden="true"></i><label for="personFilter">Persona</label><select id="personFilter" style="min-width:140px;"><option value="">Todas</option></select></div>
-      <button class="clear-btn" id="clearBtn" style="display:none;"><i class="ti ti-filter-off" style="font-size:13px;" aria-hidden="true"></i> Limpiar</button>
-    </div>
-    <div class="stats-grid" id="statsGrid"></div>
-    <div class="charts-row" id="chartsRow">
-      <div class="chart-card"><div class="chart-title"><i class="ti ti-chart-donut" aria-hidden="true"></i>Viajeros por departamento</div><div class="chart-wrap"><canvas id="deptChart"></canvas></div></div>
-      <div class="chart-card"><div class="chart-title"><i class="ti ti-chart-bar" aria-hidden="true"></i>Gasto por departamento</div><div class="chart-wrap"><canvas id="gastoChart"></canvas></div></div>
-    </div>
-    <div class="table-card">
-      <div id="tableSection">
-        <div class="table-header"><div class="table-header-left"><i class="ti ti-list" aria-hidden="true"></i>Listado de viajeros</div><span class="row-count" id="rowCount">0 viajeros</span></div>
-        <div style="overflow-x:auto;">
-          <table>
-            <thead><tr><th style="width:30%;">Viajero</th><th style="width:22%;">Departamento</th><th style="width:20%;">Fecha salida</th><th class="r" style="width:18%;">Importe</th></tr></thead>
-            <tbody id="tableBody"></tbody>
-            <tfoot id="tableFoot"></tfoot>
-          </table>
-        </div>
-        <div class="no-results" id="noResults" style="display:none;"><i class="ti ti-search-off" aria-hidden="true"></i>No hay viajeros para los filtros seleccionados</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- VISTA ANUAL -->
-  <div id="viewAnual" style="display:none;">
+  <div id="viewAnual">
     <div id="anualContent">
       <div class="anual-filters">
         <div class="fg"><i class="ti ti-calendar" aria-hidden="true"></i><label for="yearFilter">Año</label><select id="yearFilter"></select></div>
@@ -319,6 +288,70 @@ tfoot td.r{text-align:right;}
     </div>
   </div>
 
+
+  <!-- VISTA TRAVELPERK -->
+  <div id="viewTP" style="display:none;">
+    <div class="filters-bar" id="tpFiltersBar">
+      <div class="fg"><i class="ti ti-calendar-month" aria-hidden="true"></i><label for="tpMonthPicker">Periodo</label>
+        <select id="tpPeriodFilter">
+          <option value="">Acumulado anual</option>
+          <option value="2026-01">Enero 2026</option>
+          <option value="2026-02">Febrero 2026</option>
+          <option value="2026-03">Marzo 2026</option>
+          <option value="2026-04">Abril 2026</option>
+          <option value="2026-05">Mayo 2026</option>
+        </select>
+      </div>
+      <div class="divider"></div>
+      <div class="fg"><i class="ti ti-building-skyscraper" aria-hidden="true"></i><label for="tpDeptFilter">Departamento</label>
+        <select id="tpDeptFilter"><option value="">Todos</option></select>
+      </div>
+      <div class="divider"></div>
+      <div class="fg"><i class="ti ti-tag" aria-hidden="true"></i><label for="tpCatFilter">Categoría</label>
+        <select id="tpCatFilter">
+          <option value="">Todas</option>
+          <option value="Hotel">🏨 Hotel</option>
+          <option value="Vuelo/Tren">✈️ Vuelo/Tren</option>
+          <option value="Alquiler de coche">🚗 Alquiler de coche</option>
+          <option value="Fee TravelPerk">💳 Fee TravelPerk</option>
+          <option value="Suplemento asiento">💺 Suplemento asiento</option>
+          <option value="Otros">📎 Otros</option>
+        </select>
+      </div>
+      <div class="divider"></div>
+      <div class="fg"><i class="ti ti-user-circle" aria-hidden="true"></i><label for="tpPersonFilter">Persona</label>
+        <select id="tpPersonFilter" style="min-width:140px;"><option value="">Todas</option></select>
+      </div>
+      <button class="clear-btn" id="tpClearBtn" style="display:none;"><i class="ti ti-filter-off" style="font-size:13px;" aria-hidden="true"></i> Limpiar</button>
+    </div>
+    <div class="stats-grid" id="tpStatsGrid"></div>
+    <div class="charts-row">
+      <div class="chart-card"><div class="chart-title"><i class="ti ti-chart-donut" aria-hidden="true"></i>Viajeros por departamento</div><div class="chart-wrap"><canvas id="tpDeptChart"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title"><i class="ti ti-chart-bar" aria-hidden="true"></i>Gasto por departamento</div><div class="chart-wrap"><canvas id="tpGastoChart"></canvas></div></div>
+    </div>
+    <div class="table-card">
+      <div class="table-header">
+        <div class="table-header-left"><i class="ti ti-list" aria-hidden="true"></i>Listado de gastos</div>
+        <span class="row-count" id="tpRowCount">0 registros</span>
+      </div>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead><tr>
+            <th style="width:22%;">Viajero</th>
+            <th style="width:18%;">Departamento</th>
+            <th style="width:12%;">Fecha</th>
+            <th style="width:14%;">Categoría</th>
+            <th style="width:24%;">Descripción</th>
+            <th class="r" style="width:10%;">Importe</th>
+          </tr></thead>
+          <tbody id="tpTableBody"></tbody>
+          <tfoot id="tpTableFoot"></tfoot>
+        </table>
+      </div>
+      <div class="no-results" id="tpNoResults" style="display:none;"><i class="ti ti-search-off" aria-hidden="true"></i>No hay registros para los filtros seleccionados</div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -352,14 +385,15 @@ function fmtMonth(val){const[y,m]=val.split('-');return new Date(+y,+m-1,1).toLo
 const MESES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
 function switchTab(t){
-  document.getElementById('tabMes').className='tab'+(t==='mes'?' active':'');
   document.getElementById('tabAnual').className='tab'+(t==='anual'?' active':'');
   document.getElementById('tabTarjeta').className='tab'+(t==='tarjeta'?' active':'');
-  document.getElementById('viewMes').style.display=t==='mes'?'block':'none';
+  document.getElementById('tabTP').className='tab'+(t==='tp'?' active':'');
   document.getElementById('viewAnual').style.display=t==='anual'?'block':'none';
   document.getElementById('viewTarjeta').style.display=t==='tarjeta'?'block':'none';
+  document.getElementById('viewTP').style.display=t==='tp'?'block':'none';
   if(t==='anual')renderAnual();
   if(t==='tarjeta')renderTarjeta();
+  if(t==='tp')renderTP();
 }
 
 
@@ -519,10 +553,10 @@ function renderAnual(){
 }
 
 function goToMonth(year,monthIdx){
+  switchTab('tp');
   const val=year+'-'+String(monthIdx+1).padStart(2,'0');
-  document.getElementById('monthPicker').value=val;
-  switchTab('mes');
-  render();
+  document.getElementById('tpPeriodFilter').value=val;
+  renderTP();
 }
 
 // ---- TARJETA CORPORATIVA ----
@@ -615,7 +649,6 @@ function renderTarjeta(){
   document.getElementById('tcStats').innerHTML=`
     <div class="stat blue"><div class="stat-icon"><i class="ti ti-credit-card" aria-hidden="true"></i></div><div class="stat-label">Gasto ${mesNombre||'acumulado'}</div><div class="stat-value" style="font-size:17px;">${fmtImp(grandTotal,false)}</div><div class="stat-sub">${subLabel}</div></div>
     <div class="stat teal"><div class="stat-icon"><i class="ti ti-users" aria-hidden="true"></i></div><div class="stat-label">Titulares</div><div class="stat-value">${pool.length}</div><div class="stat-sub">${Object.keys(bunMap).length} BUN${Object.keys(bunMap).length!==1?'s':''}</div></div>
-    <div class="stat amber"><div class="stat-icon"><i class="ti ti-trophy" aria-hidden="true"></i></div><div class="stat-label">Mayor gasto</div><div class="stat-value" style="font-size:13px;line-height:1.3;">${topP?topP.cruce||topP.persona:'—'}</div><div class="stat-sub">${topP?fmtImp(getVal(topP),false):''}</div></div>
     ${mesNombre?
       `<div class="stat violet"><div class="stat-icon"><i class="ti ti-calendar-stats" aria-hidden="true"></i></div><div class="stat-label">Media por titular</div><div class="stat-value" style="font-size:17px;">${pool.length?fmtImp(grandTotal/pool.length,false):'—'}</div><div class="stat-sub">${mesNombre}</div></div>`
       :`<div class="stat violet"><div class="stat-icon"><i class="ti ti-calendar-stats" aria-hidden="true"></i></div><div class="stat-label">Mes pico</div><div class="stat-value" style="font-size:17px;">${TC_MESES[topM.i].slice(0,3)}</div><div class="stat-sub">${fmtImp(monthTotals[topM.i],false)}</div></div>`
@@ -706,50 +739,151 @@ function renderTarjeta(){
 
 // ── DATOS PRECARGADOS — ACTUALIZAR CADA MES ──
 const RAW_DATA = [
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-01-19",importe:56.9},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-01-19",importe:2.42},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-01-28",importe:13.23},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-01-28",importe:364.5},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-03-05",importe:57.82},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-03-15",importe:2.0},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-03-27",importe:75.5},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-03-27",importe:2.49},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-04-07",importe:2.33},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-04-08",importe:9.17},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-04-08",importe:11.87},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-04-08",importe:11.87},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-04-08",importe:254.08},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-04-07",importe:70.68},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-05-12",importe:7.71},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-05-13",importe:125.05},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-05-13",importe:4.13},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-05-12",importe:233.63},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-05-25",importe:150.44},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-05-25",importe:16.95},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-05-25",importe:27.41},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-05-25",importe:73.6},
-  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-05-25",importe:262.3},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-01-19",importe:56.9,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35935341"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-01-19",importe:2.42,categoria:"Vuelo/Tren",summary:"Route: Madrid - Chamart\u00c3\u00adn-Clara Campoamor > Valencia  - Joaquin Sorolla > Madrid - Chamart\u00c3\u00adn-Clara Campoamor"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-01-28",importe:13.23,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36349529"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-01-28",importe:364.5,categoria:"Hotel",summary:"Hotels: Munna Hotel Boutique"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-03-05",importe:57.82,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Barcelona - Sants > Madrid - Puerta De Atocha"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-03-15",importe:2.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37753931"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-03-27",importe:75.5,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Barcelona - Sants > Madrid - Puerta De Atocha"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-03-27",importe:2.49,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 38640592"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-04-07",importe:2.33,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 38978449"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-04-08",importe:9.17,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 38975028"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-04-08",importe:11.87,categoria:"Vuelo/Tren",summary:"Route: MAD > VGO > MAD"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-04-08",importe:11.87,categoria:"Vuelo/Tren",summary:"Route: MAD > VGO > MAD"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-04-08",importe:254.08,categoria:"Vuelo/Tren",summary:"Route: MAD > VGO > MAD"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-04-07",importe:70.68,categoria:"Hotel",summary:"Hotels: Casas \u00c3\u0081 Beira - Apartamentos"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-05-12",importe:7.71,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40414890"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-05-13",importe:125.05,categoria:"Hotel",summary:"Hotels: BCN Urbaness Hotels Del Comte"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-05-13",importe:4.13,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40473521"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-05-12",importe:233.63,categoria:"Vuelo/Tren",summary:"Route: MAD > BCN > MAD"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-05-25",importe:150.44,categoria:"Hotel",summary:"Hotels: Hesperia A Coru\u00c3\u00b1a Centro"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-05-25",importe:16.95,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40926838"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-05-25",importe:27.41,categoria:"Vuelo/Tren",summary:"Route: LCG > MAD"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-05-25",importe:73.6,categoria:"Vuelo/Tren",summary:"Route: LCG > MAD"},
+  {nombre:"Alicia",apellidos:"Roman",departamento:"Education",fecha:"2026-05-25",importe:262.3,categoria:"Vuelo/Tren",summary:"Route: MAD > SCQ"},
 ];
 
-allData=RAW_DATA.map(r=>{return {nombre:r.nombre,apellidos:r.apellidos,departamento:r.departamento,fecha:parseDate(r.fecha),fechaRaw:r.fecha,importe:r.importe};});
+allData=RAW_DATA.map(r=>({nombre:r.nombre,apellidos:r.apellidos,departamento:r.departamento,fecha:parseDate(r.fecha),fechaRaw:r.fecha,importe:r.importe,categoria:r.categoria||'Otros',summary:r.summary||''}));
+
+// ── TRAVELPERK TAB (declared early so init can reference it) ──────────────
+const CAT_ICONS={'Hotel':'🏨','Vuelo/Tren':'✈️','Alquiler de coche':'🚗','Fee TravelPerk':'💳','Suplemento asiento':'💺','Otros':'📎'};
+let tpDeptChartInst=null,tpGastoChartInst=null,tpInited=false;
+
 (function init(){
   const depts=[...new Set(allData.map(r=>r.departamento).filter(Boolean))].sort();
   const dh='<option value="">Todos</option>'+depts.map(d=>`<option value="${d}">${d}</option>`).join('');
-  document.getElementById('deptFilter').innerHTML=dh;
   document.getElementById('anualDeptFilter').innerHTML=dh;
   const years=[...new Set(allData.filter(r=>r.fecha).map(r=>r.fecha.getFullYear()))].sort((a,b)=>b-a);
   document.getElementById('yearFilter').innerHTML=years.map(y=>`<option value="${y}">${y}</option>`).join('');
-  updatePersonFilter('');
-  document.getElementById('monthPicker').value=new Date().toISOString().slice(0,7);
-  document.getElementById('monthPicker').addEventListener('change',render);
-  document.getElementById('deptFilter').addEventListener('change',()=>{updatePersonFilter(document.getElementById('deptFilter').value);document.getElementById('personFilter').value='';render();});
-  document.getElementById('personFilter').addEventListener('change',render);
-  document.getElementById('clearBtn').addEventListener('click',()=>{document.getElementById('deptFilter').value='';document.getElementById('personFilter').value='';updatePersonFilter('');render();});
   document.getElementById('yearFilter').addEventListener('change',renderAnual);
   document.getElementById('anualDeptFilter').addEventListener('change',renderAnual);
   document.getElementById('clearAnualBtn').addEventListener('click',()=>{document.getElementById('anualDeptFilter').value='';renderAnual();});
-  render();
+  renderAnual();
 })();
+
+function initTPFilters(){
+  const depts=[...new Set(allData.map(r=>r.departamento).filter(Boolean))].sort();
+  document.getElementById('tpDeptFilter').innerHTML='<option value="">Todos</option>'+depts.map(d=>`<option value="${d}">${d}</option>`).join('');
+  updateTPPersonFilter('');
+  document.getElementById('tpPeriodFilter').addEventListener('change',renderTP);
+  document.getElementById('tpDeptFilter').addEventListener('change',()=>{updateTPPersonFilter(document.getElementById('tpDeptFilter').value);document.getElementById('tpPersonFilter').value='';renderTP();});
+  document.getElementById('tpCatFilter').addEventListener('change',renderTP);
+  document.getElementById('tpPersonFilter').addEventListener('change',renderTP);
+  document.getElementById('tpClearBtn').addEventListener('click',()=>{
+    document.getElementById('tpPeriodFilter').value='';
+    document.getElementById('tpDeptFilter').value='';
+    document.getElementById('tpCatFilter').value='';
+    document.getElementById('tpPersonFilter').value='';
+    updateTPPersonFilter('');renderTP();
+  });
+}
+
+function updateTPPersonFilter(dept){
+  const pool=dept?allData.filter(r=>r.departamento===dept):allData;
+  const persons=[...new Set(pool.map(r=>(r.nombre+' '+r.apellidos).trim()))].sort();
+  document.getElementById('tpPersonFilter').innerHTML='<option value="">Todas</option>'+persons.map(p=>`<option value="${p}">${p}</option>`).join('');
+}
+
+function renderTP(){
+  if(!tpInited){initTPFilters();tpInited=true;}
+  const period=document.getElementById('tpPeriodFilter').value;
+  const dept=document.getElementById('tpDeptFilter').value;
+  const cat=document.getElementById('tpCatFilter').value;
+  const person=document.getElementById('tpPersonFilter').value;
+  const hasFil=period||dept||cat||person;
+  document.getElementById('tpClearBtn').style.display=hasFil?'flex':'none';
+
+  let pool=[...allData];
+  if(period) pool=pool.filter(r=>r.fecha&&r.fecha.toISOString().slice(0,7)===period);
+  if(dept) pool=pool.filter(r=>r.departamento===dept);
+  if(cat) pool=pool.filter(r=>r.categoria===cat);
+  if(person) pool=pool.filter(r=>(r.nombre+' '+r.apellidos).trim()===person);
+
+  // Stats
+  const total=pool.reduce((s,r)=>s+r.importe,0);
+  const uniqueViajeros=new Set(pool.map(r=>(r.nombre+' '+r.apellidos).trim())).size;
+  const deptCounts={};pool.forEach(r=>{deptCounts[r.departamento]=(deptCounts[r.departamento]||0)+1;});
+  const topDept=Object.entries(deptCounts).sort((a,b)=>b[1]-a[1])[0];
+  const avg=uniqueViajeros?total/uniqueViajeros:0;
+  const label=period?new Date(period+'-15').toLocaleString('es-ES',{month:'long',year:'numeric'}):'Acumulado anual';
+
+  document.getElementById('tpStatsGrid').innerHTML=`
+    <div class="stat blue"><div class="stat-icon"><i class="ti ti-users" aria-hidden="true"></i></div><div class="stat-label">Viajeros únicos</div><div class="stat-value">${uniqueViajeros}</div><div class="stat-sub">${pool.length} reservas en total</div></div>
+    <div class="stat teal"><div class="stat-icon"><i class="ti ti-building-skyscraper" aria-hidden="true"></i></div><div class="stat-label">Departamentos</div><div class="stat-value">${Object.keys(deptCounts).length}</div><div class="stat-sub">${topDept?'Mayor: '+topDept[0]:''}</div></div>
+    <div class="stat green"><div class="stat-icon"><i class="ti ti-cash" aria-hidden="true"></i></div><div class="stat-label">Gasto total</div><div class="stat-value" style="font-size:17px;">${fmtImp(total,false)}</div><div class="stat-sub">${label}</div></div>
+    <div class="stat amber"><div class="stat-icon"><i class="ti ti-chart-line" aria-hidden="true"></i></div><div class="stat-label">Gasto medio</div><div class="stat-value" style="font-size:17px;">${fmtImp(avg,false)}</div><div class="stat-sub">por viajero</div></div>
+  `;
+
+  // Charts
+  const DEPT_COLORS=['#2563a8','#0d9488','#7c3aed','#d97706','#059669','#0891b2','#9333ea','#dc2626'];
+  const depts=[...new Set(allData.map(r=>r.departamento).filter(Boolean))].sort();
+  const deptGasto={};depts.forEach(d=>{deptGasto[d]=pool.filter(r=>r.departamento===d).reduce((s,r)=>s+r.importe,0);});
+  const deptUnique={};depts.forEach(d=>{deptUnique[d]=new Set(pool.filter(r=>r.departamento===d).map(r=>r.nombre+r.apellidos)).size;});
+
+  if(tpDeptChartInst)tpDeptChartInst.destroy();
+  tpDeptChartInst=new Chart(document.getElementById('tpDeptChart'),{
+    type:'doughnut',
+    data:{labels:depts,datasets:[{data:depts.map(d=>deptUnique[d]),backgroundColor:DEPT_COLORS,borderWidth:2,borderColor:'#fff'}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'right',labels:{font:{size:11},boxWidth:12,padding:8}},tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${ctx.raw} viajeros`}}}}
+  });
+
+  if(tpGastoChartInst)tpGastoChartInst.destroy();
+  tpGastoChartInst=new Chart(document.getElementById('tpGastoChart'),{
+    type:'bar',
+    data:{labels:depts,datasets:[{data:depts.map(d=>deptGasto[d]),backgroundColor:DEPT_COLORS.map(c=>c+'33'),borderColor:DEPT_COLORS,borderWidth:1.5,borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>fmtImp(ctx.raw,false)}}},scales:{x:{ticks:{font:{size:10},color:'#7a8faa'},grid:{display:false}},y:{ticks:{font:{size:10},color:'#7a8faa',callback:v=>v.toLocaleString('es-ES')+'€'},grid:{color:'#f0f4fa'}}}}
+  });
+
+  // Table
+  document.getElementById('tpRowCount').textContent=pool.length+' registro'+(pool.length!==1?'s':'');
+  const noRes=document.getElementById('tpNoResults');
+  noRes.style.display=pool.length?'none':'block';
+
+  const DEPT_COLOR_MAP={};depts.forEach((d,i)=>{DEPT_COLOR_MAP[d]=DEPT_COLORS[i%DEPT_COLORS.length];});
+
+  document.getElementById('tpTableBody').innerHTML=pool.map(r=>{
+    const name=(r.nombre+' '+r.apellidos).trim();
+    const initials=(r.nombre[0]||(r.apellidos[0]||'?'))+(r.apellidos?r.apellidos[0]:'');
+    const col=DEPT_COLOR_MAP[r.departamento]||'#6b7280';
+    const colLight=col+'22';
+    const icon=CAT_ICONS[r.categoria]||'📎';
+    const fechaFmt=r.fecha?r.fecha.toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}):'-';
+    const imp=r.importe>=0?`<span style="color:#1a2235;font-weight:600;">${fmtImp(r.importe,false)}</span>`:`<span style="color:#dc2626;font-weight:600;">${fmtImp(r.importe,false)}</span>`;
+    return `<tr>
+      <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:30px;height:30px;border-radius:50%;background:${colLight};border:1px solid ${col};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:${col};flex-shrink:0;">${initials.toUpperCase()}</div><span style="font-weight:500;color:#1a2235;">${name}</span></div></td>
+      <td><span style="display:inline-flex;align-items:center;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;background:${colLight};color:${col};">${r.departamento}</span></td>
+      <td style="color:#5a6a85;font-size:13px;">${fechaFmt}</td>
+      <td style="font-size:13px;">${icon} ${r.categoria}</td>
+      <td style="color:#5a6a85;font-size:12px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.summary}">${r.summary||'—'}</td>
+      <td class="r">${imp}</td>
+    </tr>`;
+  }).join('');
+
+  const foot=pool.reduce((s,r)=>s+r.importe,0);
+  document.getElementById('tpTableFoot').innerHTML=`<tr><td colspan="5" style="font-weight:600;color:#2563a8;">TOTAL</td><td class="r" style="font-weight:700;color:#2563a8;">${fmtImp(foot,false)}</td></tr>`;
+}
+
 </script>
 </body>
 </html>

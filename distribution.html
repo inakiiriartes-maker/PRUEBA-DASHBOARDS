@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Portal de Viajes</title>
+<title>Portal de Viajes · Distribution v3</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -154,7 +154,7 @@ tfoot td.r{text-align:right;}
   <div class="header-left">
     <div class="header-icon"><i class="ti ti-plane-departure" aria-hidden="true"></i></div>
     <div>
-      <div class="header-title">Portal de Viajes</div>
+      <div class="header-title">Portal de Viajes v3</div>
       <div class="header-sub">Gastos corporativos — Distribution</div>
     </div>
   </div>
@@ -162,45 +162,14 @@ tfoot td.r{text-align:right;}
 </div>
 
 <div class="tabs">
-  <div class="tab active" id="tabMes" onclick="switchTab('mes')"><i class="ti ti-calendar-month" aria-hidden="true"></i>Vista mensual</div>
-  <div class="tab" id="tabAnual" onclick="switchTab('anual')"><i class="ti ti-chart-line" aria-hidden="true"></i>Comparativa anual</div>
+  <div class="tab active" id="tabAnual" onclick="switchTab('anual')"><i class="ti ti-chart-line" aria-hidden="true"></i>Comparativa anual</div>
   <div class="tab" id="tabTarjeta" onclick="switchTab('tarjeta')"><i class="ti ti-credit-card" aria-hidden="true"></i>Tarjeta corporativa</div>
+  <div class="tab" id="tabTP" onclick="switchTab('tp')"><i class="ti ti-plane" aria-hidden="true"></i>TravelPerk</div>
 </div>
 
 <div class="main">
 
-  <!-- VISTA MENSUAL -->
-  <div id="viewMes">
-    <div class="filters-bar" id="filtersBar">
-      <div class="fg"><i class="ti ti-calendar-month" aria-hidden="true"></i><label for="monthPicker">Mes</label><input type="month" id="monthPicker"/></div>
-      <div class="divider"></div>
-      <div class="fg"><i class="ti ti-building-skyscraper" aria-hidden="true"></i><label for="deptFilter">Departamento</label><select id="deptFilter"><option value="">Todos</option></select></div>
-      <div class="divider"></div>
-      <div class="fg"><i class="ti ti-user-circle" aria-hidden="true"></i><label for="personFilter">Persona</label><select id="personFilter" style="min-width:140px;"><option value="">Todas</option></select></div>
-      <button class="clear-btn" id="clearBtn" style="display:none;"><i class="ti ti-filter-off" style="font-size:13px;" aria-hidden="true"></i> Limpiar</button>
-    </div>
-    <div class="stats-grid" id="statsGrid"></div>
-    <div class="charts-row" id="chartsRow">
-      <div class="chart-card"><div class="chart-title"><i class="ti ti-chart-donut" aria-hidden="true"></i>Viajeros por departamento</div><div class="chart-wrap"><canvas id="deptChart"></canvas></div></div>
-      <div class="chart-card"><div class="chart-title"><i class="ti ti-chart-bar" aria-hidden="true"></i>Gasto por departamento</div><div class="chart-wrap"><canvas id="gastoChart"></canvas></div></div>
-    </div>
-    <div class="table-card">
-      <div id="tableSection">
-        <div class="table-header"><div class="table-header-left"><i class="ti ti-list" aria-hidden="true"></i>Listado de viajeros</div><span class="row-count" id="rowCount">0 viajeros</span></div>
-        <div style="overflow-x:auto;">
-          <table>
-            <thead><tr><th style="width:30%;">Viajero</th><th style="width:22%;">Departamento</th><th style="width:20%;">Fecha salida</th><th class="r" style="width:18%;">Importe</th></tr></thead>
-            <tbody id="tableBody"></tbody>
-            <tfoot id="tableFoot"></tfoot>
-          </table>
-        </div>
-        <div class="no-results" id="noResults" style="display:none;"><i class="ti ti-search-off" aria-hidden="true"></i>No hay viajeros para los filtros seleccionados</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- VISTA ANUAL -->
-  <div id="viewAnual" style="display:none;">
+  <div id="viewAnual">
     <div id="anualContent">
       <div class="anual-filters">
         <div class="fg"><i class="ti ti-calendar" aria-hidden="true"></i><label for="yearFilter">Año</label><select id="yearFilter"></select></div>
@@ -319,6 +288,70 @@ tfoot td.r{text-align:right;}
     </div>
   </div>
 
+
+  <!-- VISTA TRAVELPERK -->
+  <div id="viewTP" style="display:none;">
+    <div class="filters-bar" id="tpFiltersBar">
+      <div class="fg"><i class="ti ti-calendar-month" aria-hidden="true"></i><label for="tpMonthPicker">Periodo</label>
+        <select id="tpPeriodFilter">
+          <option value="">Acumulado anual</option>
+          <option value="2026-01">Enero 2026</option>
+          <option value="2026-02">Febrero 2026</option>
+          <option value="2026-03">Marzo 2026</option>
+          <option value="2026-04">Abril 2026</option>
+          <option value="2026-05">Mayo 2026</option>
+        </select>
+      </div>
+      <div class="divider"></div>
+      <div class="fg"><i class="ti ti-building-skyscraper" aria-hidden="true"></i><label for="tpDeptFilter">Departamento</label>
+        <select id="tpDeptFilter"><option value="">Todos</option></select>
+      </div>
+      <div class="divider"></div>
+      <div class="fg"><i class="ti ti-tag" aria-hidden="true"></i><label for="tpCatFilter">Categoría</label>
+        <select id="tpCatFilter">
+          <option value="">Todas</option>
+          <option value="Hotel">🏨 Hotel</option>
+          <option value="Vuelo/Tren">✈️ Vuelo/Tren</option>
+          <option value="Alquiler de coche">🚗 Alquiler de coche</option>
+          <option value="Fee TravelPerk">💳 Fee TravelPerk</option>
+          <option value="Suplemento asiento">💺 Suplemento asiento</option>
+          <option value="Otros">📎 Otros</option>
+        </select>
+      </div>
+      <div class="divider"></div>
+      <div class="fg"><i class="ti ti-user-circle" aria-hidden="true"></i><label for="tpPersonFilter">Persona</label>
+        <select id="tpPersonFilter" style="min-width:140px;"><option value="">Todas</option></select>
+      </div>
+      <button class="clear-btn" id="tpClearBtn" style="display:none;"><i class="ti ti-filter-off" style="font-size:13px;" aria-hidden="true"></i> Limpiar</button>
+    </div>
+    <div class="stats-grid" id="tpStatsGrid"></div>
+    <div class="charts-row">
+      <div class="chart-card"><div class="chart-title"><i class="ti ti-chart-donut" aria-hidden="true"></i>Viajeros por departamento</div><div class="chart-wrap"><canvas id="tpDeptChart"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title"><i class="ti ti-chart-bar" aria-hidden="true"></i>Gasto por departamento</div><div class="chart-wrap"><canvas id="tpGastoChart"></canvas></div></div>
+    </div>
+    <div class="table-card">
+      <div class="table-header">
+        <div class="table-header-left"><i class="ti ti-list" aria-hidden="true"></i>Listado de gastos</div>
+        <span class="row-count" id="tpRowCount">0 registros</span>
+      </div>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead><tr>
+            <th style="width:22%;">Viajero</th>
+            <th style="width:18%;">Departamento</th>
+            <th style="width:12%;">Fecha</th>
+            <th style="width:14%;">Categoría</th>
+            <th style="width:24%;">Descripción</th>
+            <th class="r" style="width:10%;">Importe</th>
+          </tr></thead>
+          <tbody id="tpTableBody"></tbody>
+          <tfoot id="tpTableFoot"></tfoot>
+        </table>
+      </div>
+      <div class="no-results" id="tpNoResults" style="display:none;"><i class="ti ti-search-off" aria-hidden="true"></i>No hay registros para los filtros seleccionados</div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -352,14 +385,15 @@ function fmtMonth(val){const[y,m]=val.split('-');return new Date(+y,+m-1,1).toLo
 const MESES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
 function switchTab(t){
-  document.getElementById('tabMes').className='tab'+(t==='mes'?' active':'');
   document.getElementById('tabAnual').className='tab'+(t==='anual'?' active':'');
   document.getElementById('tabTarjeta').className='tab'+(t==='tarjeta'?' active':'');
-  document.getElementById('viewMes').style.display=t==='mes'?'block':'none';
+  document.getElementById('tabTP').className='tab'+(t==='tp'?' active':'');
   document.getElementById('viewAnual').style.display=t==='anual'?'block':'none';
   document.getElementById('viewTarjeta').style.display=t==='tarjeta'?'block':'none';
+  document.getElementById('viewTP').style.display=t==='tp'?'block':'none';
   if(t==='anual')renderAnual();
   if(t==='tarjeta')renderTarjeta();
+  if(t==='tp')renderTP();
 }
 
 
@@ -519,10 +553,10 @@ function renderAnual(){
 }
 
 function goToMonth(year,monthIdx){
+  switchTab('tp');
   const val=year+'-'+String(monthIdx+1).padStart(2,'0');
-  document.getElementById('monthPicker').value=val;
-  switchTab('mes');
-  render();
+  document.getElementById('tpPeriodFilter').value=val;
+  renderTP();
 }
 
 // ---- TARJETA CORPORATIVA ----
@@ -618,7 +652,6 @@ function renderTarjeta(){
   document.getElementById('tcStats').innerHTML=`
     <div class="stat blue"><div class="stat-icon"><i class="ti ti-credit-card" aria-hidden="true"></i></div><div class="stat-label">Gasto ${mesNombre||'acumulado'}</div><div class="stat-value" style="font-size:17px;">${fmtImp(grandTotal,false)}</div><div class="stat-sub">${subLabel}</div></div>
     <div class="stat teal"><div class="stat-icon"><i class="ti ti-users" aria-hidden="true"></i></div><div class="stat-label">Titulares</div><div class="stat-value">${pool.length}</div><div class="stat-sub">${Object.keys(bunMap).length} BUN${Object.keys(bunMap).length!==1?'s':''}</div></div>
-    <div class="stat amber"><div class="stat-icon"><i class="ti ti-trophy" aria-hidden="true"></i></div><div class="stat-label">Mayor gasto</div><div class="stat-value" style="font-size:13px;line-height:1.3;">${topP?topP.cruce||topP.persona:'—'}</div><div class="stat-sub">${topP?fmtImp(getVal(topP),false):''}</div></div>
     ${mesNombre?
       `<div class="stat violet"><div class="stat-icon"><i class="ti ti-calendar-stats" aria-hidden="true"></i></div><div class="stat-label">Media por titular</div><div class="stat-value" style="font-size:17px;">${pool.length?fmtImp(grandTotal/pool.length,false):'—'}</div><div class="stat-sub">${mesNombre}</div></div>`
       :`<div class="stat violet"><div class="stat-icon"><i class="ti ti-calendar-stats" aria-hidden="true"></i></div><div class="stat-label">Mes pico</div><div class="stat-value" style="font-size:17px;">${TC_MESES[topM.i].slice(0,3)}</div><div class="stat-sub">${fmtImp(monthTotals[topM.i],false)}</div></div>`
@@ -709,206 +742,307 @@ function renderTarjeta(){
 
 // ── DATOS PRECARGADOS — ACTUALIZAR CADA MES ──
 const RAW_DATA = [
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-08",importe:-127.0},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-08",importe:-160.43},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-02",importe:50.23},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-02",importe:39.18},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-02",importe:77.13},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-02",importe:5.0},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-02",importe:31.29},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-02",importe:27.0},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-02",importe:187.95},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-02",importe:5.64},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-05",importe:155.33},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-05",importe:5.64},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-05",importe:27.83},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-01-09",importe:4.28},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-11",importe:9.37},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-11",importe:47.19},
-  {nombre:"Antonio",apellidos:"Sanchez",departamento:"Distribution",fecha:"2026-01-13",importe:140.32},
-  {nombre:"Antonio",apellidos:"Sanchez",departamento:"Distribution",fecha:"2026-01-13",importe:5.09},
-  {nombre:"Antonio",apellidos:"Sanchez",departamento:"Distribution",fecha:"2026-01-13",importe:116.1},
-  {nombre:"Antonio",apellidos:"Sanchez",departamento:"Distribution",fecha:"2026-01-13",importe:4.21},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-15",importe:61.2},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-15",importe:47.2},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-15",importe:73.0},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-15",importe:6.58},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-01-19",importe:13.43},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-01-19",importe:154.0},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-01-19",importe:5.59},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-21",importe:7.18},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-23",importe:265.68},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-23",importe:26.12},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-23",importe:46.22},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-23",importe:139.44},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-23",importe:17.33},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-23",importe:30.64},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-23",importe:59.05},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-26",importe:5.0},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-26",importe:55.95},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-26",importe:2.42},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-26",importe:29.65},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-26",importe:5.0},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-26",importe:2.42},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-26",importe:6.05},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-26",importe:2.42},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-26",importe:12.1},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-01-30",importe:118.25},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-01-30",importe:4.3},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-21",importe:197.75},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-01-09",importe:117.9},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-11",importe:258.0},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-01-19",importe:370.0},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-26",importe:66.5},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-02-15",importe:30.0},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-05",importe:112.08},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:3.7},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-02-05",importe:119.31},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-02-15",importe:3.94},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-02-06",importe:112.08},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-02-15",importe:3.7},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-02-06",importe:114.72},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-02-15",importe:13.38},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-02-09",importe:408.11},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-02-15",importe:13.47},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-02-09",importe:117.8},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-02-15",importe:17.85},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-02-09",importe:245.98},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-02-15",importe:14.99},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-12",importe:183.9},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:5.52},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-12",importe:71.34},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:2.14},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:11.0},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:3.63},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:2.37},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:5.43},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:27.0},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:4.37},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:22.0},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-12",importe:567.38},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:17.02},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-02-09",importe:104.19},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-02-15",importe:3.13},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-02-06",importe:72.15},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-02-09",importe:121.82},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-02-09",importe:239.99},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-02-09",importe:18.09},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-02-09",importe:63.86},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-02-09",importe:126.38},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-02-09",importe:130.64},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-12",importe:132.46},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-12",importe:134.77},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-02-05",importe:121.0},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-12",importe:78.99},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-12",importe:86.36},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-03-03",importe:16.07},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-03-03",importe:16.07},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-03-03",importe:214.04},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-03-15",importe:15.3},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-15",importe:3.81},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-15",importe:2.85},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-05",importe:141.82},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-15",importe:4.68},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-15",importe:5.19},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-15",importe:3.07},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-05",importe:148.38},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-15",importe:4.45},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-06",importe:51.73},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-15",importe:2.0},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-06",importe:101.87},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-15",importe:3.36},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-15",importe:4.34},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-15",importe:2.9},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-15",importe:33.79},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-05",importe:115.59},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-05",importe:86.45},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-05",importe:157.3},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-05",importe:93.15},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-06",importe:87.75},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-03-03",importe:263.7},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-06",importe:131.65},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-27",importe:-115.82},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-03-25",importe:389.48},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-03-25",importe:23.37},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-27",importe:115.82},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-27",importe:3.82},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-03-27",importe:157.52},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-03-27",importe:130.64},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-03-27",importe:8.64},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-27",importe:269.32},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-27",importe:8.08},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-03-27",importe:402.85},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-03-27",importe:12.09},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-28",importe:11.06},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-28",importe:368.64},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-04-17",importe:134.0},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-04-17",importe:104.73},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-04-17",importe:7.48},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-04-17",importe:123.11},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-04-17",importe:7.39},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-04-18",importe:113.55},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-04-18",importe:3.41},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-04-18",importe:74.36},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-04-18",importe:2.23},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-04-18",importe:5.59},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-04-21",importe:131.32},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-04-21",importe:4.33},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-04-22",importe:134.0},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-04-22",importe:4.02},
-  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-04-18",importe:186.3},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-04-26",importe:217.35},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-04-26",importe:7.17},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-02",importe:366.29},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-02",importe:18.08},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-02",importe:380.22},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-02",importe:18.08},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-02",importe:23.48},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-05-04",importe:4.12},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-05-05",importe:218.33},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-05-05",importe:14.41},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-05-05",importe:199.47},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-05-05",importe:5.98},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-06",importe:45.22},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-06",importe:318.75},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-06",importe:45.22},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-06",importe:12.28},
-  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-05-04",importe:124.77},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-26",importe:139.0},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-26",importe:4.17},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-05-26",importe:4.55},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-05-26",importe:0.0},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-05-26",importe:99.73},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-05-26",importe:3.44},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-05-26",importe:145.6},
-  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-05-26",importe:8.74},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-26",importe:0.0},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-26",importe:42.91},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-26",importe:2.0},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-26",importe:40.27},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-26",importe:0.0},
-  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-26",importe:2.0},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-08",importe:-127.0,categoria:"Hotel",summary:"Hotels: Melia Costa del Sol"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-08",importe:-160.43,categoria:"Vuelo/Tren",summary:"Route: BCN > AGP > BCN"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-02",importe:50.23,categoria:"Vuelo/Tren",summary:"Route: AGP > OPO"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-02",importe:39.18,categoria:"Vuelo/Tren",summary:"Route: AGP > OPO"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-02",importe:77.13,categoria:"Vuelo/Tren",summary:"Route: OPO > MAD > AGP"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-02",importe:5.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35340980"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-02",importe:31.29,categoria:"Fee TravelPerk",summary:"FlexiTravel Service Service for Trip 35340980"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-02",importe:27.0,categoria:"Fee TravelPerk",summary:"FlexiTravel Service Service for Trip 35340980"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-02",importe:187.95,categoria:"Hotel",summary:"Hotels: Eurostars Oporto"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-02",importe:5.64,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35341460"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-05",importe:155.33,categoria:"Vuelo/Tren",summary:"Route: BCN > LIS > BCN"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-05",importe:5.64,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35406566"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-05",importe:27.83,categoria:"Fee TravelPerk",summary:"FlexiTravel Trips Service for Trip 35406566"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-01-09",importe:4.28,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35580101"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-11",importe:9.37,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 34983026"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-11",importe:47.19,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35621202"},
+  {nombre:"Antonio",apellidos:"Sanchez",departamento:"Distribution",fecha:"2026-01-13",importe:140.32,categoria:"Fee TravelPerk",summary:"FlexiTravel Trips Service for Trip 35621202"},
+  {nombre:"Antonio",apellidos:"Sanchez",departamento:"Distribution",fecha:"2026-01-13",importe:5.09,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Barcelona - Sants"},
+  {nombre:"Antonio",apellidos:"Sanchez",departamento:"Distribution",fecha:"2026-01-13",importe:116.1,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35707650"},
+  {nombre:"Antonio",apellidos:"Sanchez",departamento:"Distribution",fecha:"2026-01-13",importe:4.21,categoria:"Alquiler de coche",summary:"Car for trip 35709623"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-15",importe:61.2,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35800428"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-15",importe:47.2,categoria:"Hotel",summary:"Hotels: Exe Tartessos"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-15",importe:73.0,categoria:"Vuelo/Tren",summary:"Route: Sevilla-Santa Justa > Granada"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-15",importe:6.58,categoria:"Vuelo/Tren",summary:"Route: Granada > Cordoba > Huelva"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-01-19",importe:13.43,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35896598"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-01-19",importe:154.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35919673"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-01-19",importe:5.59,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Barcelona - Sants"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-21",importe:7.18,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36026897"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-23",importe:265.68,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36111922"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-23",importe:26.12,categoria:"Hotel",summary:"Hotels: Axis Porto Business & Spa Hotel"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-23",importe:46.22,categoria:"Vuelo/Tren",summary:"Route: AGP > OPO"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-23",importe:139.44,categoria:"Vuelo/Tren",summary:"Route: AGP > OPO"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-23",importe:17.33,categoria:"Vuelo/Tren",summary:"Route: OPO > MAD > AGP"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-23",importe:30.64,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36131791"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-23",importe:59.05,categoria:"Fee TravelPerk",summary:"FlexiTravel Service Service for Trip 36131791"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-26",importe:5.0,categoria:"Suplemento asiento",summary:"Seat booking fee for Trip 36219057"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-26",importe:55.95,categoria:"Vuelo/Tren",summary:"Route: Barcelona - Sants > Madrid - Puerta De Atocha"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-26",importe:2.42,categoria:"Vuelo/Tren",summary:"Route: Barcelona - Sants > Madrid - Puerta De Atocha"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-26",importe:29.65,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36235347"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-26",importe:5.0,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Barcelona - Sants"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-26",importe:2.42,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Barcelona - Sants"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-26",importe:6.05,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36235916"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-26",importe:2.42,categoria:"Fee TravelPerk",summary:"FlexiTravel Trips Service for Trip 36235916"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-26",importe:12.1,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36236252"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-01-30",importe:118.25,categoria:"Fee TravelPerk",summary:"FlexiTravel Service Service for Trip 36391888"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-01-30",importe:4.3,categoria:"Vuelo/Tren",summary:"Route: Camp Tarragona > Madrid - Puerta De Atocha > Camp Tarragona"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-01-21",importe:197.75,categoria:"Vuelo/Tren",summary:"Route: VLC > BIO"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-01-09",importe:117.9,categoria:"Hotel",summary:"Hotels: Melia Lisboa Oriente Hotel"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-11",importe:258.0,categoria:"Hotel",summary:"Hotels: Ibis Budget Madrid Centro Las Ventas"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-01-19",importe:370.0,categoria:"Hotel",summary:"Hotels: Colectia Hotel Urumea"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-01-26",importe:66.5,categoria:"Hotel",summary:"Hotels: Catalonia Goya"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-02-15",importe:30.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36658175"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-05",importe:112.08,categoria:"Hotel",summary:"Hotels: Hotel Balmes, a member of Preferred Hotels & Resorts"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:3.7,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36669618"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-02-05",importe:119.31,categoria:"Hotel",summary:"Hotels: Hotel Balmes, a member of Preferred Hotels & Resorts"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-02-15",importe:3.94,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36672531"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-02-06",importe:112.08,categoria:"Hotel",summary:"Hotels: Hotel Balmes, a member of Preferred Hotels & Resorts"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-02-15",importe:3.7,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36688020"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-02-06",importe:114.72,categoria:"Hotel",summary:"Hotels: B&B HOTEL Barcelona Mataro"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-02-15",importe:13.38,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36690418"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-02-09",importe:408.11,categoria:"Hotel",summary:"Hotels: Room Mate Leo, Granada"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-02-15",importe:13.47,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36756754"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-02-09",importe:117.8,categoria:"Hotel",summary:"Hotels: Hotel Pax Atocha"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-02-15",importe:17.85,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36763330"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-02-09",importe:245.98,categoria:"Hotel",summary:"Hotels: Sercotel Amistad Murcia"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-02-15",importe:14.99,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36789202"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-12",importe:183.9,categoria:"Vuelo/Tren",summary:"Route: BCN > LIS"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:5.52,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36950790"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-12",importe:71.34,categoria:"Vuelo/Tren",summary:"Route: OPO > BCN"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:2.14,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36951014"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:11.0,categoria:"Fee TravelPerk",summary:"FlexiTravel Trips Service for Trip 36951014"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:3.63,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36951293"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:2.37,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36951528"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:5.43,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36951597"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:27.0,categoria:"Fee TravelPerk",summary:"FlexiTravel Trips Service for Trip 36951597"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:4.37,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36951714"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:22.0,categoria:"Fee TravelPerk",summary:"FlexiTravel Trips Service for Trip 36951714"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-12",importe:567.38,categoria:"Hotel",summary:"Hotels: NH Alicante"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-15",importe:17.02,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36951869"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-02-09",importe:104.19,categoria:"Hotel",summary:"Hotels: Room Mate Leo, Granada"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-02-15",importe:3.13,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36756754"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-02-06",importe:72.15,categoria:"Vuelo/Tren",summary:"Route: MAD > GRX"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-02-09",importe:121.82,categoria:"Vuelo/Tren",summary:"Route: BCN > MAD"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-02-09",importe:239.99,categoria:"Vuelo/Tren",summary:"Route: GRX > BCN"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-02-09",importe:18.09,categoria:"Vuelo/Tren",summary:"Route: SVQ > ALC"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-02-09",importe:63.86,categoria:"Vuelo/Tren",summary:"Route: SVQ > ALC"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-02-09",importe:126.38,categoria:"Vuelo/Tren",summary:"Route: ALC > OVD > SVQ"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-02-09",importe:130.64,categoria:"Vuelo/Tren",summary:"Route: BIO > MAD > LCG"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-12",importe:132.46,categoria:"Vuelo/Tren",summary:"Route: ALC > BCN"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-12",importe:134.77,categoria:"Vuelo/Tren",summary:"Route: BCN > MAD > BCN"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-02-05",importe:121.0,categoria:"Hotel",summary:"Hotels: Melia Lisboa Oriente Hotel"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-12",importe:78.99,categoria:"Hotel",summary:"Hotels: Eurostars Oporto"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-02-12",importe:86.36,categoria:"Hotel",summary:"Hotels: Ibis Budget Madrid Centro Las Ventas"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-03-03",importe:16.07,categoria:"Vuelo/Tren",summary:"Route: AGP > OPO > AGP"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-03-03",importe:16.07,categoria:"Vuelo/Tren",summary:"Route: AGP > OPO > AGP"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-03-03",importe:214.04,categoria:"Vuelo/Tren",summary:"Route: AGP > OPO > AGP"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-03-15",importe:15.3,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37645210"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-15",importe:3.81,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37768270"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-15",importe:2.85,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37768090"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-05",importe:141.82,categoria:"Hotel",summary:"Hotels: Melia Madrid Serrano"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-15",importe:4.68,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37765492"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-15",importe:5.19,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37781953"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-15",importe:3.07,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37782101"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-05",importe:148.38,categoria:"Hotel",summary:"Hotels: BG Caballero"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-15",importe:4.45,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37784364"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-06",importe:51.73,categoria:"Vuelo/Tren",summary:"Route: Madrid - Chamart\u00c3\u00adn-Clara Campoamor > Valencia  - Joaquin Sorolla"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-15",importe:2.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37806069"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-06",importe:101.87,categoria:"Hotel",summary:"Hotels: Travelodge Madrid Metropolitano"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-15",importe:3.36,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37807088"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-15",importe:4.34,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37808840"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-15",importe:2.9,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37810294"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-15",importe:33.79,categoria:"Fee TravelPerk",summary:"FlexiTravel Service Service for Trip 37810294"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-05",importe:115.59,categoria:"Vuelo/Tren",summary:"Route: MAD > BCN"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-05",importe:86.45,categoria:"Vuelo/Tren",summary:"Route: BCN > MAD"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-05",importe:157.3,categoria:"Vuelo/Tren",summary:"Route: BCN > PMI"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-05",importe:93.15,categoria:"Vuelo/Tren",summary:"Route: PMI > BCN"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-06",importe:87.75,categoria:"Vuelo/Tren",summary:"Route: VLC > SVQ"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-03-03",importe:263.7,categoria:"Hotel",summary:"Hotels: Eurostars Oporto"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-06",importe:131.65,categoria:"Hotel",summary:"Hotels: Nest Style Valencia"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-27",importe:-115.82,categoria:"Hotel",summary:"Hotels: Zenit Abeba"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-03-25",importe:389.48,categoria:"Hotel",summary:"Hotels: Acta The Clover"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-03-25",importe:23.37,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 38565001"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-27",importe:115.82,categoria:"Hotel",summary:"Hotels: Zenit Abeba"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-03-27",importe:3.82,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 38641483"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-03-27",importe:157.52,categoria:"Vuelo/Tren",summary:"Route: OPO > BCN > AGP"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-03-27",importe:130.64,categoria:"Vuelo/Tren",summary:"Route: AGP > OPO"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-03-27",importe:8.64,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 38646675"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-27",importe:269.32,categoria:"Vuelo/Tren",summary:"Route: BCN > OPO > BCN"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-27",importe:8.08,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 38647351"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-03-27",importe:402.85,categoria:"Hotel",summary:"Hotels: Acta The Clover"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-03-27",importe:12.09,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 38652142"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-28",importe:11.06,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 38674452"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-03-28",importe:368.64,categoria:"Hotel",summary:"Hotels: Acta The Clover"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-04-17",importe:134.0,categoria:"Hotel",summary:"Hotels: Four Points Flex by Sheraton Madrid Atocha"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-04-17",importe:104.73,categoria:"Vuelo/Tren",summary:"Route: Granada > Madrid - Puerta De Atocha > Granada"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-04-17",importe:7.48,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39439673"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-04-17",importe:123.11,categoria:"Hotel",summary:"Hotels: NH Valencia Center"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-04-17",importe:7.39,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39450543"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-04-18",importe:113.55,categoria:"Vuelo/Tren",summary:"Route: BCN > OPO"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-04-18",importe:3.41,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39481444"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-04-18",importe:74.36,categoria:"Vuelo/Tren",summary:"Route: OPO > BCN"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-04-18",importe:2.23,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39481483"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-04-18",importe:5.59,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39481518"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-04-21",importe:131.32,categoria:"Vuelo/Tren",summary:"Route: Granada > Madrid - Puerta De Atocha > Granada"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-04-21",importe:4.33,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39604645"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-04-22",importe:134.0,categoria:"Hotel",summary:"Hotels: Four Points Flex by Sheraton Madrid Atocha"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-04-22",importe:4.02,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39618631"},
+  {nombre:"Jessica",apellidos:"Casado",departamento:"Distribution",fecha:"2026-04-18",importe:186.3,categoria:"Hotel",summary:"Hotels: Eurostars Oporto"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-04-26",importe:217.35,categoria:"Hotel",summary:"Hotels: Gran Hotel Luna de Granada"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-04-26",importe:7.17,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39779856"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-02",importe:366.29,categoria:"Hotel",summary:"Hotels: Eurostars Oporto"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-02",importe:18.08,categoria:"Vuelo/Tren",summary:"Route: AGP > OPO > AGP"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-02",importe:380.22,categoria:"Vuelo/Tren",summary:"Route: AGP > OPO > AGP"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-02",importe:18.08,categoria:"Vuelo/Tren",summary:"Route: AGP > OPO > AGP"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-02",importe:23.48,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40032464"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-05-04",importe:4.12,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40079026"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-05-05",importe:218.33,categoria:"Hotel",summary:"Hotels: Hotel Taburiente"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-05-05",importe:14.41,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40133932"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-05-05",importe:199.47,categoria:"Vuelo/Tren",summary:"Route: MAD > TFN > MAD"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-05-05",importe:5.98,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40135209"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-06",importe:45.22,categoria:"Vuelo/Tren",summary:"Route: AGP > TFN > AGP"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-06",importe:318.75,categoria:"Vuelo/Tren",summary:"Route: AGP > TFN > AGP"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-06",importe:45.22,categoria:"Vuelo/Tren",summary:"Route: AGP > TFN > AGP"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-06",importe:12.28,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40136112"},
+  {nombre:"Otros",apellidos:"Consultores",departamento:"Distribution",fecha:"2026-05-04",importe:124.77,categoria:"Hotel",summary:"Hotels: Apartamentos Juan Bravo"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-26",importe:139.0,categoria:"Hotel",summary:"Hotels: Four Points Flex by Sheraton Madrid Atocha"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-26",importe:4.17,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40940116"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-05-26",importe:4.55,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Sevilla-Santa Justa > Madrid - Puerta De Atocha"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-05-26",importe:0.0,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Sevilla-Santa Justa > Madrid - Puerta De Atocha"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-05-26",importe:99.73,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Sevilla-Santa Justa > Madrid - Puerta De Atocha"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-05-26",importe:3.44,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40943675"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-05-26",importe:145.6,categoria:"Hotel",summary:"Hotels: Zenit Sevilla"},
+  {nombre:"Susana",apellidos:"Paya",departamento:"Distribution",fecha:"2026-05-26",importe:8.74,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40947180"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-26",importe:0.0,categoria:"Vuelo/Tren",summary:"Route: Granada > Sevilla-Santa Justa"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-26",importe:42.91,categoria:"Vuelo/Tren",summary:"Route: Granada > Sevilla-Santa Justa"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-26",importe:2.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40948685"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-26",importe:40.27,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Granada"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-26",importe:0.0,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Granada"},
+  {nombre:"Jessica",apellidos:"del Arbol",departamento:"Distribution",fecha:"2026-05-26",importe:2.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40959005"},
 ];
 
-allData=RAW_DATA.map(r=>{return {nombre:r.nombre,apellidos:r.apellidos,departamento:r.departamento,fecha:parseDate(r.fecha),fechaRaw:r.fecha,importe:r.importe};});
+allData=RAW_DATA.map(r=>({nombre:r.nombre,apellidos:r.apellidos,departamento:r.departamento,fecha:parseDate(r.fecha),fechaRaw:r.fecha,importe:r.importe,categoria:r.categoria||'Otros',summary:r.summary||''}));
+
+// ── TRAVELPERK TAB (declared early so init can reference it) ──────────────
+const CAT_ICONS={'Hotel':'🏨','Vuelo/Tren':'✈️','Alquiler de coche':'🚗','Fee TravelPerk':'💳','Suplemento asiento':'💺','Otros':'📎'};
+let tpDeptChartInst=null,tpGastoChartInst=null,tpInited=false;
+
 (function init(){
   const depts=[...new Set(allData.map(r=>r.departamento).filter(Boolean))].sort();
   const dh='<option value="">Todos</option>'+depts.map(d=>`<option value="${d}">${d}</option>`).join('');
-  document.getElementById('deptFilter').innerHTML=dh;
   document.getElementById('anualDeptFilter').innerHTML=dh;
   const years=[...new Set(allData.filter(r=>r.fecha).map(r=>r.fecha.getFullYear()))].sort((a,b)=>b-a);
   document.getElementById('yearFilter').innerHTML=years.map(y=>`<option value="${y}">${y}</option>`).join('');
-  updatePersonFilter('');
-  document.getElementById('monthPicker').value=new Date().toISOString().slice(0,7);
-  document.getElementById('monthPicker').addEventListener('change',render);
-  document.getElementById('deptFilter').addEventListener('change',()=>{updatePersonFilter(document.getElementById('deptFilter').value);document.getElementById('personFilter').value='';render();});
-  document.getElementById('personFilter').addEventListener('change',render);
-  document.getElementById('clearBtn').addEventListener('click',()=>{document.getElementById('deptFilter').value='';document.getElementById('personFilter').value='';updatePersonFilter('');render();});
   document.getElementById('yearFilter').addEventListener('change',renderAnual);
   document.getElementById('anualDeptFilter').addEventListener('change',renderAnual);
   document.getElementById('clearAnualBtn').addEventListener('click',()=>{document.getElementById('anualDeptFilter').value='';renderAnual();});
-  render();
+  renderAnual();
 })();
+
+function initTPFilters(){
+  const depts=[...new Set(allData.map(r=>r.departamento).filter(Boolean))].sort();
+  document.getElementById('tpDeptFilter').innerHTML='<option value="">Todos</option>'+depts.map(d=>`<option value="${d}">${d}</option>`).join('');
+  updateTPPersonFilter('');
+  document.getElementById('tpPeriodFilter').addEventListener('change',renderTP);
+  document.getElementById('tpDeptFilter').addEventListener('change',()=>{updateTPPersonFilter(document.getElementById('tpDeptFilter').value);document.getElementById('tpPersonFilter').value='';renderTP();});
+  document.getElementById('tpCatFilter').addEventListener('change',renderTP);
+  document.getElementById('tpPersonFilter').addEventListener('change',renderTP);
+  document.getElementById('tpClearBtn').addEventListener('click',()=>{
+    document.getElementById('tpPeriodFilter').value='';
+    document.getElementById('tpDeptFilter').value='';
+    document.getElementById('tpCatFilter').value='';
+    document.getElementById('tpPersonFilter').value='';
+    updateTPPersonFilter('');renderTP();
+  });
+}
+
+function updateTPPersonFilter(dept){
+  const pool=dept?allData.filter(r=>r.departamento===dept):allData;
+  const persons=[...new Set(pool.map(r=>(r.nombre+' '+r.apellidos).trim()))].sort();
+  document.getElementById('tpPersonFilter').innerHTML='<option value="">Todas</option>'+persons.map(p=>`<option value="${p}">${p}</option>`).join('');
+}
+
+function renderTP(){
+  if(!tpInited){initTPFilters();tpInited=true;}
+  const period=document.getElementById('tpPeriodFilter').value;
+  const dept=document.getElementById('tpDeptFilter').value;
+  const cat=document.getElementById('tpCatFilter').value;
+  const person=document.getElementById('tpPersonFilter').value;
+  const hasFil=period||dept||cat||person;
+  document.getElementById('tpClearBtn').style.display=hasFil?'flex':'none';
+
+  let pool=[...allData];
+  if(period) pool=pool.filter(r=>r.fecha&&r.fecha.toISOString().slice(0,7)===period);
+  if(dept) pool=pool.filter(r=>r.departamento===dept);
+  if(cat) pool=pool.filter(r=>r.categoria===cat);
+  if(person) pool=pool.filter(r=>(r.nombre+' '+r.apellidos).trim()===person);
+
+  // Stats
+  const total=pool.reduce((s,r)=>s+r.importe,0);
+  const uniqueViajeros=new Set(pool.map(r=>(r.nombre+' '+r.apellidos).trim())).size;
+  const deptCounts={};pool.forEach(r=>{deptCounts[r.departamento]=(deptCounts[r.departamento]||0)+1;});
+  const topDept=Object.entries(deptCounts).sort((a,b)=>b[1]-a[1])[0];
+  const avg=uniqueViajeros?total/uniqueViajeros:0;
+  const label=period?new Date(period+'-15').toLocaleString('es-ES',{month:'long',year:'numeric'}):'Acumulado anual';
+
+  document.getElementById('tpStatsGrid').innerHTML=`
+    <div class="stat blue"><div class="stat-icon"><i class="ti ti-users" aria-hidden="true"></i></div><div class="stat-label">Viajeros únicos</div><div class="stat-value">${uniqueViajeros}</div><div class="stat-sub">${pool.length} reservas en total</div></div>
+    <div class="stat teal"><div class="stat-icon"><i class="ti ti-building-skyscraper" aria-hidden="true"></i></div><div class="stat-label">Departamentos</div><div class="stat-value">${Object.keys(deptCounts).length}</div><div class="stat-sub">${topDept?'Mayor: '+topDept[0]:''}</div></div>
+    <div class="stat green"><div class="stat-icon"><i class="ti ti-cash" aria-hidden="true"></i></div><div class="stat-label">Gasto total</div><div class="stat-value" style="font-size:17px;">${fmtImp(total,false)}</div><div class="stat-sub">${label}</div></div>
+    <div class="stat amber"><div class="stat-icon"><i class="ti ti-chart-line" aria-hidden="true"></i></div><div class="stat-label">Gasto medio</div><div class="stat-value" style="font-size:17px;">${fmtImp(avg,false)}</div><div class="stat-sub">por viajero</div></div>
+  `;
+
+  // Charts
+  const DEPT_COLORS=['#2563a8','#0d9488','#7c3aed','#d97706','#059669','#0891b2','#9333ea','#dc2626'];
+  const depts=[...new Set(allData.map(r=>r.departamento).filter(Boolean))].sort();
+  const deptGasto={};depts.forEach(d=>{deptGasto[d]=pool.filter(r=>r.departamento===d).reduce((s,r)=>s+r.importe,0);});
+  const deptUnique={};depts.forEach(d=>{deptUnique[d]=new Set(pool.filter(r=>r.departamento===d).map(r=>r.nombre+r.apellidos)).size;});
+
+  if(tpDeptChartInst)tpDeptChartInst.destroy();
+  tpDeptChartInst=new Chart(document.getElementById('tpDeptChart'),{
+    type:'doughnut',
+    data:{labels:depts,datasets:[{data:depts.map(d=>deptUnique[d]),backgroundColor:DEPT_COLORS,borderWidth:2,borderColor:'#fff'}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'right',labels:{font:{size:11},boxWidth:12,padding:8}},tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${ctx.raw} viajeros`}}}}
+  });
+
+  if(tpGastoChartInst)tpGastoChartInst.destroy();
+  tpGastoChartInst=new Chart(document.getElementById('tpGastoChart'),{
+    type:'bar',
+    data:{labels:depts,datasets:[{data:depts.map(d=>deptGasto[d]),backgroundColor:DEPT_COLORS.map(c=>c+'33'),borderColor:DEPT_COLORS,borderWidth:1.5,borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>fmtImp(ctx.raw,false)}}},scales:{x:{ticks:{font:{size:10},color:'#7a8faa'},grid:{display:false}},y:{ticks:{font:{size:10},color:'#7a8faa',callback:v=>v.toLocaleString('es-ES')+'€'},grid:{color:'#f0f4fa'}}}}
+  });
+
+  // Table
+  document.getElementById('tpRowCount').textContent=pool.length+' registro'+(pool.length!==1?'s':'');
+  const noRes=document.getElementById('tpNoResults');
+  noRes.style.display=pool.length?'none':'block';
+
+  const DEPT_COLOR_MAP={};depts.forEach((d,i)=>{DEPT_COLOR_MAP[d]=DEPT_COLORS[i%DEPT_COLORS.length];});
+
+  document.getElementById('tpTableBody').innerHTML=pool.map(r=>{
+    const name=(r.nombre+' '+r.apellidos).trim();
+    const initials=(r.nombre[0]||(r.apellidos[0]||'?'))+(r.apellidos?r.apellidos[0]:'');
+    const col=DEPT_COLOR_MAP[r.departamento]||'#6b7280';
+    const colLight=col+'22';
+    const icon=CAT_ICONS[r.categoria]||'📎';
+    const fechaFmt=r.fecha?r.fecha.toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}):'-';
+    const imp=r.importe>=0?`<span style="color:#1a2235;font-weight:600;">${fmtImp(r.importe,false)}</span>`:`<span style="color:#dc2626;font-weight:600;">${fmtImp(r.importe,false)}</span>`;
+    return `<tr>
+      <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:30px;height:30px;border-radius:50%;background:${colLight};border:1px solid ${col};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:${col};flex-shrink:0;">${initials.toUpperCase()}</div><span style="font-weight:500;color:#1a2235;">${name}</span></div></td>
+      <td><span style="display:inline-flex;align-items:center;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;background:${colLight};color:${col};">${r.departamento}</span></td>
+      <td style="color:#5a6a85;font-size:13px;">${fechaFmt}</td>
+      <td style="font-size:13px;">${icon} ${r.categoria}</td>
+      <td style="color:#5a6a85;font-size:12px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.summary}">${r.summary||'—'}</td>
+      <td class="r">${imp}</td>
+    </tr>`;
+  }).join('');
+
+  const foot=pool.reduce((s,r)=>s+r.importe,0);
+  document.getElementById('tpTableFoot').innerHTML=`<tr><td colspan="5" style="font-weight:600;color:#2563a8;">TOTAL</td><td class="r" style="font-weight:700;color:#2563a8;">${fmtImp(foot,false)}</td></tr>`;
+}
+
 </script>
 </body>
 </html>

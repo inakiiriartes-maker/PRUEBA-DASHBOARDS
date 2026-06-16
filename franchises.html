@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Portal de Viajes</title>
+<title>Portal de Viajes · Franquicias v3</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -154,7 +154,7 @@ tfoot td.r{text-align:right;}
   <div class="header-left">
     <div class="header-icon"><i class="ti ti-plane-departure" aria-hidden="true"></i></div>
     <div>
-      <div class="header-title">Portal de Viajes</div>
+      <div class="header-title">Portal de Viajes v3</div>
       <div class="header-sub">Gastos corporativos — Franquicias</div>
     </div>
   </div>
@@ -162,45 +162,14 @@ tfoot td.r{text-align:right;}
 </div>
 
 <div class="tabs">
-  <div class="tab active" id="tabMes" onclick="switchTab('mes')"><i class="ti ti-calendar-month" aria-hidden="true"></i>Vista mensual</div>
-  <div class="tab" id="tabAnual" onclick="switchTab('anual')"><i class="ti ti-chart-line" aria-hidden="true"></i>Comparativa anual</div>
+  <div class="tab active" id="tabAnual" onclick="switchTab('anual')"><i class="ti ti-chart-line" aria-hidden="true"></i>Comparativa anual</div>
   <div class="tab" id="tabTarjeta" onclick="switchTab('tarjeta')"><i class="ti ti-credit-card" aria-hidden="true"></i>Tarjeta corporativa</div>
+  <div class="tab" id="tabTP" onclick="switchTab('tp')"><i class="ti ti-plane" aria-hidden="true"></i>TravelPerk</div>
 </div>
 
 <div class="main">
 
-  <!-- VISTA MENSUAL -->
-  <div id="viewMes">
-    <div class="filters-bar" id="filtersBar">
-      <div class="fg"><i class="ti ti-calendar-month" aria-hidden="true"></i><label for="monthPicker">Mes</label><input type="month" id="monthPicker"/></div>
-      <div class="divider"></div>
-      <div class="fg"><i class="ti ti-building-skyscraper" aria-hidden="true"></i><label for="deptFilter">Departamento</label><select id="deptFilter"><option value="">Todos</option></select></div>
-      <div class="divider"></div>
-      <div class="fg"><i class="ti ti-user-circle" aria-hidden="true"></i><label for="personFilter">Persona</label><select id="personFilter" style="min-width:140px;"><option value="">Todas</option></select></div>
-      <button class="clear-btn" id="clearBtn" style="display:none;"><i class="ti ti-filter-off" style="font-size:13px;" aria-hidden="true"></i> Limpiar</button>
-    </div>
-    <div class="stats-grid" id="statsGrid"></div>
-    <div class="charts-row" id="chartsRow">
-      <div class="chart-card"><div class="chart-title"><i class="ti ti-chart-donut" aria-hidden="true"></i>Viajeros por departamento</div><div class="chart-wrap"><canvas id="deptChart"></canvas></div></div>
-      <div class="chart-card"><div class="chart-title"><i class="ti ti-chart-bar" aria-hidden="true"></i>Gasto por departamento</div><div class="chart-wrap"><canvas id="gastoChart"></canvas></div></div>
-    </div>
-    <div class="table-card">
-      <div id="tableSection">
-        <div class="table-header"><div class="table-header-left"><i class="ti ti-list" aria-hidden="true"></i>Listado de viajeros</div><span class="row-count" id="rowCount">0 viajeros</span></div>
-        <div style="overflow-x:auto;">
-          <table>
-            <thead><tr><th style="width:30%;">Viajero</th><th style="width:22%;">Departamento</th><th style="width:20%;">Fecha salida</th><th class="r" style="width:18%;">Importe</th></tr></thead>
-            <tbody id="tableBody"></tbody>
-            <tfoot id="tableFoot"></tfoot>
-          </table>
-        </div>
-        <div class="no-results" id="noResults" style="display:none;"><i class="ti ti-search-off" aria-hidden="true"></i>No hay viajeros para los filtros seleccionados</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- VISTA ANUAL -->
-  <div id="viewAnual" style="display:none;">
+  <div id="viewAnual">
     <div id="anualContent">
       <div class="anual-filters">
         <div class="fg"><i class="ti ti-calendar" aria-hidden="true"></i><label for="yearFilter">Año</label><select id="yearFilter"></select></div>
@@ -319,6 +288,70 @@ tfoot td.r{text-align:right;}
     </div>
   </div>
 
+
+  <!-- VISTA TRAVELPERK -->
+  <div id="viewTP" style="display:none;">
+    <div class="filters-bar" id="tpFiltersBar">
+      <div class="fg"><i class="ti ti-calendar-month" aria-hidden="true"></i><label for="tpMonthPicker">Periodo</label>
+        <select id="tpPeriodFilter">
+          <option value="">Acumulado anual</option>
+          <option value="2026-01">Enero 2026</option>
+          <option value="2026-02">Febrero 2026</option>
+          <option value="2026-03">Marzo 2026</option>
+          <option value="2026-04">Abril 2026</option>
+          <option value="2026-05">Mayo 2026</option>
+        </select>
+      </div>
+      <div class="divider"></div>
+      <div class="fg"><i class="ti ti-building-skyscraper" aria-hidden="true"></i><label for="tpDeptFilter">Departamento</label>
+        <select id="tpDeptFilter"><option value="">Todos</option></select>
+      </div>
+      <div class="divider"></div>
+      <div class="fg"><i class="ti ti-tag" aria-hidden="true"></i><label for="tpCatFilter">Categoría</label>
+        <select id="tpCatFilter">
+          <option value="">Todas</option>
+          <option value="Hotel">🏨 Hotel</option>
+          <option value="Vuelo/Tren">✈️ Vuelo/Tren</option>
+          <option value="Alquiler de coche">🚗 Alquiler de coche</option>
+          <option value="Fee TravelPerk">💳 Fee TravelPerk</option>
+          <option value="Suplemento asiento">💺 Suplemento asiento</option>
+          <option value="Otros">📎 Otros</option>
+        </select>
+      </div>
+      <div class="divider"></div>
+      <div class="fg"><i class="ti ti-user-circle" aria-hidden="true"></i><label for="tpPersonFilter">Persona</label>
+        <select id="tpPersonFilter" style="min-width:140px;"><option value="">Todas</option></select>
+      </div>
+      <button class="clear-btn" id="tpClearBtn" style="display:none;"><i class="ti ti-filter-off" style="font-size:13px;" aria-hidden="true"></i> Limpiar</button>
+    </div>
+    <div class="stats-grid" id="tpStatsGrid"></div>
+    <div class="charts-row">
+      <div class="chart-card"><div class="chart-title"><i class="ti ti-chart-donut" aria-hidden="true"></i>Viajeros por departamento</div><div class="chart-wrap"><canvas id="tpDeptChart"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title"><i class="ti ti-chart-bar" aria-hidden="true"></i>Gasto por departamento</div><div class="chart-wrap"><canvas id="tpGastoChart"></canvas></div></div>
+    </div>
+    <div class="table-card">
+      <div class="table-header">
+        <div class="table-header-left"><i class="ti ti-list" aria-hidden="true"></i>Listado de gastos</div>
+        <span class="row-count" id="tpRowCount">0 registros</span>
+      </div>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead><tr>
+            <th style="width:22%;">Viajero</th>
+            <th style="width:18%;">Departamento</th>
+            <th style="width:12%;">Fecha</th>
+            <th style="width:14%;">Categoría</th>
+            <th style="width:24%;">Descripción</th>
+            <th class="r" style="width:10%;">Importe</th>
+          </tr></thead>
+          <tbody id="tpTableBody"></tbody>
+          <tfoot id="tpTableFoot"></tfoot>
+        </table>
+      </div>
+      <div class="no-results" id="tpNoResults" style="display:none;"><i class="ti ti-search-off" aria-hidden="true"></i>No hay registros para los filtros seleccionados</div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -352,14 +385,15 @@ function fmtMonth(val){const[y,m]=val.split('-');return new Date(+y,+m-1,1).toLo
 const MESES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
 function switchTab(t){
-  document.getElementById('tabMes').className='tab'+(t==='mes'?' active':'');
   document.getElementById('tabAnual').className='tab'+(t==='anual'?' active':'');
   document.getElementById('tabTarjeta').className='tab'+(t==='tarjeta'?' active':'');
-  document.getElementById('viewMes').style.display=t==='mes'?'block':'none';
+  document.getElementById('tabTP').className='tab'+(t==='tp'?' active':'');
   document.getElementById('viewAnual').style.display=t==='anual'?'block':'none';
   document.getElementById('viewTarjeta').style.display=t==='tarjeta'?'block':'none';
+  document.getElementById('viewTP').style.display=t==='tp'?'block':'none';
   if(t==='anual')renderAnual();
   if(t==='tarjeta')renderTarjeta();
+  if(t==='tp')renderTP();
 }
 
 
@@ -519,10 +553,10 @@ function renderAnual(){
 }
 
 function goToMonth(year,monthIdx){
+  switchTab('tp');
   const val=year+'-'+String(monthIdx+1).padStart(2,'0');
-  document.getElementById('monthPicker').value=val;
-  switchTab('mes');
-  render();
+  document.getElementById('tpPeriodFilter').value=val;
+  renderTP();
 }
 
 // ---- TARJETA CORPORATIVA ----
@@ -624,7 +658,6 @@ function renderTarjeta(){
   document.getElementById('tcStats').innerHTML=`
     <div class="stat blue"><div class="stat-icon"><i class="ti ti-credit-card" aria-hidden="true"></i></div><div class="stat-label">Gasto ${mesNombre||'acumulado'}</div><div class="stat-value" style="font-size:17px;">${fmtImp(grandTotal,false)}</div><div class="stat-sub">${subLabel}</div></div>
     <div class="stat teal"><div class="stat-icon"><i class="ti ti-users" aria-hidden="true"></i></div><div class="stat-label">Titulares</div><div class="stat-value">${pool.length}</div><div class="stat-sub">${Object.keys(bunMap).length} BUN${Object.keys(bunMap).length!==1?'s':''}</div></div>
-    <div class="stat amber"><div class="stat-icon"><i class="ti ti-trophy" aria-hidden="true"></i></div><div class="stat-label">Mayor gasto</div><div class="stat-value" style="font-size:13px;line-height:1.3;">${topP?topP.cruce||topP.persona:'—'}</div><div class="stat-sub">${topP?fmtImp(getVal(topP),false):''}</div></div>
     ${mesNombre?
       `<div class="stat violet"><div class="stat-icon"><i class="ti ti-calendar-stats" aria-hidden="true"></i></div><div class="stat-label">Media por titular</div><div class="stat-value" style="font-size:17px;">${pool.length?fmtImp(grandTotal/pool.length,false):'—'}</div><div class="stat-sub">${mesNombre}</div></div>`
       :`<div class="stat violet"><div class="stat-icon"><i class="ti ti-calendar-stats" aria-hidden="true"></i></div><div class="stat-label">Mes pico</div><div class="stat-value" style="font-size:17px;">${TC_MESES[topM.i].slice(0,3)}</div><div class="stat-sub">${fmtImp(monthTotals[topM.i],false)}</div></div>`
@@ -715,211 +748,312 @@ function renderTarjeta(){
 
 // ── DATOS PRECARGADOS — ACTUALIZAR CADA MES ──
 const RAW_DATA = [
-  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-01-08",importe:2.82},
-  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-01-08",importe:7.45},
-  {nombre:"Pedro",apellidos:"Moreno",departamento:"Franchises",fecha:"2026-01-09",importe:36.35},
-  {nombre:"Pedro",apellidos:"Moreno",departamento:"Franchises",fecha:"2026-01-09",importe:2.42},
-  {nombre:"Pedro",apellidos:"Moreno",departamento:"Franchises",fecha:"2026-01-09",importe:36.35},
-  {nombre:"Pedro",apellidos:"Moreno",departamento:"Franchises",fecha:"2026-01-09",importe:2.42},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-01-11",importe:21.0},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-01-11",importe:0.76},
-  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-01-13",importe:82.0},
-  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-01-13",importe:2.98},
-  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-01-15",importe:82.45},
-  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-01-15",importe:2.99},
-  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-01-15",importe:160.82},
-  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-01-15",importe:5.83},
-  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-01-15",importe:127.72},
-  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-01-15",importe:4.63},
-  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-01-15",importe:5.28},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-01-16",importe:77.25},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-01-16",importe:2.81},
-  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-01-16",importe:40.65},
-  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-01-16",importe:2.42},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-01-16",importe:141.75},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-01-16",importe:5.14},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-01-19",importe:93.6},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-01-19",importe:3.4},
-  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-01-21",importe:3.27},
-  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-01-21",importe:120.47},
-  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-01-21",importe:4.37},
-  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-01-21",importe:2.61},
-  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-01-21",importe:83.95},
-  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-01-21",importe:3.05},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-01-29",importe:2.42},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-01-29",importe:83.09},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-01-29",importe:3.01},
-  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-01-08",importe:77.75},
-  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-01-15",importe:40.2},
-  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-01-15",importe:35.18},
-  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-01-15",importe:69.99},
-  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-01-21",importe:89.85},
-  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-01-21",importe:72.0},
-  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-01-08",importe:205.25},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-01-29",importe:66.33},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-02-02",importe:44.14},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-02-15",importe:2.0},
-  {nombre:"Patrick",apellidos:"Phellippeau",departamento:"Franchises",fecha:"2026-02-10",importe:141.59},
-  {nombre:"Patrick",apellidos:"Phellippeau",departamento:"Franchises",fecha:"2026-02-10",importe:5.08},
-  {nombre:"Patrick",apellidos:"Phellippeau",departamento:"Franchises",fecha:"2026-02-10",importe:5.09},
-  {nombre:"Patrick",apellidos:"Phellippeau",departamento:"Franchises",fecha:"2026-02-10",importe:176.89},
-  {nombre:"Patrick",apellidos:"Phellippeau",departamento:"Franchises",fecha:"2026-02-15",importe:9.86},
-  {nombre:"Patrick",apellidos:"Phellippeau",departamento:"Franchises",fecha:"2026-02-15",importe:4.0},
-  {nombre:"Patrick",apellidos:"Phellippeau",departamento:"Franchises",fecha:"2026-02-15",importe:4.0},
-  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-02-10",importe:36.45},
-  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-02-15",importe:2.0},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-02-15",importe:4.45},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-02-20",importe:90.8},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-02-20",importe:76.82},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-02-15",importe:5.53},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-02-23",importe:23.0},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-02-15",importe:5.32},
-  {nombre:"Wilma",apellidos:"Sortino",departamento:"Franchises",fecha:"2026-02-15",importe:2.0},
-  {nombre:"Wilma",apellidos:"Sortino",departamento:"Franchises",fecha:"2026-02-26",importe:65.55},
-  {nombre:"Wilma",apellidos:"Sortino",departamento:"Franchises",fecha:"2026-02-15",importe:2.16},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-02-26",importe:83.24},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-02-15",importe:2.75},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-02-15",importe:14.0},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-02-28",importe:97.36},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-02-15",importe:3.21},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-02-15",importe:301.29},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-02-13",importe:155.9},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-02-23",importe:208.33},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-02-23",importe:54.55},
-  {nombre:"Wilma",apellidos:"Sortino",departamento:"Franchises",fecha:"2026-02-25",importe:77.27},
-  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-03-02",importe:75.5},
-  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-03-15",importe:2.49},
-  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-03-02",importe:97.05},
-  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-03-15",importe:3.2},
-  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-03-04",importe:106.73},
-  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-03-15",importe:3.52},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-03-11",importe:115.55},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-03-15",importe:3.81},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-03-15",importe:4.74},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-03-15",importe:5.04},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-03-23",importe:92.84},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-03-15",importe:3.37},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-03-12",importe:143.71},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-03-18",importe:152.73},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-03-23",importe:92.84},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-03-23",importe:3.37},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-06",importe:49.93},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-06",importe:2.0},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-06",importe:86.7},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-06",importe:2.86},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-04-09",importe:67.32},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-04-09",importe:2.22},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-10",importe:2.64},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-10",importe:80.07},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-04-15",importe:5.17},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-16",importe:286.04},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-16",importe:9.44},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-16",importe:69.95},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-16",importe:2.31},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-20",importe:151.73},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-20",importe:4.55},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-04-20",importe:89.54},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-04-20",importe:2.95},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-20",importe:258.08},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-20",importe:7.74},
-  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-04-21",importe:29.14},
-  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-04-21",importe:2.0},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-21",importe:31.18},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-21",importe:2.0},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-22",importe:5.73},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-22",importe:2.0},
-  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-04-22",importe:59.92},
-  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-04-22",importe:2.0},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-04-15",importe:156.76},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-04-23",importe:50.86},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-04-23",importe:2.0},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-04-24",importe:45.68},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-04-24",importe:2.0},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-27",importe:5.14},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-27",importe:2.0},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-27",importe:87.7},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-27",importe:2.89},
-  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-04-27",importe:3.97},
-  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-04-30",importe:31.82},
-  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-04-30",importe:2.0},
-  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-04-30",importe:69.18},
-  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-04-30",importe:2.28},
-  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-04-30",importe:4.55},
-  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-04-30",importe:44.41},
-  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-04-30",importe:2.0},
-  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-04-27",importe:74.65},
-  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-04-27",importe:22.84},
-  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-04-27",importe:22.84},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-14",importe:-71.18},
-  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-05-04",importe:2.0},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-05",importe:122.05},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-05",importe:4.03},
-  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-05-06",importe:101.77},
-  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-05-06",importe:3.36},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-05-06",importe:91.79},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-05-06",importe:2.75},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-05-06",importe:2.76},
-  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-05-07",importe:6.52},
-  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-05-07",importe:66.63},
-  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-05-07",importe:2.2},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-08",importe:72.55},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-08",importe:2.39},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-09",importe:60.45},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-09",importe:2.0},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-09",importe:146.95},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-09",importe:5.33},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-09",importe:334.6},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-09",importe:11.04},
-  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-05-15",importe:60.45},
-  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-05-15",importe:2.0},
-  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-05-15",importe:66.5},
-  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-05-15",importe:2.19},
-  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-05-07",importe:197.72},
-  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-05-04",importe:52.36},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-05-06",importe:83.64},
-  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-19",importe:-93.23},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-05-19",importe:84.78},
-  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-05-19",importe:2.8},
-  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-05-20",importe:366.36},
-  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-05-20",importe:10.99},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-05-20",importe:366.36},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-05-20",importe:10.99},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-05-20",importe:200.8},
-  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-05-20",importe:6.02},
-  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-05-20",importe:306.29},
-  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-05-20",importe:0.0},
-  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-05-20",importe:9.19},
-  {nombre:"Pedro",apellidos:"Moreno",departamento:"Franchises",fecha:"2026-05-21",importe:200.8},
-  {nombre:"Pedro",apellidos:"Moreno",departamento:"Franchises",fecha:"2026-05-21",importe:6.02},
-  {nombre:"Pedro",apellidos:"Moreno",departamento:"Franchises",fecha:"2026-05-21",importe:366.36},
-  {nombre:"Pedro",apellidos:"Moreno",departamento:"Franchises",fecha:"2026-05-21",importe:10.99},
-  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-05-22",importe:3.61},
-  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-05-26",importe:0.0},
-  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-05-26",importe:0.0},
-  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-05-26",importe:113.18},
-  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-05-26",importe:3.73},
-  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-05-22",importe:109.35},
+  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-01-08",importe:2.82,categoria:"Fee TravelPerk",summary:"Pro monthly subscription fee for period 2026-01-01 to 2026-01-31"},
+  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-01-08",importe:7.45,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35483112"},
+  {nombre:"Pedro",apellidos:"Moreno",departamento:"Franchises",fecha:"2026-01-09",importe:36.35,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35592007"},
+  {nombre:"Pedro",apellidos:"Moreno",departamento:"Franchises",fecha:"2026-01-09",importe:2.42,categoria:"Vuelo/Tren",summary:"Route: Camp Tarragona > Lleida > Camp Tarragona"},
+  {nombre:"Pedro",apellidos:"Moreno",departamento:"Franchises",fecha:"2026-01-09",importe:36.35,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35594525"},
+  {nombre:"Pedro",apellidos:"Moreno",departamento:"Franchises",fecha:"2026-01-09",importe:2.42,categoria:"Vuelo/Tren",summary:"Route: Camp Tarragona > Lleida > Camp Tarragona"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-01-11",importe:21.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35594957"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-01-11",importe:0.76,categoria:"Vuelo/Tren",summary:"Route: BCN > TFN"},
+  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-01-13",importe:82.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35709623"},
+  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-01-13",importe:2.98,categoria:"Vuelo/Tren",summary:"Route: BCN > ATH > BCN"},
+  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-01-15",importe:82.45,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35771606"},
+  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-01-15",importe:2.99,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Barcelona - Sants > Madrid - Puerta De Atocha"},
+  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-01-15",importe:160.82,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35800140"},
+  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-01-15",importe:5.83,categoria:"Hotel",summary:"Hotels: 1881 Barcelona Rosell\u00c3\u00b3n Hotel"},
+  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-01-15",importe:127.72,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35813626"},
+  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-01-15",importe:4.63,categoria:"Hotel",summary:"Hotels: Minavra Hotel"},
+  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-01-15",importe:5.28,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35835839"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-01-16",importe:77.25,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35855991"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-01-16",importe:2.81,categoria:"Vuelo/Tren",summary:"Route: Alicante/Alacant > Madrid - Chamart\u00c3\u00adn-Clara Campoamor > Alicante/Alacant"},
+  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-01-16",importe:40.65,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35857525"},
+  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-01-16",importe:2.42,categoria:"Vuelo/Tren",summary:"Route: Valencia  - Joaquin Sorolla > Madrid - Chamart\u00c3\u00adn-Clara Campoamor"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-01-16",importe:141.75,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35857192"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-01-16",importe:5.14,categoria:"Vuelo/Tren",summary:"Route: Barcelona - Sants > Madrid - Puerta De Atocha > Barcelona - Sants"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-01-19",importe:93.6,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 35963576"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-01-19",importe:3.4,categoria:"Hotel",summary:"Hotels: Atipico Madrid"},
+  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-01-21",importe:3.27,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36018839"},
+  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-01-21",importe:120.47,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36042611"},
+  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-01-21",importe:4.37,categoria:"Hotel",summary:"Hotels: Hotel Balmes, a member of Preferred Hotels & Resorts"},
+  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-01-21",importe:2.61,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36042896"},
+  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-01-21",importe:83.95,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36043108"},
+  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-01-21",importe:3.05,categoria:"Vuelo/Tren",summary:"Route: Barcelona - Sants > Madrid - Puerta De Atocha"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-01-29",importe:2.42,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36219057"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-01-29",importe:83.09,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36385334"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-01-29",importe:3.01,categoria:"Hotel",summary:"Hotels: Hotel Campoamor"},
+  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-01-08",importe:77.75,categoria:"Vuelo/Tren",summary:"Route: BCN > GRX > BCN"},
+  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-01-15",importe:40.2,categoria:"Vuelo/Tren",summary:"Route: BCN > GRX > BCN"},
+  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-01-15",importe:35.18,categoria:"Vuelo/Tren",summary:"Route: BCN > GRX > BCN"},
+  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-01-15",importe:69.99,categoria:"Vuelo/Tren",summary:"Route: GRX > MAD > GRX"},
+  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-01-21",importe:89.85,categoria:"Vuelo/Tren",summary:"Route: BIO > BCN"},
+  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-01-21",importe:72.0,categoria:"Vuelo/Tren",summary:"Route: SCQ > BCN"},
+  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-01-08",importe:205.25,categoria:"Hotel",summary:"Hotels: Numa Madrid Goya"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-01-29",importe:66.33,categoria:"Otros",summary:""},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-02-02",importe:44.14,categoria:"Vuelo/Tren",summary:"Route: Alicante/Alacant > Valencia - Estacio Del Nord > Alicante/Alacant"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-02-15",importe:2.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36467391"},
+  {nombre:"Patrick",apellidos:"Phellippeau",departamento:"Franchises",fecha:"2026-02-10",importe:141.59,categoria:"Hotel",summary:"Hotels: HOTEL ALISON"},
+  {nombre:"Patrick",apellidos:"Phellippeau",departamento:"Franchises",fecha:"2026-02-10",importe:5.08,categoria:"Vuelo/Tren",summary:"Route: BCN > ORY > BCN"},
+  {nombre:"Patrick",apellidos:"Phellippeau",departamento:"Franchises",fecha:"2026-02-10",importe:5.09,categoria:"Vuelo/Tren",summary:"Route: BCN > ORY > BCN"},
+  {nombre:"Patrick",apellidos:"Phellippeau",departamento:"Franchises",fecha:"2026-02-10",importe:176.89,categoria:"Vuelo/Tren",summary:"Route: BCN > ORY > BCN"},
+  {nombre:"Patrick",apellidos:"Phellippeau",departamento:"Franchises",fecha:"2026-02-15",importe:9.86,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36806916"},
+  {nombre:"Patrick",apellidos:"Phellippeau",departamento:"Franchises",fecha:"2026-02-15",importe:4.0,categoria:"Suplemento asiento",summary:"Seat booking fee for Trip 36806916"},
+  {nombre:"Patrick",apellidos:"Phellippeau",departamento:"Franchises",fecha:"2026-02-15",importe:4.0,categoria:"Suplemento asiento",summary:"Seat booking fee for Trip 36806916"},
+  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-02-10",importe:36.45,categoria:"Vuelo/Tren",summary:"Route: Madrid - Chamart\u00c3\u00adn-Clara Campoamor > Valladolid > Madrid - Chamart\u00c3\u00adn-Clara Campoamor"},
+  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-02-15",importe:2.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36842329"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-02-15",importe:4.45,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 36975368"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-02-20",importe:90.8,categoria:"Hotel",summary:"Hotels: 1881 Madrid Ventas Hotel"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-02-20",importe:76.82,categoria:"Vuelo/Tren",summary:"Route: Alicante/Alacant > Madrid - Chamart\u00c3\u00adn-Clara Campoamor > Alicante/Alacant"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-02-15",importe:5.53,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37242875"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-02-23",importe:23.0,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Sevilla-Santa Justa"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-02-15",importe:5.32,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37332664"},
+  {nombre:"Wilma",apellidos:"Sortino",departamento:"Franchises",fecha:"2026-02-15",importe:2.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37452604"},
+  {nombre:"Wilma",apellidos:"Sortino",departamento:"Franchises",fecha:"2026-02-26",importe:65.55,categoria:"Vuelo/Tren",summary:"Route: Barcelona - Sants > Zaragoza-Delicias > Barcelona - Sants"},
+  {nombre:"Wilma",apellidos:"Sortino",departamento:"Franchises",fecha:"2026-02-15",importe:2.16,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37462285"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-02-26",importe:83.24,categoria:"Vuelo/Tren",summary:"Route: Barcelona - Sants > Madrid - Puerta De Atocha > Barcelona - Sants"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-02-15",importe:2.75,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37498197"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-02-15",importe:14.0,categoria:"Fee TravelPerk",summary:"FlexiTravel Trips Service for Trip 37498197"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-02-28",importe:97.36,categoria:"Hotel",summary:"Hotels: 1881 Madrid Ventas Hotel"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-02-15",importe:3.21,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37548409"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-02-15",importe:301.29,categoria:"Vuelo/Tren",summary:"Route: GRX > BCN > GRX"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-02-13",importe:155.9,categoria:"Vuelo/Tren",summary:"Route: VGO > MAD > VGO"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-02-23",importe:208.33,categoria:"Hotel",summary:"Hotels: Magnificent apartment 1BR-4P - Arc de Triomphe"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-02-23",importe:54.55,categoria:"Hotel",summary:"Hotels: Hotel Gran Via"},
+  {nombre:"Wilma",apellidos:"Sortino",departamento:"Franchises",fecha:"2026-02-25",importe:77.27,categoria:"Hotel",summary:"Hotels: Ibis Budget Madrid Centro Las Ventas"},
+  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-03-02",importe:75.5,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Barcelona - Sants > Madrid - Puerta De Atocha"},
+  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-03-15",importe:2.49,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37583646"},
+  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-03-02",importe:97.05,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Barcelona - Sants > Madrid - Puerta De Atocha"},
+  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-03-15",importe:3.2,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37585225"},
+  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-03-04",importe:106.73,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Barcelona - Sants > Madrid - Puerta De Atocha"},
+  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-03-15",importe:3.52,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37644391"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-03-11",importe:115.55,categoria:"Vuelo/Tren",summary:"Route: Barcelona - Sants > Madrid - Puerta De Atocha > Barcelona - Sants"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-03-15",importe:3.81,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 37988883"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-03-15",importe:4.74,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 38050399"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-03-15",importe:5.04,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 38277802"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-03-23",importe:92.84,categoria:"Alquiler de coche",summary:"Car for trip 38468212"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-03-15",importe:3.37,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 38468212"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-03-12",importe:143.71,categoria:"Vuelo/Tren",summary:"Route: BCN > BIO > BCN"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-03-18",importe:152.73,categoria:"Hotel",summary:"Hotels: Apartamentos TH Las Rozas"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-03-23",importe:92.84,categoria:"Alquiler de coche",summary:"Car for trip 38468212"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-03-23",importe:3.37,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 38468212"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-06",importe:49.93,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Barcelona - Sants"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-06",importe:2.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 38917980"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-06",importe:86.7,categoria:"Vuelo/Tren",summary:"Route: Barcelona - Sants > Madrid - Puerta De Atocha > Barcelona - Sants"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-06",importe:2.86,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 38919523"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-04-09",importe:67.32,categoria:"Vuelo/Tren",summary:"Route: Cordoba > Madrid - Puerta De Atocha > Cordoba"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-04-09",importe:2.22,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39057216"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-10",importe:2.64,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39124190"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-10",importe:80.07,categoria:"Vuelo/Tren",summary:"Route: BCN > BIO > BCN"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-04-15",importe:5.17,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39331028"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-16",importe:286.04,categoria:"Hotel",summary:"Hotels: voco Bilbao City by IHG"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-16",importe:9.44,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39408453"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-16",importe:69.95,categoria:"Vuelo/Tren",summary:"Route: Barcelona - Sants > Madrid - Puerta De Atocha > Barcelona - Sants"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-16",importe:2.31,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39412340"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-20",importe:151.73,categoria:"Vuelo/Tren",summary:"Route: BCN > LPA > BCN"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-20",importe:4.55,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39513711"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-04-20",importe:89.54,categoria:"Vuelo/Tren",summary:"Route: Barcelona - Sants > Madrid - Puerta De Atocha > Barcelona - Sants"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-04-20",importe:2.95,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39520845"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-20",importe:258.08,categoria:"Hotel",summary:"Hotels: Hotel MG Poniente"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-20",importe:7.74,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39539522"},
+  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-04-21",importe:29.14,categoria:"Vuelo/Tren",summary:"Route: Barcelona - Sants > Zaragoza-Delicias"},
+  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-04-21",importe:2.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39579723"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-21",importe:31.18,categoria:"Vuelo/Tren",summary:"Route: Valencia - Estacio Del Nord > Barcelona - Sants"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-21",importe:2.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39592867"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-22",importe:5.73,categoria:"Vuelo/Tren",summary:"Route: Castell\u00c3\u00b3n de la Plana > Valencia - Estacio Del Nord"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-22",importe:2.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39621957"},
+  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-04-22",importe:59.92,categoria:"Vuelo/Tren",summary:"Route: Zaragoza-Delicias > Barcelona - Sants"},
+  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-04-22",importe:2.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39634490"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-04-15",importe:156.76,categoria:"Hotel",summary:"Hotels: Gran Hotel Los Angeles"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-04-23",importe:50.86,categoria:"Vuelo/Tren",summary:"Route: Barcelona - Sants > Madrid - Puerta De Atocha"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-04-23",importe:2.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39704636"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-04-24",importe:45.68,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Barcelona - Sants"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-04-24",importe:2.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39755008"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-27",importe:5.14,categoria:"Vuelo/Tren",summary:"Route: Benicarl\u00c3\u00b3-Pe\u00c3\u00b1iscola > Castell\u00c3\u00b3n de la Plana"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-27",importe:2.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39796580"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-27",importe:87.7,categoria:"Hotel",summary:"Hotels: Casual Vintage Valencia by Casual Hoteles"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-04-27",importe:2.89,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39797295"},
+  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-04-27",importe:3.97,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39831896"},
+  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-04-30",importe:31.82,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Barcelona - Sants"},
+  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-04-30",importe:2.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39962605"},
+  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-04-30",importe:69.18,categoria:"Vuelo/Tren",summary:"Route: Barcelona - Sants > Valencia - Estacio Del Nord"},
+  {nombre:"Belen",apellidos:"Mahiques",departamento:"Franchises",fecha:"2026-04-30",importe:2.28,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 39963043"},
+  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-04-30",importe:4.55,categoria:"Vuelo/Tren",summary:"Route: Oviedo > Madrid - Chamart\u00c3\u00adn-Clara Campoamor"},
+  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-04-30",importe:44.41,categoria:"Vuelo/Tren",summary:"Route: Oviedo > Madrid - Chamart\u00c3\u00adn-Clara Campoamor"},
+  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-04-30",importe:2.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40003041"},
+  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-04-27",importe:74.65,categoria:"Vuelo/Tren",summary:"Route: BCN > PMI > BCN"},
+  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-04-27",importe:22.84,categoria:"Vuelo/Tren",summary:"Route: BCN > PMI > BCN"},
+  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-04-27",importe:22.84,categoria:"Vuelo/Tren",summary:"Route: BCN > PMI > BCN"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-14",importe:-71.18,categoria:"Vuelo/Tren",summary:"Route: Barcelona - Sants > Madrid - Puerta De Atocha > Barcelona - Sants"},
+  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-05-04",importe:2.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40056010"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-05",importe:122.05,categoria:"Vuelo/Tren",summary:"Route: Barcelona - Sants > Madrid - Puerta De Atocha > Barcelona - Sants"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-05",importe:4.03,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40068514"},
+  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-05-06",importe:101.77,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Alicante/Alacant > Madrid - Puerta De Atocha"},
+  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-05-06",importe:3.36,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40145561"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-05-06",importe:91.79,categoria:"Vuelo/Tren",summary:"Route: LPA > TFN > LPA"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-05-06",importe:2.75,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40165797"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-05-06",importe:2.76,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40198494"},
+  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-05-07",importe:6.52,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40246387"},
+  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-05-07",importe:66.63,categoria:"Hotel",summary:"Hotels: Hesperia A Coru\u00c3\u00b1a Centro"},
+  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-05-07",importe:2.2,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40256196"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-08",importe:72.55,categoria:"Vuelo/Tren",summary:"Route: Barcelona - Sants > Pamplona/Iru\u00c3\u00b1a"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-08",importe:2.39,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40287526"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-09",importe:60.45,categoria:"Vuelo/Tren",summary:"Route: Pamplona/Iru\u00c3\u00b1a > Barcelona - Sants"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-09",importe:2.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40315639"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-09",importe:146.95,categoria:"Alquiler de coche",summary:"Car for trip 40315739"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-09",importe:5.33,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40315739"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-09",importe:334.6,categoria:"Hotel",summary:"Hotels: Axel Hotel Bilbao - Adults Only"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-09",importe:11.04,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40316931"},
+  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-05-15",importe:60.45,categoria:"Vuelo/Tren",summary:"Route: Barcelona - Sants > Pamplona/Iru\u00c3\u00b1a"},
+  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-05-15",importe:2.0,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40559813"},
+  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-05-15",importe:66.5,categoria:"Vuelo/Tren",summary:"Route: Pamplona/Iru\u00c3\u00b1a > Barcelona - Sants"},
+  {nombre:"Veronica",apellidos:"Martin Orozco",departamento:"Franchises",fecha:"2026-05-15",importe:2.19,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40560113"},
+  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-05-07",importe:197.72,categoria:"Vuelo/Tren",summary:"Route: MAD > LCG > MAD"},
+  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-05-04",importe:52.36,categoria:"Hotel",summary:"Hotels: Hotel Maravillas del Mundo"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-05-06",importe:83.64,categoria:"Hotel",summary:"Hotels: LCB Hotel Fuenlabrada"},
+  {nombre:"Jose",apellidos:"Pardo Cayuela",departamento:"Franchises",fecha:"2026-05-19",importe:-93.23,categoria:"Alquiler de coche",summary:"Car for trip 40315739"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-05-19",importe:84.78,categoria:"Hotel",summary:"Hotels: Sercotel Las Artes Pinto"},
+  {nombre:"Blas",apellidos:"Anton",departamento:"Franchises",fecha:"2026-05-19",importe:2.8,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40686631"},
+  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-05-20",importe:366.36,categoria:"Hotel",summary:"Hotels: Campanile PRIME - Paris Levallois-Perret"},
+  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-05-20",importe:10.99,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40771544"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-05-20",importe:366.36,categoria:"Hotel",summary:"Hotels: Campanile PRIME - Paris Levallois-Perret"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-05-20",importe:10.99,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40770531"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-05-20",importe:200.8,categoria:"Vuelo/Tren",summary:"Route: BCN > CDG > BCN"},
+  {nombre:"Juan",apellidos:"Carlos Bra\u00f1as",departamento:"Franchises",fecha:"2026-05-20",importe:6.02,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40772469"},
+  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-05-20",importe:306.29,categoria:"Vuelo/Tren",summary:"Route: MAD > CDG > MAD"},
+  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-05-20",importe:0.0,categoria:"Vuelo/Tren",summary:"Route: MAD > CDG > MAD"},
+  {nombre:"Ana",apellidos:"Martinez",departamento:"Franchises",fecha:"2026-05-20",importe:9.19,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40772470"},
+  {nombre:"Pedro",apellidos:"Moreno",departamento:"Franchises",fecha:"2026-05-21",importe:200.8,categoria:"Vuelo/Tren",summary:"Route: BCN > CDG > BCN"},
+  {nombre:"Pedro",apellidos:"Moreno",departamento:"Franchises",fecha:"2026-05-21",importe:6.02,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40798458"},
+  {nombre:"Pedro",apellidos:"Moreno",departamento:"Franchises",fecha:"2026-05-21",importe:366.36,categoria:"Hotel",summary:"Hotels: Campanile PRIME - Paris Levallois-Perret"},
+  {nombre:"Pedro",apellidos:"Moreno",departamento:"Franchises",fecha:"2026-05-21",importe:10.99,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40800526"},
+  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-05-22",importe:3.61,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40870137"},
+  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-05-26",importe:0.0,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Barcelona - Sants > Madrid - Puerta De Atocha"},
+  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-05-26",importe:0.0,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Barcelona - Sants > Madrid - Puerta De Atocha"},
+  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-05-26",importe:113.18,categoria:"Vuelo/Tren",summary:"Route: Madrid - Puerta De Atocha > Barcelona - Sants > Madrid - Puerta De Atocha"},
+  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-05-26",importe:3.73,categoria:"Fee TravelPerk",summary:"Pro Service for Trip 40869200"},
+  {nombre:"Alberto",apellidos:"Sanguino",departamento:"Franchises",fecha:"2026-05-22",importe:109.35,categoria:"Hotel",summary:"Hotels: ITC Barcelona By Soho Boutique"},
 ];
 
-allData=RAW_DATA.map(r=>{return {nombre:r.nombre,apellidos:r.apellidos,departamento:r.departamento,fecha:parseDate(r.fecha),fechaRaw:r.fecha,importe:r.importe};});
+allData=RAW_DATA.map(r=>({nombre:r.nombre,apellidos:r.apellidos,departamento:r.departamento,fecha:parseDate(r.fecha),fechaRaw:r.fecha,importe:r.importe,categoria:r.categoria||'Otros',summary:r.summary||''}));
+
+// ── TRAVELPERK TAB (declared early so init can reference it) ──────────────
+const CAT_ICONS={'Hotel':'🏨','Vuelo/Tren':'✈️','Alquiler de coche':'🚗','Fee TravelPerk':'💳','Suplemento asiento':'💺','Otros':'📎'};
+let tpDeptChartInst=null,tpGastoChartInst=null,tpInited=false;
+
 (function init(){
   const depts=[...new Set(allData.map(r=>r.departamento).filter(Boolean))].sort();
   const dh='<option value="">Todos</option>'+depts.map(d=>`<option value="${d}">${d}</option>`).join('');
-  document.getElementById('deptFilter').innerHTML=dh;
   document.getElementById('anualDeptFilter').innerHTML=dh;
   const years=[...new Set(allData.filter(r=>r.fecha).map(r=>r.fecha.getFullYear()))].sort((a,b)=>b-a);
   document.getElementById('yearFilter').innerHTML=years.map(y=>`<option value="${y}">${y}</option>`).join('');
-  updatePersonFilter('');
-  document.getElementById('monthPicker').value=new Date().toISOString().slice(0,7);
-  document.getElementById('monthPicker').addEventListener('change',render);
-  document.getElementById('deptFilter').addEventListener('change',()=>{updatePersonFilter(document.getElementById('deptFilter').value);document.getElementById('personFilter').value='';render();});
-  document.getElementById('personFilter').addEventListener('change',render);
-  document.getElementById('clearBtn').addEventListener('click',()=>{document.getElementById('deptFilter').value='';document.getElementById('personFilter').value='';updatePersonFilter('');render();});
   document.getElementById('yearFilter').addEventListener('change',renderAnual);
   document.getElementById('anualDeptFilter').addEventListener('change',renderAnual);
   document.getElementById('clearAnualBtn').addEventListener('click',()=>{document.getElementById('anualDeptFilter').value='';renderAnual();});
-  render();
+  renderAnual();
 })();
+
+function initTPFilters(){
+  const depts=[...new Set(allData.map(r=>r.departamento).filter(Boolean))].sort();
+  document.getElementById('tpDeptFilter').innerHTML='<option value="">Todos</option>'+depts.map(d=>`<option value="${d}">${d}</option>`).join('');
+  updateTPPersonFilter('');
+  document.getElementById('tpPeriodFilter').addEventListener('change',renderTP);
+  document.getElementById('tpDeptFilter').addEventListener('change',()=>{updateTPPersonFilter(document.getElementById('tpDeptFilter').value);document.getElementById('tpPersonFilter').value='';renderTP();});
+  document.getElementById('tpCatFilter').addEventListener('change',renderTP);
+  document.getElementById('tpPersonFilter').addEventListener('change',renderTP);
+  document.getElementById('tpClearBtn').addEventListener('click',()=>{
+    document.getElementById('tpPeriodFilter').value='';
+    document.getElementById('tpDeptFilter').value='';
+    document.getElementById('tpCatFilter').value='';
+    document.getElementById('tpPersonFilter').value='';
+    updateTPPersonFilter('');renderTP();
+  });
+}
+
+function updateTPPersonFilter(dept){
+  const pool=dept?allData.filter(r=>r.departamento===dept):allData;
+  const persons=[...new Set(pool.map(r=>(r.nombre+' '+r.apellidos).trim()))].sort();
+  document.getElementById('tpPersonFilter').innerHTML='<option value="">Todas</option>'+persons.map(p=>`<option value="${p}">${p}</option>`).join('');
+}
+
+function renderTP(){
+  if(!tpInited){initTPFilters();tpInited=true;}
+  const period=document.getElementById('tpPeriodFilter').value;
+  const dept=document.getElementById('tpDeptFilter').value;
+  const cat=document.getElementById('tpCatFilter').value;
+  const person=document.getElementById('tpPersonFilter').value;
+  const hasFil=period||dept||cat||person;
+  document.getElementById('tpClearBtn').style.display=hasFil?'flex':'none';
+
+  let pool=[...allData];
+  if(period) pool=pool.filter(r=>r.fecha&&r.fecha.toISOString().slice(0,7)===period);
+  if(dept) pool=pool.filter(r=>r.departamento===dept);
+  if(cat) pool=pool.filter(r=>r.categoria===cat);
+  if(person) pool=pool.filter(r=>(r.nombre+' '+r.apellidos).trim()===person);
+
+  // Stats
+  const total=pool.reduce((s,r)=>s+r.importe,0);
+  const uniqueViajeros=new Set(pool.map(r=>(r.nombre+' '+r.apellidos).trim())).size;
+  const deptCounts={};pool.forEach(r=>{deptCounts[r.departamento]=(deptCounts[r.departamento]||0)+1;});
+  const topDept=Object.entries(deptCounts).sort((a,b)=>b[1]-a[1])[0];
+  const avg=uniqueViajeros?total/uniqueViajeros:0;
+  const label=period?new Date(period+'-15').toLocaleString('es-ES',{month:'long',year:'numeric'}):'Acumulado anual';
+
+  document.getElementById('tpStatsGrid').innerHTML=`
+    <div class="stat blue"><div class="stat-icon"><i class="ti ti-users" aria-hidden="true"></i></div><div class="stat-label">Viajeros únicos</div><div class="stat-value">${uniqueViajeros}</div><div class="stat-sub">${pool.length} reservas en total</div></div>
+    <div class="stat teal"><div class="stat-icon"><i class="ti ti-building-skyscraper" aria-hidden="true"></i></div><div class="stat-label">Departamentos</div><div class="stat-value">${Object.keys(deptCounts).length}</div><div class="stat-sub">${topDept?'Mayor: '+topDept[0]:''}</div></div>
+    <div class="stat green"><div class="stat-icon"><i class="ti ti-cash" aria-hidden="true"></i></div><div class="stat-label">Gasto total</div><div class="stat-value" style="font-size:17px;">${fmtImp(total,false)}</div><div class="stat-sub">${label}</div></div>
+    <div class="stat amber"><div class="stat-icon"><i class="ti ti-chart-line" aria-hidden="true"></i></div><div class="stat-label">Gasto medio</div><div class="stat-value" style="font-size:17px;">${fmtImp(avg,false)}</div><div class="stat-sub">por viajero</div></div>
+  `;
+
+  // Charts
+  const DEPT_COLORS=['#2563a8','#0d9488','#7c3aed','#d97706','#059669','#0891b2','#9333ea','#dc2626'];
+  const depts=[...new Set(allData.map(r=>r.departamento).filter(Boolean))].sort();
+  const deptGasto={};depts.forEach(d=>{deptGasto[d]=pool.filter(r=>r.departamento===d).reduce((s,r)=>s+r.importe,0);});
+  const deptUnique={};depts.forEach(d=>{deptUnique[d]=new Set(pool.filter(r=>r.departamento===d).map(r=>r.nombre+r.apellidos)).size;});
+
+  if(tpDeptChartInst)tpDeptChartInst.destroy();
+  tpDeptChartInst=new Chart(document.getElementById('tpDeptChart'),{
+    type:'doughnut',
+    data:{labels:depts,datasets:[{data:depts.map(d=>deptUnique[d]),backgroundColor:DEPT_COLORS,borderWidth:2,borderColor:'#fff'}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'right',labels:{font:{size:11},boxWidth:12,padding:8}},tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${ctx.raw} viajeros`}}}}
+  });
+
+  if(tpGastoChartInst)tpGastoChartInst.destroy();
+  tpGastoChartInst=new Chart(document.getElementById('tpGastoChart'),{
+    type:'bar',
+    data:{labels:depts,datasets:[{data:depts.map(d=>deptGasto[d]),backgroundColor:DEPT_COLORS.map(c=>c+'33'),borderColor:DEPT_COLORS,borderWidth:1.5,borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>fmtImp(ctx.raw,false)}}},scales:{x:{ticks:{font:{size:10},color:'#7a8faa'},grid:{display:false}},y:{ticks:{font:{size:10},color:'#7a8faa',callback:v=>v.toLocaleString('es-ES')+'€'},grid:{color:'#f0f4fa'}}}}
+  });
+
+  // Table
+  document.getElementById('tpRowCount').textContent=pool.length+' registro'+(pool.length!==1?'s':'');
+  const noRes=document.getElementById('tpNoResults');
+  noRes.style.display=pool.length?'none':'block';
+
+  const DEPT_COLOR_MAP={};depts.forEach((d,i)=>{DEPT_COLOR_MAP[d]=DEPT_COLORS[i%DEPT_COLORS.length];});
+
+  document.getElementById('tpTableBody').innerHTML=pool.map(r=>{
+    const name=(r.nombre+' '+r.apellidos).trim();
+    const initials=(r.nombre[0]||(r.apellidos[0]||'?'))+(r.apellidos?r.apellidos[0]:'');
+    const col=DEPT_COLOR_MAP[r.departamento]||'#6b7280';
+    const colLight=col+'22';
+    const icon=CAT_ICONS[r.categoria]||'📎';
+    const fechaFmt=r.fecha?r.fecha.toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}):'-';
+    const imp=r.importe>=0?`<span style="color:#1a2235;font-weight:600;">${fmtImp(r.importe,false)}</span>`:`<span style="color:#dc2626;font-weight:600;">${fmtImp(r.importe,false)}</span>`;
+    return `<tr>
+      <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:30px;height:30px;border-radius:50%;background:${colLight};border:1px solid ${col};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:${col};flex-shrink:0;">${initials.toUpperCase()}</div><span style="font-weight:500;color:#1a2235;">${name}</span></div></td>
+      <td><span style="display:inline-flex;align-items:center;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;background:${colLight};color:${col};">${r.departamento}</span></td>
+      <td style="color:#5a6a85;font-size:13px;">${fechaFmt}</td>
+      <td style="font-size:13px;">${icon} ${r.categoria}</td>
+      <td style="color:#5a6a85;font-size:12px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.summary}">${r.summary||'—'}</td>
+      <td class="r">${imp}</td>
+    </tr>`;
+  }).join('');
+
+  const foot=pool.reduce((s,r)=>s+r.importe,0);
+  document.getElementById('tpTableFoot').innerHTML=`<tr><td colspan="5" style="font-weight:600;color:#2563a8;">TOTAL</td><td class="r" style="font-weight:700;color:#2563a8;">${fmtImp(foot,false)}</td></tr>`;
+}
+
 </script>
 </body>
 </html>
